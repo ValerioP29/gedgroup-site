@@ -1,0 +1,33 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import SectionHeader from "../../components/SectionHeader.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+import { services } from "../../data/services";
+---
+
+<Layout
+  title="Servizi | GED Group"
+  description="Pulizie uffici, condomìni, ambienti industriali e interventi straordinari."
+>
+  <section class="mx-auto max-w-7xl px-4 py-12">
+    <SectionHeader
+      eyebrow="Servizi"
+      title="Servizi di pulizia ordinaria e straordinaria"
+      subtitle="Pagine servizio già pronte per contenuti SEO e commerciali. Sì, fatte apposta per portare richieste vere."
+    />
+
+    <div class="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {services.map((service) => <ServiceCard service={service} />)}
+    </div>
+
+    <div class="mt-10 panel p-5">
+      <h3 class="text-lg font-semibold">Come lavoriamo</h3>
+      <ol class="mt-3 grid gap-3 text-sm text-neutral-600 md:grid-cols-4">
+        <li class="rounded-xl border border-black/5 p-3"><strong>1.</strong> Sopralluogo e analisi esigenze</li>
+        <li class="rounded-xl border border-black/5 p-3"><strong>2.</strong> Proposta con frequenze e capitolato</li>
+        <li class="rounded-xl border border-black/5 p-3"><strong>3.</strong> Avvio servizio e coordinamento</li>
+        <li class="rounded-xl border border-black/5 p-3"><strong>4.</strong> Controlli qualità e supporto</li>
+      </ol>
+    </div>
+  </section>
+</Layout>

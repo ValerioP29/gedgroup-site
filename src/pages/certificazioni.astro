@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+---
+
+<Layout title="Certificazioni | GED Group" description="Certificazioni, conformità e standard qualitativi.">
+  <section class="mx-auto max-w-7xl px-4 py-12">
+    <SectionHeader
+      eyebrow="Certificazioni"
+      title="Certificazioni e standard"
+      subtitle="Pagina pronta per esporre certificazioni, procedure e documentazione richiesta in fase commerciale."
+    />
+
+    <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {[
+        { title: "ISO 9001", text: "Spazio per certificazione qualità e ambito di applicazione." },
+        { title: "ISO 14001", text: "Spazio per gestione ambientale e policy interne." },
+        { title: "ISO 45001", text: "Spazio per sicurezza e salute sul lavoro." },
+        { title: "Procedure operative", text: "Procedure interne, controlli qualità, gestione segnalazioni." },
+        { title: "Formazione personale", text: "Programmi formativi, aggiornamenti e standard operativi." },
+        { title: "Documentazione su richiesta", text: "Area utile per gare, amministratori e clienti corporate." },
+      ].map((item) => (
+        <div class="panel p-5">
+          <div class="mb-3 inline-grid h-10 w-10 place-items-center rounded-xl bg-neutral-900 text-white">✓</div>
+          <h3 class="font-semibold">{item.title}</h3>
+          <p class="mt-2 text-sm leading-6 text-neutral-600">{item.text}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-8 panel p-5">
+      <h3 class="text-lg font-semibold">Nota pratica</h3>
+      <p class="mt-2 text-sm text-neutral-600">
+        Qui possiamo aggiungere PDF scaricabili, badge ufficiali e dettagli reali delle certificazioni.
+        Se vuoi, nella prossima iterazione inseriamo una sezione download documenti.
+      </p>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,104 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
+import { getWhatsAppUrl, site } from "../data/site";
+
+const faqs = [
+  {
+    q: "Come posso segnalare un'esigenza o una richiesta extra?",
+    a: "Puoi usare i canali indicati in questa pagina. Nella versione finale possiamo creare un flusso dedicato con form assistenza o area clienti.",
+  },
+  {
+    q: "È possibile programmare interventi straordinari?",
+    a: "Sì. Gli interventi straordinari possono essere richiesti e pianificati con il referente operativo.",
+  },
+  {
+    q: "Chi contatto per modifiche al servizio ricorrente?",
+    a: "Il referente commerciale o operativo indicato nel contratto. In questa pagina possiamo inserire nominativi reali e canali dedicati.",
+  },
+  {
+    q: "Posso richiedere un sopralluogo?",
+    a: "Sì. Puoi richiederlo dai contatti o tramite WhatsApp e pianificare una visita tecnica.",
+  },
+];
+---
+
+<Layout title="Customer care | GED Group" description="Assistenza clienti, canali rapidi e FAQ.">
+  <section class="mx-auto max-w-7xl px-4 py-12">
+    <SectionHeader
+      eyebrow="Customer care"
+      title="Assistenza clienti"
+      subtitle="Pagina utile per clienti attivi e nuovi contatti. Riduce richieste sparse e dà un riferimento chiaro."
+    />
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-[1fr_1fr]">
+      <div class="space-y-4">
+        <div class="panel p-5">
+          <h2 class="text-xl font-semibold">Canali di contatto</h2>
+          <ul class="mt-4 space-y-3 text-sm text-neutral-600">
+            <li class="rounded-xl border border-black/5 bg-neutral-50 p-3">
+              <strong>Telefono:</strong>
+              <a href={`tel:${site.phoneHref}`} class="ml-1 hover:underline" data-track="click_phone">
+                {site.phoneDisplay}
+              </a>
+            </li>
+            <li class="rounded-xl border border-black/5 bg-neutral-50 p-3">
+              <strong>Email:</strong>
+              <a href={`mailto:${site.email}`} class="ml-1 hover:underline" data-track="click_email">
+                {site.email}
+              </a>
+            </li>
+            <li class="rounded-xl border border-black/5 bg-neutral-50 p-3">
+              <strong>WhatsApp:</strong>
+              <a
+                href={getWhatsAppUrl("Ciao GED Group, avrei bisogno di assistenza.")}
+                target="_blank"
+                rel="noopener"
+                class="ml-1 hover:underline"
+                data-track="click_whatsapp"
+              >
+                chat diretta
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="panel p-5">
+          <h2 class="text-xl font-semibold">Orari assistenza</h2>
+          <div class="mt-4 grid gap-3 text-sm text-neutral-600">
+            <div class="rounded-xl border border-black/5 bg-neutral-50 p-3">
+              <div class="font-medium text-neutral-900">Lun - Ven</div>
+              <div>08:30 - 18:00 (placeholder)</div>
+            </div>
+            <div class="rounded-xl border border-black/5 bg-neutral-50 p-3">
+              <div class="font-medium text-neutral-900">Urgenze</div>
+              <div>Gestione su canale dedicato (da definire)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel p-5">
+          <h2 class="text-xl font-semibold">Segnalazioni e richieste</h2>
+          <p class="mt-2 text-sm leading-6 text-neutral-600">
+            Nella versione finale possiamo aggiungere un form assistenza dedicato con categorie:
+            segnalazione, richiesta extra, info amministrative, sopralluogo.
+          </p>
+          <a href="/contatti" class="mt-4 inline-block text-sm font-medium hover:underline">
+            Vai ai contatti →
+          </a>
+        </div>
+      </div>
+
+      <div class="panel p-5">
+        <h2 class="text-xl font-semibold">FAQ</h2>
+        <p class="mt-2 text-sm text-neutral-600">
+          Domande frequenti in formato accordion. Interattivo quanto basta, senza script circensi.
+        </p>
+        <div class="mt-4">
+          <FaqAccordion items={faqs} />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

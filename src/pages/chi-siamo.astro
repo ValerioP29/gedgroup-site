@@ -1,0 +1,94 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+---
+
+<Layout title="Chi siamo | GED Group" description="Chi siamo, metodo di lavoro e approccio operativo di GED Group.">
+  <section class="mx-auto max-w-7xl px-4 py-12">
+    <SectionHeader
+      eyebrow="Chi siamo"
+      title="Una presentazione credibile, non il solito testo generico"
+      subtitle="Questa pagina è strutturata per raccontare metodo, affidabilità e organizzazione. Poi mettiamo i contenuti reali e smette di sembrare una demo."
+    />
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <div class="space-y-6">
+        <div class="panel p-5">
+          <h2 class="text-xl font-semibold">La nostra missione</h2>
+          <p class="mt-3 text-sm leading-6 text-neutral-600">
+            Aiutare aziende, amministratori e strutture a mantenere ambienti ordinati e funzionali
+            con un servizio chiaro, costante e ben organizzato. Qui inseriremo la storia reale di GED Group,
+            i territori serviti e l'esperienza maturata.
+          </p>
+          <p class="mt-3 text-sm leading-6 text-neutral-600">
+            La pagina è già pronta per contenere foto team, immagini operative, numeri aziendali e
+            messaggi più commerciali senza rifare la struttura.
+          </p>
+        </div>
+
+        <div class="panel p-5">
+          <h2 class="text-xl font-semibold">Valori operativi</h2>
+          <div class="mt-4 grid gap-3 md:grid-cols-2">
+            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
+              <h3 class="font-medium">Affidabilità</h3>
+              <p class="mt-2 text-sm text-neutral-600">Routine stabili, presenza costante e gestione chiara delle richieste.</p>
+            </div>
+            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
+              <h3 class="font-medium">Qualità verificabile</h3>
+              <p class="mt-2 text-sm text-neutral-600">Controlli periodici e confronto con il cliente per mantenere lo standard.</p>
+            </div>
+            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
+              <h3 class="font-medium">Flessibilità</h3>
+              <p class="mt-2 text-sm text-neutral-600">Programmi adattabili a orari, turni, accessi e stagionalità.</p>
+            </div>
+            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
+              <h3 class="font-medium">Comunicazione</h3>
+              <p class="mt-2 text-sm text-neutral-600">Referente dedicato e canali rapidi per supporto e segnalazioni.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel p-5">
+          <h2 class="text-xl font-semibold">Come impostiamo un nuovo cliente</h2>
+          <ol class="mt-4 space-y-2 text-sm text-neutral-600">
+            <li class="rounded-xl border border-black/5 bg-neutral-50 px-3 py-2"><strong>1.</strong> Sopralluogo e analisi ambienti</li>
+            <li class="rounded-xl border border-black/5 bg-neutral-50 px-3 py-2"><strong>2.</strong> Proposta operativa e capitolato</li>
+            <li class="rounded-xl border border-black/5 bg-neutral-50 px-3 py-2"><strong>3.</strong> Avvio con pianificazione condivisa</li>
+            <li class="rounded-xl border border-black/5 bg-neutral-50 px-3 py-2"><strong>4.</strong> Verifiche e ottimizzazioni periodiche</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="panel p-5">
+          <h2 class="text-xl font-semibold">Numeri da inserire</h2>
+          <div class="mt-4 grid gap-3">
+            <div class="rounded-xl border border-black/5 p-4">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Anni di esperienza</div>
+              <div class="mt-1 text-2xl font-semibold">XX+</div>
+            </div>
+            <div class="rounded-xl border border-black/5 p-4">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Clienti attivi</div>
+              <div class="mt-1 text-2xl font-semibold">XXX</div>
+            </div>
+            <div class="rounded-xl border border-black/5 p-4">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Interventi mensili</div>
+              <div class="mt-1 text-2xl font-semibold">XXXX</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel p-5">
+          <h2 class="text-xl font-semibold">Team e organizzazione</h2>
+          <p class="mt-3 text-sm leading-6 text-neutral-600">
+            Qui puoi inserire una breve descrizione del team operativo, del coordinamento e dell'area qualità.
+            Se vuoi possiamo aggiungere una sezione “Il nostro team” con foto e ruoli.
+          </p>
+          <a href="/contatti" class="mt-4 inline-block text-sm font-medium hover:underline">
+            Parliamone per il tuo caso →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

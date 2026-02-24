@@ -1,0 +1,66 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import { caseStudies } from "../data/case-studies";
+import { getWhatsAppUrl } from "../data/site";
+---
+
+<Layout title="Casi studio | GED Group" description="Esempi di casi gestiti e risultati operativi.">
+  <section class="mx-auto max-w-7xl px-4 py-12">
+    <SectionHeader
+      eyebrow="Casi studio"
+      title="Casi studio e progetti gestiti"
+      subtitle="Pagina pensata per costruire fiducia. I clienti leggono esempi concreti, non brochure poetiche."
+    />
+
+    <div class="mt-8 space-y-4">
+      {caseStudies.map((c, idx) => (
+        <article class="panel p-5">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-600">{c.sector}</span>
+            <span class="text-xs text-neutral-400">Caso {idx + 1}</span>
+          </div>
+          <h2 class="mt-3 text-xl font-semibold">{c.title}</h2>
+
+          <div class="mt-4 grid gap-4 lg:grid-cols-3">
+            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Sfida</div>
+              <p class="mt-2 text-sm leading-6 text-neutral-600">{c.challenge}</p>
+            </div>
+            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Soluzione</div>
+              <p class="mt-2 text-sm leading-6 text-neutral-600">{c.solution}</p>
+            </div>
+            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Risultati</div>
+              <ul class="mt-2 space-y-1 text-sm text-neutral-600">
+                {c.results.map((r) => <li>• {r}</li>)}
+              </ul>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-8 panel p-5">
+      <h3 class="text-lg font-semibold">Vuoi una proposta per un caso simile?</h3>
+      <p class="mt-2 text-sm text-neutral-600">
+        Possiamo trasformare questa sezione con i tuoi casi reali e relative foto. Intanto la struttura è pronta.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <a href="/contatti" class="rounded-xl bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-black">
+          Richiedi preventivo
+        </a>
+        <a
+          href={getWhatsAppUrl("Ciao GED Group, vorrei un preventivo per un caso simile a quelli del sito.")}
+          target="_blank"
+          rel="noopener"
+          class="rounded-xl border border-neutral-300 px-4 py-2.5 text-sm font-semibold hover:bg-neutral-50"
+          data-track="click_whatsapp"
+        >
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
