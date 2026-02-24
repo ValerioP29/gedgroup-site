@@ -1,38 +1,210 @@
 @import "tailwindcss";
 
 :root {
-    color-scheme: light;
+  color-scheme: light;
+
+  /* palette */
+  --bg: #f5f7fb;
+  --surface: #eef2f7;
+  --panel: #ffffff;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #dbe3ef;
+  --accent: #0f172a;
+  --accent-foreground: #ffffff;
+  --accent-soft: #e2e8f0;
+
+  /* shape + depth */
+  --radius-sm: 0.625rem;
+  --radius-md: 0.9rem;
+  --radius-lg: 1.25rem;
+  --shadow-soft: 0 1px 2px rgba(15, 23, 42, 0.05), 0 8px 20px rgba(15, 23, 42, 0.04);
+  --shadow-elevated: 0 2px 6px rgba(15, 23, 42, 0.07), 0 16px 38px rgba(15, 23, 42, 0.09);
+
+  /* layout */
+  --container: 78rem;
+  --container-wide: 86rem;
+  --section-y: clamp(3.2rem, 6vw, 5.75rem);
+  --stack-gap: clamp(1rem, 2vw, 1.5rem);
+
+  /* type */
+  --h1-size: clamp(2rem, 2.2vw + 1.2rem, 3.5rem);
+  --h2-size: clamp(1.55rem, 1.25vw + 1rem, 2.35rem);
+  --h3-size: clamp(1.18rem, 0.6vw + 1rem, 1.45rem);
+  --body-size: 1.03rem;
+  --small-size: 0.92rem;
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: radial-gradient(circle at 15% -10%, #ffffff, transparent 45%), var(--bg);
+  color: var(--text);
+  font-size: var(--body-size);
+  line-height: 1.6;
 }
 
-.hero-grid {
-    background-image:
-        radial-gradient(circle at 15% 20%, rgba(0, 0, 0, 0.05), transparent 35%),
-        radial-gradient(circle at 85% 30%, rgba(0, 0, 0, 0.04), transparent 35%),
-        linear-gradient(to bottom, #ffffff, #fafafa);
-}
-
-.panel {
-    @apply rounded-2xl border border-black/5 bg-white shadow-sm;
-}
-
-.kpi-card {
-    @apply rounded-2xl border border-black/5 bg-white p-4 shadow-sm;
-}
-
-.gradient-card {
-    background:
-        linear-gradient(135deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0)),
-        linear-gradient(180deg, #ffffff, #fafafa);
-}
-
-.text-balance {
+@layer base {
+  h1,
+  h2,
+  h3 {
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
     text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--h1-size);
+    font-weight: 650;
+  }
+
+  h2 {
+    font-size: var(--h2-size);
+    font-weight: 620;
+  }
+
+  h3 {
+    font-size: var(--h3-size);
+    font-weight: 600;
+  }
+
+  p,
+  li {
+    color: var(--muted);
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  summary {
+    @apply outline-none;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  summary:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 18%, white);
+    border-radius: var(--radius-sm);
+  }
+}
+
+@layer components {
+  .site-container {
+    width: min(100% - 2rem, var(--container));
+    margin-inline: auto;
+  }
+
+  .site-container-wide {
+    width: min(100% - 2rem, var(--container-wide));
+    margin-inline: auto;
+  }
+
+  .section-y {
+    padding-block: var(--section-y);
+  }
+
+  .surface-section {
+    background: color-mix(in srgb, var(--surface) 42%, white);
+    border-block: 1px solid color-mix(in srgb, var(--border) 85%, white);
+  }
+
+  .panel,
+  .card-base {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .panel {
+    @apply p-5 md:p-6;
+  }
+
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    @apply p-4;
+  }
+
+  .card-hover {
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-elevated);
+    border-color: color-mix(in oklab, var(--border) 64%, var(--accent-soft));
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition;
+    min-height: 2.9rem;
+    padding: 0.625rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.92rem;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-foreground);
+    border: 1px solid var(--accent);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+  }
+
+  .btn-secondary {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    background: #fff;
+    border-color: color-mix(in oklab, var(--border) 68%, var(--accent-soft));
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid transparent;
+  }
+
+  .btn-ghost:hover {
+    background: color-mix(in srgb, var(--surface) 45%, white);
+  }
+
+  .hero-grid {
+    background-image: radial-gradient(circle at 10% 15%, rgba(15, 23, 42, 0.08), transparent 35%),
+      radial-gradient(circle at 90% 20%, rgba(15, 23, 42, 0.06), transparent 35%),
+      linear-gradient(to bottom, #ffffff, color-mix(in srgb, var(--surface) 34%, white));
+  }
+
+  .gradient-card {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.04), rgba(15, 23, 42, 0.005)), var(--card);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .stack > * + * {
+    margin-top: var(--stack-gap);
+  }
 }
