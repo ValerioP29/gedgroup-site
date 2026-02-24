@@ -1,0 +1,98 @@
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!prefersReducedMotion) {
+    // Navbar entrance
+    const header = document.querySelector("header");
+    if (header) {
+      gsap.from(header, {
+        y: -14,
+        opacity: 0,
+        duration: 0.45,
+        ease: "power2.out",
+      });
+    }
+
+    // Hero intro (prima sezione)
+    const firstSection = document.querySelector("main section");
+    if (firstSection) {
+      const heroTitle = firstSection.querySelector("h1");
+      const heroText = firstSection.querySelector("p");
+      const heroButtons = firstSection.querySelectorAll("a, button");
+
+      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+      if (heroTitle) tl.from(heroTitle, { y: 18, opacity: 0, duration: 0.5 });
+      if (heroText) tl.from(heroText, { y: 14, opacity: 0, duration: 0.45 }, "-=0.25");
+      if (heroButtons.length) {
+        tl.from(heroButtons, {
+          y: 10,
+          opacity: 0,
+          duration: 0.35,
+          stagger: 0.06,
+        }, "-=0.2");
+      }
+    }
+
+    // Reveal on scroll (automatico)
+    const revealTargets = [
+      ...document.querySelectorAll("[data-reveal]"),
+      ...document.querySelectorAll(".panel, .kpi-card, article, details"),
+    ];
+
+    const seen = new Set();
+
+    revealTargets.forEach((el) => {
+      if (!(el instanceof HTMLElement)) return;
+      if (seen.has(el)) return;
+      seen.add(el);
+
+      gsap.fromTo(
+        el,
+        { y: 18, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.55,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 88%",
+            once: true,
+          },
+        }
+      );
+    });
+
+    // Micro-hover su card/pannelli
+    const hoverTargets = document.querySelectorAll(".panel, .group");
+    hoverTargets.forEach((el) => {
+      if (!(el instanceof HTMLElement)) return;
+
+      el.addEventListener("mouseenter", () => {
+        gsap.to(el, {
+          y: -2,
+          duration: 0.2,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      });
+
+      el.addEventListener("mouseleave", () => {
+        gsap.to(el, {
+          y: 0,
+          duration: 0.2,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      });
+    });
+
+    // refresh dopo load (utile quando aggiungerai immagini vere)
+    window.addEventListener("load", () => ScrollTrigger.refresh());
+  }
+</script>

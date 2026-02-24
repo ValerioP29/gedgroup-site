@@ -1,0 +1,48 @@
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  const trackedScrolls = new Set();
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const el = target.closest("[data-track]");
+    if (!(el instanceof HTMLElement)) return;
+
+    const eventName = el.dataset.track || "ui_click";
+    const href =
+      el instanceof HTMLAnchorElement ? el.getAttribute("href") || "" : "";
+
+    window.dataLayer.push({
+      event: eventName,
+      click_text: (el.textContent || "").trim(),
+      click_href: href,
+      page_path: window.location.pathname,
+    });
+  });
+
+  // Scroll milestones base (25 / 50 / 75 / 100)
+  const onScroll = () => {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    if (scrollHeight <= 0) return;
+
+    const pct = Math.round((scrollTop / scrollHeight) * 100);
+    const milestones = [25, 50, 75, 100];
+
+    for (const m of milestones) {
+      if (pct >= m && !trackedScrolls.has(m)) {
+        trackedScrolls.add(m);
+        window.dataLayer.push({
+          event: "scroll_depth",
+          scroll_percent: m,
+          page_path: window.location.pathname,
+        });
+      }
+    }
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+</script>

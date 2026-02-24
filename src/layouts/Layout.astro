@@ -4,6 +4,8 @@ import Footer from "../components/Footer.astro";
 import FloatingActions from "../components/FloatingActions.astro";
 import "../styles/global.css";
 import { site } from "../data/site";
+import Tracking from "../components/Tracking.astro";
+import GsapInit from "../components/GsapInit.astro";
 
 const {
   title = `${site.companyName} | Impresa di pulizie`,
@@ -29,6 +31,19 @@ const canonicalUrl = new URL(Astro.url.pathname, site.baseUrl).toString();
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content={site.companyName} />
+    <meta name="theme-color" content="#111111" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="manifest" href="/site.webmanifest" />
+
+<meta property="og:image" content={`${site.baseUrl}/og-cover.svg`} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="it_IT" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={`${site.baseUrl}/og-cover.svg`} />
 
     {site.gtmId && (
       <script is:inline>
@@ -61,5 +76,7 @@ const canonicalUrl = new URL(Astro.url.pathname, site.baseUrl).toString();
     </main>
     <Footer />
     <FloatingActions />
+    <Tracking />
+<GsapInit />
   </body>
 </html>
