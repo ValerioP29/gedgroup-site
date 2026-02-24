@@ -3,238 +3,265 @@ import Layout from "../layouts/Layout.astro";
 import SectionHeader from "../components/SectionHeader.astro";
 import ServiceCard from "../components/ServiceCard.astro";
 import ContactForm from "../components/ContactForm.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
 import { site, getWhatsAppUrl } from "../data/site";
 import { services } from "../data/services";
 import { caseStudies } from "../data/case-studies";
+
+const homepageFaqs = [
+  {
+    q: "In quanto tempo ricevo una proposta?",
+    a: "Dopo il primo contatto possiamo impostare una proposta iniziale in tempi rapidi e poi rifinirla dopo il sopralluogo.",
+  },
+  {
+    q: "Gestite sia servizi ricorrenti che straordinari?",
+    a: "Sì, la struttura è pensata per coprire pulizie ordinarie su programma e interventi mirati su richiesta.",
+  },
+  {
+    q: "Posso avere un referente unico?",
+    a: "Sì, il modello operativo prevede un contatto dedicato per coordinamento e gestione segnalazioni.",
+  },
+];
 ---
 
 <Layout
   title={`${site.companyName} | Pulizie professionali per aziende e condomìni`}
   description="Servizi di pulizia ordinaria e straordinaria per uffici, condomìni, ambienti industriali e strutture professionali."
 >
-  <section class="hero-grid border-b border-black/5">
-    <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-[1.1fr_0.9fr] md:py-16">
-      <div>
-        <div class="mb-3 inline-flex items-center rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs text-neutral-600">
-          Preventivi rapidi • Referente dedicato • Servizio programmato
-        </div>
-        <h1 class="text-balance text-4xl font-semibold tracking-tight text-neutral-900 md:text-5xl">
-          Pulizie professionali con un piano chiaro e risultati costanti
-        </h1>
-        <p class="mt-4 max-w-2xl text-lg leading-7 text-neutral-600">
-          Supportiamo aziende, amministratori e strutture con servizi su misura, ordinari e
-          straordinari. Questa demo è già pronta per essere trasformata nel sito definitivo di GED
-          Group con i vostri contenuti reali.
-        </p>
-
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a
-            href="/contatti"
-            class="rounded-xl bg-neutral-900 px-4 py-3 text-sm font-semibold text-white hover:bg-black"
+  <section class="hero-grid border-b border-[color:var(--border)]">
+    <div class="site-container section-y">
+      <div class="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+        <div class="space-y-7" data-hero-copy>
+          <div
+            class="inline-flex items-center rounded-full border border-[color:var(--border)] bg-white px-3 py-1 text-xs font-medium text-slate-600"
+            data-hero-badge
           >
-            Richiedi preventivo
-          </a>
-          <a
-            href={getWhatsAppUrl("Ciao GED Group, vorrei un preventivo.")}
-            target="_blank"
-            rel="noopener"
-            class="rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold hover:bg-neutral-50"
-            data-track="click_whatsapp"
-          >
-            Scrivici su WhatsApp
-          </a>
-          <a
-            href={`tel:${site.phoneHref}`}
-            class="rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold hover:bg-neutral-50"
-            data-track="click_phone"
-          >
-            {site.phoneDisplay}
-          </a>
-        </div>
+            Preventivi rapidi • Referente dedicato • Servizio programmato
+          </div>
 
-        <div class="mt-8 grid gap-3 sm:grid-cols-3">
-          <div class="kpi-card">
-            <div class="text-xs uppercase tracking-wide text-neutral-500">Servizi</div>
-            <div class="mt-1 text-xl font-semibold">Ordinari e straordinari</div>
+          <div class="space-y-4">
+            <h1 class="max-w-2xl text-balance font-semibold text-slate-900">
+              Pulizie professionali con un piano chiaro e risultati costanti
+            </h1>
+            <p class="max-w-xl text-[1.06rem] leading-7 text-slate-600">
+              Supportiamo aziende, amministratori e strutture con servizi su misura, ordinari e
+              straordinari. Questa base è pronta per diventare il sito definitivo GED Group con
+              contenuti reali e performance commerciali.
+            </p>
           </div>
-          <div class="kpi-card">
-            <div class="text-xs uppercase tracking-wide text-neutral-500">Target</div>
-            <div class="mt-1 text-xl font-semibold">B2B e condomìni</div>
-          </div>
-          <div class="kpi-card">
-            <div class="text-xs uppercase tracking-wide text-neutral-500">Canali</div>
-            <div class="mt-1 text-xl font-semibold">Telefono • WhatsApp</div>
-          </div>
-        </div>
-      </div>
 
-      <div class="panel gradient-card p-5">
-        <div class="rounded-2xl border border-black/5 bg-neutral-900 p-4 text-white">
-          <div class="text-sm text-white/70">Richiesta rapida</div>
-          <div class="mt-1 text-xl font-semibold">Ti richiamiamo con una proposta</div>
-        </div>
+          <div class="flex flex-wrap gap-3" data-hero-ctas>
+            <a href="/contatti" class="btn btn-primary">Richiedi preventivo</a>
+            <a
+              href={getWhatsAppUrl("Ciao GED Group, vorrei un preventivo.")}
+              target="_blank"
+              rel="noopener"
+              class="btn btn-secondary"
+              data-track="click_whatsapp"
+            >
+              Scrivici su WhatsApp
+            </a>
+            <a href={`tel:${site.phoneHref}`} class="btn btn-ghost" data-track="click_phone">{site.phoneDisplay}</a>
+          </div>
 
-        <div class="mt-4 grid gap-3 sm:grid-cols-2">
-          <div class="rounded-xl border border-black/5 bg-white p-4">
-            <div class="text-xs uppercase tracking-wide text-neutral-500">Uffici</div>
-            <p class="mt-2 text-sm text-neutral-600">Routine stabili e ambienti ordinati ogni giorno.</p>
-          </div>
-          <div class="rounded-xl border border-black/5 bg-white p-4">
-            <div class="text-xs uppercase tracking-wide text-neutral-500">Condomìni</div>
-            <p class="mt-2 text-sm text-neutral-600">Programmi chiari e supporto per amministratori.</p>
-          </div>
-          <div class="rounded-xl border border-black/5 bg-white p-4">
-            <div class="text-xs uppercase tracking-wide text-neutral-500">Industriale</div>
-            <p class="mt-2 text-sm text-neutral-600">Piani operativi su turni e finestre dedicate.</p>
-          </div>
-          <div class="rounded-xl border border-black/5 bg-white p-4">
-            <div class="text-xs uppercase tracking-wide text-neutral-500">Straordinari</div>
-            <p class="mt-2 text-sm text-neutral-600">Ripristini, sanificazioni e interventi mirati.</p>
+          <div class="grid gap-3 sm:grid-cols-3" data-stagger="kpi">
+            <div class="kpi-card" data-stagger-item>
+              <div class="text-xs uppercase tracking-wide text-slate-500">Servizi</div>
+              <div class="mt-1 text-base font-semibold text-slate-900">Ordinari e straordinari</div>
+            </div>
+            <div class="kpi-card" data-stagger-item>
+              <div class="text-xs uppercase tracking-wide text-slate-500">Target</div>
+              <div class="mt-1 text-base font-semibold text-slate-900">B2B e condomìni</div>
+            </div>
+            <div class="kpi-card" data-stagger-item>
+              <div class="text-xs uppercase tracking-wide text-slate-500">Canali</div>
+              <div class="mt-1 text-base font-semibold text-slate-900">Telefono • WhatsApp</div>
+            </div>
           </div>
         </div>
 
-        <div class="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-          <div class="text-sm font-medium">Cosa rende questo sito “lead-first”</div>
-          <ul class="mt-2 space-y-2 text-sm text-neutral-600">
-            <li>• CTA chiare in ogni pagina</li>
-            <li>• Contatti sempre visibili (telefono + WhatsApp)</li>
-            <li>• Form semplice e pronto per integrazione API</li>
-            <li>• Struttura SEO pulita e pagine dedicate per servizio</li>
-          </ul>
+        <div class="relative" data-hero-visual>
+          <div class="card-base gradient-card relative overflow-hidden p-6 md:p-7">
+            <div class="absolute -left-16 -top-16 h-40 w-40 rounded-full bg-sky-100/70 blur-2xl"></div>
+            <div class="absolute -bottom-20 -right-14 h-48 w-48 rounded-full bg-indigo-100/70 blur-2xl"></div>
+
+            <div class="relative z-10 rounded-[var(--radius-md)] bg-slate-900 p-5 text-white">
+              <p class="text-sm text-white/75">Richiesta rapida</p>
+              <p class="mt-1 text-xl font-semibold leading-tight">Ti richiamiamo con una proposta chiara</p>
+            </div>
+
+            <div class="relative z-10 mt-4 grid gap-3 sm:grid-cols-2" data-stagger="hero-mini">
+              <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white p-4" data-stagger-item>
+                <div class="text-xs uppercase tracking-wide text-slate-500">Uffici</div>
+                <p class="mt-2 text-sm leading-6 text-slate-600">Routine stabili e ambienti ordinati ogni giorno.</p>
+              </div>
+              <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white p-4" data-stagger-item>
+                <div class="text-xs uppercase tracking-wide text-slate-500">Condomìni</div>
+                <p class="mt-2 text-sm leading-6 text-slate-600">Programmi chiari e supporto per amministratori.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-base absolute -left-5 top-8 hidden max-w-[14rem] p-3 md:block" data-hero-float>
+            <div class="text-[11px] uppercase tracking-wide text-slate-500">Metodo</div>
+            <p class="mt-1 text-sm font-semibold text-slate-900">Sopralluogo → capitolato → avvio</p>
+          </div>
+
+          <div class="card-base absolute -bottom-5 right-4 hidden max-w-[15rem] p-3 md:block" data-hero-float>
+            <div class="text-[11px] uppercase tracking-wide text-slate-500">Lead-first</div>
+            <p class="mt-1 text-sm text-slate-600">Contatti sempre visibili e CTA chiare in ogni passaggio.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="mx-auto max-w-7xl px-4 py-14">
-    <SectionHeader
-      eyebrow="Servizi"
-      title="Una struttura chiara per far capire subito cosa fate"
-      subtitle="Ogni servizio ha una pagina dedicata. Ottimo per il cliente e ottimo per SEO, che ogni tanto serve anche a qualcosa."
-    />
-    <div class="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-      {services.map((service) => <ServiceCard service={service} />)}
-    </div>
-    <div class="mt-5">
-      <a href="/servizi" class="text-sm font-medium text-neutral-900 hover:underline">
-        Vedi tutti i servizi →
-      </a>
-    </div>
-  </section>
-
-  <section class="border-y border-black/5 bg-white">
-    <div class="mx-auto max-w-7xl px-4 py-14">
+  <section class="section-y">
+    <div class="site-container">
       <SectionHeader
-        eyebrow="Perché GED Group"
-        title="Un sito che comunica affidabilità, non solo “facciamo pulizie”"
-        subtitle="Qui puoi inserire i veri plus aziendali. Intanto la base è pronta e già impostata bene."
+        eyebrow="Servizi"
+        title="Una struttura chiara per far capire subito cosa fate"
+        subtitle="Ogni servizio ha una pagina dedicata, utile per conversione e indicizzazione."
       />
-      <div class="mt-8 grid gap-4 md:grid-cols-3">
-        <div class="panel p-5">
-          <h3 class="font-semibold">Capitolato chiaro</h3>
-          <p class="mt-2 text-sm leading-6 text-neutral-600">
-            Attività, frequenze e standard condivisi per evitare incomprensioni e richieste “non era compreso”.
-          </p>
-        </div>
-        <div class="panel p-5">
-          <h3 class="font-semibold">Referente operativo</h3>
-          <p class="mt-2 text-sm leading-6 text-neutral-600">
-            Un contatto unico per gestione interventi, segnalazioni e verifiche periodiche.
-          </p>
-        </div>
-        <div class="panel p-5">
-          <h3 class="font-semibold">Flessibilità reale</h3>
-          <p class="mt-2 text-sm leading-6 text-neutral-600">
-            Turni, fasce orarie e piani personalizzati per uffici, condomìni e ambienti produttivi.
-          </p>
-        </div>
+
+      <div class="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4" data-stagger="services" data-reveal="fade-up">
+        {services.map((service) => (
+          <div data-stagger-item>
+            <ServiceCard service={service} />
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-6">
+        <a href="/servizi" class="btn btn-ghost">Vedi tutti i servizi →</a>
       </div>
     </div>
   </section>
 
-  <section class="mx-auto max-w-7xl px-4 py-14">
-    <SectionHeader
-      eyebrow="Casi studio"
-      title="Esempi di casi gestiti"
-      subtitle="Template pronti da sostituire con casi reali. Servono a rassicurare e a vendere, non a fare poesia."
-    />
-    <div class="mt-8 grid gap-4 lg:grid-cols-3">
-      {caseStudies.map((c) => (
-        <article class="panel p-5">
-          <div class="text-xs uppercase tracking-wide text-neutral-500">{c.sector}</div>
-          <h3 class="mt-2 text-lg font-semibold">{c.title}</h3>
-          <p class="mt-3 text-sm leading-6 text-neutral-600"><strong>Sfida:</strong> {c.challenge}</p>
-          <p class="mt-2 text-sm leading-6 text-neutral-600"><strong>Soluzione:</strong> {c.solution}</p>
-          <ul class="mt-3 space-y-1 text-sm text-neutral-600">
-            {c.results.map((r) => <li>• {r}</li>)}
-          </ul>
-        </article>
-      ))}
-    </div>
-    <div class="mt-5">
-      <a href="/casi-studio" class="text-sm font-medium text-neutral-900 hover:underline">
-        Pagina casi studio completa →
-      </a>
-    </div>
-  </section>
+  <section class="surface-section section-y" data-reveal="fade-up">
+    <div class="site-container">
+      <SectionHeader
+        eyebrow="Come lavoriamo"
+        title="Processo operativo semplice, tracciabile e senza ambiguità"
+        subtitle="Una sequenza chiara riduce incomprensioni, migliora il servizio e velocizza l'avvio." 
+      />
 
-  <section class="border-y border-black/5 bg-white">
-    <div class="mx-auto grid max-w-7xl gap-6 px-4 py-14 md:grid-cols-2">
-      <div class="panel p-5">
-        <div class="text-xs uppercase tracking-wide text-neutral-500">Certificazioni</div>
-        <h3 class="mt-2 text-xl font-semibold">Spazio dedicato a certificazioni e conformità</h3>
-        <p class="mt-3 text-sm leading-6 text-neutral-600">
-          Pagina pronta per inserire ISO, procedure interne, policy qualità e documenti richiesti dai clienti.
-        </p>
-        <a href="/certificazioni" class="mt-4 inline-block text-sm font-medium hover:underline">
-          Vai alla sezione certificazioni →
-        </a>
-      </div>
-
-      <div class="panel p-5">
-        <div class="text-xs uppercase tracking-wide text-neutral-500">Customer care</div>
-        <h3 class="mt-2 text-xl font-semibold">Canale assistenza chiaro per clienti attivi</h3>
-        <p class="mt-3 text-sm leading-6 text-neutral-600">
-          Pagina con FAQ, orari, canali e gestione segnalazioni. Utile per abbassare richieste ripetitive.
-        </p>
-        <a href="/customer-care" class="mt-4 inline-block text-sm font-medium hover:underline">
-          Vai al customer care →
-        </a>
+      <div class="mt-8 grid gap-4 lg:grid-cols-4" data-stagger="process">
+        {[
+          "Sopralluogo e analisi esigenze",
+          "Proposta con frequenze e capitolato",
+          "Avvio servizio e coordinamento",
+          "Controlli qualità e supporto",
+        ].map((step, index) => (
+          <article class="card-base card-hover p-5" data-stagger-item>
+            <div class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-xs font-semibold text-white">
+              {index + 1}
+            </div>
+            <p class="mt-3 text-sm leading-6 text-slate-700">{step}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
-  <section id="preventivo" class="mx-auto max-w-7xl px-4 py-14">
-    <div class="grid gap-6 lg:grid-cols-[1fr_1.05fr]">
-      <div>
+  <section class="section-y">
+    <div class="site-container grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+      <div data-reveal="fade-right">
         <SectionHeader
-          eyebrow="Contatti"
-          title="Richiedi un preventivo"
-          subtitle="Questo form è già pronto lato UI. Appena colleghiamo la micro-API Laravel lo rendiamo operativo con email, rate limit e anti-spam."
+          eyebrow="Perché GED Group"
+          title="Affidabilità operativa con una comunicazione chiara"
+          subtitle="Questa sezione è pronta per ospitare i plus reali dell'azienda mantenendo una struttura commerciale solida."
         />
-        <div class="mt-6 space-y-3 text-sm text-neutral-600">
-          <div class="panel p-4">
-            <div class="font-medium text-neutral-900">Telefono</div>
-            <a href={`tel:${site.phoneHref}`} class="mt-1 inline-block hover:underline" data-track="click_phone">
-              {site.phoneDisplay}
-            </a>
-          </div>
-          <div class="panel p-4">
-            <div class="font-medium text-neutral-900">WhatsApp</div>
-            <a href={getWhatsAppUrl()} target="_blank" rel="noopener" class="mt-1 inline-block hover:underline" data-track="click_whatsapp">
-              Chat diretta con messaggio precompilato
-            </a>
-          </div>
-          <div class="panel p-4">
-            <div class="font-medium text-neutral-900">Email</div>
-            <a href={`mailto:${site.email}`} class="mt-1 inline-block hover:underline" data-track="click_email">
-              {site.email}
-            </a>
+
+        <div class="mt-6 space-y-3">
+          {[
+            "Capitolato chiaro con attività e frequenze condivise",
+            "Referente operativo unico per richieste e segnalazioni",
+            "Programmi flessibili per turni, stagionalità e priorità",
+          ].map((item) => (
+            <div class="card-base p-4 text-sm text-slate-700">• {item}</div>
+          ))}
+        </div>
+      </div>
+
+      <aside class="card-base gradient-card p-5 md:p-6" data-reveal="fade-left">
+        <h3 class="text-lg font-semibold text-slate-900">Esempi di casi gestiti</h3>
+        <p class="mt-2 text-sm text-slate-600">Template pronti da sostituire con case study reali, mantenendo un layout già credibile.</p>
+
+        <div class="mt-5 space-y-3" data-stagger="case-studies">
+          {caseStudies.slice(0, 2).map((c) => (
+            <article class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white p-4" data-stagger-item>
+              <div class="text-xs uppercase tracking-wide text-slate-500">{c.sector}</div>
+              <h4 class="mt-1 font-semibold text-slate-900">{c.title}</h4>
+              <p class="mt-2 text-sm text-slate-600"><strong>Sfida:</strong> {c.challenge}</p>
+            </article>
+          ))}
+        </div>
+
+        <a href="/casi-studio" class="btn btn-secondary mt-5">Vai ai casi studio</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="surface-section section-y">
+    <div class="site-container grid gap-6 lg:grid-cols-[1fr_1.15fr] lg:items-start">
+      <div data-reveal="fade-right">
+        <SectionHeader
+          eyebrow="Supporto"
+          title="Domande frequenti e canali rapidi"
+          subtitle="Una sezione utile per ridurre attriti commerciali e chiarire subito i punti più richiesti."
+        />
+        <div class="mt-5 card-base p-5">
+          <h3 class="text-base font-semibold text-slate-900">Hai bisogno di supporto dedicato?</h3>
+          <p class="mt-2 text-sm text-slate-600">Per richieste operative o amministrative puoi usare customer care e contatti diretti.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <a href="/customer-care" class="btn btn-secondary">Vai al customer care</a>
+            <a href="/contatti" class="btn btn-ghost">Contatti</a>
           </div>
         </div>
       </div>
 
-      <ContactForm />
+      <div class="card-base p-5 md:p-6" data-reveal="fade-up">
+        <FaqAccordion items={homepageFaqs} />
+      </div>
+    </div>
+  </section>
+
+  <section id="preventivo" class="section-y">
+    <div class="site-container">
+      <div class="card-base gradient-card p-6 md:p-8" data-reveal="scale-in">
+        <div class="grid gap-7 lg:grid-cols-[0.95fr_1.05fr]">
+          <div>
+            <SectionHeader
+              eyebrow="Contatti"
+              title="Richiedi un preventivo"
+              subtitle="Il form è già pronto lato UI. Collegando la micro-API diventa operativo con invio reale, protezioni anti-spam e tracciamento completo."
+            />
+            <div class="mt-6 space-y-3 text-sm">
+              <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white p-4">
+                <div class="font-medium text-slate-900">Telefono</div>
+                <a href={`tel:${site.phoneHref}`} class="mt-1 inline-block text-slate-700 hover:underline" data-track="click_phone">
+                  {site.phoneDisplay}
+                </a>
+              </div>
+              <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white p-4">
+                <div class="font-medium text-slate-900">WhatsApp</div>
+                <a href={getWhatsAppUrl()} target="_blank" rel="noopener" class="mt-1 inline-block text-slate-700 hover:underline" data-track="click_whatsapp">
+                  Chat diretta con messaggio precompilato
+                </a>
+              </div>
+              <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white p-4">
+                <div class="font-medium text-slate-900">Email</div>
+                <a href={`mailto:${site.email}`} class="mt-1 inline-block text-slate-700 hover:underline" data-track="click_email">
+                  {site.email}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <ContactForm />
+        </div>
+      </div>
     </div>
   </section>
 </Layout>
