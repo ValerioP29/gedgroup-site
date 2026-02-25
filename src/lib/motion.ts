@@ -19,7 +19,20 @@ const MOTION = {
 
 type Cleanup = () => void;
 
-function getRevealFrom(kind: string) {
+type RevealKind = "fade-up" | "fade-left" | "fade-right" | "scale-in" | "clip-up" | "clip-right";
+
+function getRevealKind(el: HTMLElement): RevealKind {
+  if (el.dataset.reveal) {
+    const rawKind = el.dataset.reveal;
+    return (rawKind === "up" ? "fade-up" : rawKind) as RevealKind;
+  }
+
+  if (el.classList.contains("motion-reveal-left")) return "fade-left";
+  if (el.classList.contains("motion-reveal-right")) return "fade-right";
+  return "fade-up";
+}
+
+function getRevealFrom(kind: RevealKind) {
   const from = { opacity: 0, x: 0, y: MOTION.reveal.y, scale: 1 };
 
   if (kind === "fade-left") {
@@ -37,11 +50,12 @@ function getRevealFrom(kind: string) {
 }
 
 export function initReveal(root: ParentNode = document): void {
-  const revealTargets = root.querySelectorAll<HTMLElement>("[data-reveal]");
+  const revealTargets = root.querySelectorAll<HTMLElement>(
+    "[data-reveal], .motion-reveal-up, .motion-reveal-left, .motion-reveal-right",
+  );
 
   revealTargets.forEach((el) => {
-    const rawKind = el.dataset.reveal ?? "fade-up";
-    const kind = rawKind === "up" ? "fade-up" : rawKind;
+    const kind = getRevealKind(el);
     const from = getRevealFrom(kind);
 
     const clipFrom = kind === "clip-up" ? "inset(100% 0 0 0)" : kind === "clip-right" ? "inset(0 100% 0 0)" : undefined;
@@ -71,10 +85,10 @@ export function initReveal(root: ParentNode = document): void {
 }
 
 export function initStagger(root: ParentNode = document): void {
-  const staggerGroups = root.querySelectorAll<HTMLElement>("[data-stagger]");
+  const staggerGroups = root.querySelectorAll<HTMLElement>("[data-stagger], .motion-stagger");
 
   staggerGroups.forEach((group) => {
-    const items = group.querySelectorAll<HTMLElement>("[data-stagger-item]");
+    const items = group.querySelectorAll<HTMLElement>("[data-stagger-item], .motion-stagger-item");
     if (!items.length) return;
 
     gsap.from(items, {
@@ -108,7 +122,7 @@ export function initHeroMotion(root: ParentNode = document): void {
 
   if (badge) timeline.from(badge, { y: 10, opacity: 0, duration: MOTION.hero.badgeDuration });
   if (title) {
-    const titleLines = title.querySelectorAll(".hero-video-mask__fallback span");
+    const titleLines = title.querySelectorAll(".hero-video-mask__fallback span, .hero-title-line");
     if (titleLines.length) {
       timeline.from(titleLines, { yPercent: 100, opacity: 0, stagger: 0.1, duration: MOTION.hero.titleDuration }, "-=0.14");
     } else {

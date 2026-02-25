@@ -28,7 +28,7 @@ const hasActions = Astro.slots.has("actions");
               <li class="inline-flex items-center gap-2">
                 {idx > 0 && <span aria-hidden="true">/</span>}
                 {crumb.href ? (
-                  <a href={crumb.href} class="hover:text-slate-700 hover:underline">{crumb.label}</a>
+                  <a href={crumb.href} class="hover:text-slate-700 motion-link">{crumb.label}</a>
                 ) : (
                   <span class="text-slate-700">{crumb.label}</span>
                 )}

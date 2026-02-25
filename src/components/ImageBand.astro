@@ -6,30 +6,42 @@ const { title, subtitle, images = [] } = Astro.props as {
 };
 
 const hasImages = images.length > 0;
+const gridColsClass = images.length > 1 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1";
 ---
 
 {hasImages && (
-  <section class="section-y">
+  <section class="section-y motion-reveal-up" data-reveal="fade-up">
     <div class="site-container">
       {(title || subtitle) && (
-        <div class="mb-5">
+        <div class="mb-6">
           {title && <h2>{title}</h2>}
           {subtitle && <p class="mt-2 max-w-3xl text-slate-600">{subtitle}</p>}
         </div>
       )}
-      <div class="grid gap-3 md:grid-cols-3" data-stagger="image-band">
-        {images.map((image) => (
-          <figure class="card-base card-hover overflow-hidden" data-stagger-item data-reveal="clip-up">
-            <img
-              src={image.src}
-              alt={image.alt}
-              class="band-media"
-              style={`aspect-ratio:${image.ratio ?? "4/3"};`}
-              loading="lazy"
-              decoding="async"
-            />
-          </figure>
-        ))}
+
+      <div class={`grid gap-5 motion-stagger ${gridColsClass}`}>
+        {images.map((image, index) => {
+          const revealDirection = index % 2 === 0 ? "fade-right" : "fade-left";
+          return (
+            <article class="image-band-card card-base card-hover overflow-hidden motion-stagger-item" data-reveal={revealDirection}>
+              <div class="image-band-card__media-wrap">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  class="band-media image-band-card__media motion-zoom"
+                  style={`aspect-ratio:${image.ratio ?? "4/3"};`}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="image-band-card__overlay" aria-hidden="true"></div>
+              </div>
+              <div class="image-band-card__content p-5">
+                <h3 class="text-base font-semibold text-slate-900">{image.alt}</h3>
+                <a href="/casi-studio" class="btn btn-secondary mt-4 image-band-card__cta">Vedi caso studio</a>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -38,7 +50,7 @@ const hasImages = images.length > 0;
 {!hasImages && (title || subtitle) && (
   <section class="py-6 md:py-8">
     <div class="site-container">
-      <div class="card-base p-4 md:p-5 text-sm text-slate-600">
+      <div class="card-base p-4 text-sm text-slate-600 md:p-5">
         {title && <h2 class="text-lg font-semibold text-slate-900">{title}</h2>}
         {subtitle && <p class="mt-2">{subtitle}</p>}
       </div>
