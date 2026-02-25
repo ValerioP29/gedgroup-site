@@ -1,88 +1,45 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import InternalPageHero from "../components/InternalPageHero.astro";
-import SectionHeader from "../components/SectionHeader.astro";
+import PageHero from "../components/PageHero.astro";
 import ContactForm from "../components/ContactForm.astro";
-import FaqAccordion from "../components/FaqAccordion.astro";
-import FinalCtaBand from "../components/FinalCtaBand.astro";
+import FinalCTA from "../components/FinalCTA.astro";
 import { site, getWhatsAppUrl } from "../data/site";
-
-const faqs = [
-  {
-    q: "In quanto tempo ricevo una prima risposta?",
-    a: "Di norma rispondiamo rapidamente con una prima valutazione e la proposta di sopralluogo.",
-  },
-  {
-    q: "Serve già avere un capitolato definito?",
-    a: "No. Possiamo supportarti dalla fase iniziale e impostare noi una proposta operativa completa.",
-  },
-  {
-    q: "Posso chiedere direttamente via WhatsApp?",
-    a: "Sì, puoi usare il canale WhatsApp per una richiesta veloce e poi approfondire con il team commerciale.",
-  },
-];
+import { services } from "../data/services";
 ---
 
 <Layout title="Contatti | GED Group" description="Contatta GED Group per richiedere un preventivo o un sopralluogo.">
-  <InternalPageHero
+  <PageHero
     eyebrow="Contatti"
     title="Parliamo del tuo servizio"
     subtitle="Raccontaci spazi, frequenze e priorità: impostiamo una proposta credibile con sopralluogo e piano operativo chiaro."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Contatti" }]}
+    image={services[0].heroImage}
   >
     <a slot="actions" href={`tel:${site.phoneHref}`} class="btn btn-primary" data-track="click_phone">{site.phoneDisplay}</a>
     <a slot="actions" href={getWhatsAppUrl()} target="_blank" rel="noopener" class="btn btn-secondary" data-track="click_whatsapp">
       Scrivici ora
     </a>
-  </InternalPageHero>
+  </PageHero>
 
   <section class="section-y">
-    <div class="site-container grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-      <div class="space-y-6">
-        <article class="panel" data-reveal="fade-up">
-          <SectionHeader eyebrow="Recapiti" title="Canali diretti" />
-          <ul class="mt-4 grid gap-3 text-sm text-slate-600" data-stagger="contact-channels">
-            <li class="card-base bg-slate-50 p-3" data-stagger-item>
-              <div class="font-medium text-slate-900">Telefono</div>
-              <a href={`tel:${site.phoneHref}`} class="hover:underline" data-track="click_phone">{site.phoneDisplay}</a>
-            </li>
-            <li class="card-base bg-slate-50 p-3" data-stagger-item>
-              <div class="font-medium text-slate-900">Email</div>
-              <a href={`mailto:${site.email}`} class="hover:underline" data-track="click_email">{site.email}</a>
-            </li>
-            <li class="card-base bg-slate-50 p-3" data-stagger-item>
-              <div class="font-medium text-slate-900">Sede</div>
-              <span>{site.address}</span>
-            </li>
-          </ul>
-        </article>
+    <div class="site-container grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+      <article class="panel" data-reveal="fade-up">
+        <h2 class="text-xl font-semibold text-slate-900">Canali diretti</h2>
+        <ul class="mt-4 grid gap-3 text-sm text-slate-600">
+          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-900">Telefono:</strong> {site.phoneDisplay}</li>
+          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-900">Email:</strong> {site.email}</li>
+          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-900">Sede:</strong> {site.address}</li>
+        </ul>
+        <img src={services[1].detailImages[0].src} alt={services[1].detailImages[0].alt} class="section-media mt-5 rounded-[var(--radius-md)]" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
+      </article>
 
-        <article class="panel" data-reveal="fade-up">
-          <h2 class="text-xl font-semibold text-slate-900">Sopralluogo e copertura</h2>
-          <p class="mt-2 text-sm leading-7 text-slate-600">
-            Inseriamo qui aree coperte, tempi medi di risposta e disponibilità per sopralluoghi tecnici.
-            Il layout è pronto anche per una mappa con sedi operative.
-          </p>
-          <div class="mt-4 grid h-44 place-items-center rounded-[var(--radius-md)] border border-dashed border-[color:var(--border)] bg-slate-50 text-sm text-slate-500">
-            Placeholder Google Maps embed
-          </div>
-        </article>
-      </div>
-
-      <div class="space-y-6" data-reveal="fade-left">
+      <div data-reveal="fade-left">
         <ContactForm />
-
-        <div class="panel">
-          <h2 class="text-xl font-semibold text-slate-900">FAQ contatti</h2>
-          <div class="mt-4">
-            <FaqAccordion items={faqs} />
-          </div>
-        </div>
       </div>
     </div>
   </section>
 
-  <FinalCtaBand
+  <FinalCTA
     title="Preferisci un contatto rapido?"
     subtitle="Scrivici su WhatsApp e ti richiamiamo con una prima valutazione della richiesta."
     primaryLabel="Apri WhatsApp"

@@ -1,9 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import InternalPageHero from "../../components/InternalPageHero.astro";
-import SectionHeader from "../../components/SectionHeader.astro";
+import PageHero from "../../components/PageHero.astro";
+import SplitSection from "../../components/SplitSection.astro";
+import ImageBand from "../../components/ImageBand.astro";
 import FaqAccordion from "../../components/FaqAccordion.astro";
-import FinalCtaBand from "../../components/FinalCtaBand.astro";
+import FinalCTA from "../../components/FinalCTA.astro";
 import { services } from "../../data/services";
 import { getWhatsAppUrl } from "../../data/site";
 
@@ -18,11 +19,12 @@ const { service } = Astro.props;
 ---
 
 <Layout title={`${service.title} | GED Group`} description={service.short}>
-  <InternalPageHero
+  <PageHero
     eyebrow={service.heroLabel}
     title={service.title}
     subtitle={service.summary}
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Servizi", href: "/servizi" }, { label: service.title }]}
+    image={service.heroImage}
   >
     <a slot="actions" href="/contatti" class="btn btn-primary">Richiedi preventivo</a>
     <a
@@ -35,65 +37,57 @@ const { service } = Astro.props;
     >
       Consulenza su WhatsApp
     </a>
-  </InternalPageHero>
+  </PageHero>
 
-  <section class="section-y">
-    <div class="site-container grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
-      <article class="space-y-6">
-        <div class="panel" data-reveal="fade-up">
-          <SectionHeader eyebrow="Overview" title="Cosa include il servizio" subtitle={service.short} />
-          <div class="mt-5 space-y-4 text-sm leading-7 text-slate-600">
-            {service.description.map((p) => <p>{p}</p>)}
-          </div>
-        </div>
+  <SplitSection
+    eyebrow="Dettaglio servizio"
+    title="Cosa include"
+    subtitle={service.short}
+    body={service.description}
+    bullets={service.bullets}
+    image={service.detailImages[0]}
+  />
 
-        <div class="panel" data-reveal="fade-up">
-          <h2 class="text-xl font-semibold text-slate-900">Benefici e attività principali</h2>
-          <ul class="mt-4 grid gap-3 sm:grid-cols-2" data-stagger="benefits-grid">
-            {service.bullets.map((b) => (
-              <li class="card-base bg-slate-50 p-3 text-sm text-slate-600" data-stagger-item>• {b}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div class="panel" data-reveal="fade-up">
-          <h2 class="text-xl font-semibold text-slate-900">Domande frequenti</h2>
-          <p class="mt-2 text-sm text-slate-600">Risposte rapide ai dubbi più comuni prima della richiesta preventivo.</p>
-          <div class="mt-4">
-            <FaqAccordion items={service.faqs} />
-          </div>
-        </div>
+  <section class="surface-section section-y">
+    <div class="site-container grid gap-6 lg:grid-cols-[1fr_1fr]">
+      <article class="panel" data-reveal="fade-up">
+        <h2 class="text-xl font-semibold text-slate-900">Processo sintetico</h2>
+        <ol class="mt-4 grid gap-2" data-stagger="service-process">
+          {service.process.map((step, i) => (
+            <li class="card-base bg-slate-50 px-3 py-2 text-sm text-slate-600" data-stagger-item>
+              <strong class="text-slate-900">{i + 1}.</strong> {step}
+            </li>
+          ))}
+        </ol>
       </article>
 
-      <aside class="space-y-6">
-        <div class="panel" data-reveal="fade-left">
-          <h3 class="text-lg font-semibold text-slate-900">Come funziona</h3>
-          <ol class="mt-4 space-y-2 text-sm" data-stagger="service-process">
-            {service.process.map((step, i) => (
-              <li class="card-base bg-slate-50 px-3 py-2 text-slate-600" data-stagger-item>
-                <strong class="text-slate-800">{i + 1}.</strong> {step}
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        <div class="panel" data-reveal="fade-left">
-          <h3 class="text-lg font-semibold text-slate-900">Settori serviti</h3>
-          <ul class="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-1" data-stagger="sectors-grid">
-            {service.sectors.map((s) => (
-              <li class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white px-3 py-2 text-sm text-slate-600" data-stagger-item>
-                {s}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </aside>
+      <article class="panel" data-reveal="fade-left">
+        <h2 class="text-xl font-semibold text-slate-900">Settori serviti</h2>
+        <ul class="mt-4 grid gap-2 sm:grid-cols-2" data-stagger="sectors-grid">
+          {service.sectors.map((s) => (
+            <li class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white px-3 py-2 text-sm text-slate-600" data-stagger-item>
+              {s}
+            </li>
+          ))}
+        </ul>
+      </article>
     </div>
   </section>
 
-  <FinalCtaBand
+  <ImageBand images={service.detailImages} />
+
+  <section class="section-y">
+    <div class="site-container panel" data-reveal="fade-up">
+      <h2 class="text-xl font-semibold text-slate-900">Domande frequenti</h2>
+      <div class="mt-4">
+        <FaqAccordion items={service.faqs} />
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA
     title={`Vuoi attivare ${service.title} con un piano chiaro?`}
-    subtitle="Confrontiamoci su spazi, frequenze e obiettivi: ti prepariamo una proposta operativa credibile e pronta all'avvio."
+    subtitle="Confrontiamoci su spazi, frequenze e obiettivi: prepariamo una proposta operativa pronta all'avvio."
     whatsappText={`Ciao GED Group, vorrei un preventivo per ${service.title}.`}
   />
 </Layout>

@@ -212,6 +212,21 @@ body {
   .gradient-card {
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.04), rgba(15, 23, 42, 0.005)), var(--card);
   }
+
+  .hero-media,
+  .section-media,
+  .card-media,
+  .band-media {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .hero-media,
+  .section-media {
+    min-height: 16rem;
+  }
 }
 
 @layer utilities {

@@ -130,3 +130,22 @@ References:
 ### Motion tuning
 - Edit constants in `src/lib/motion.ts`:
   - reveal/stagger/hero/parallax/hover timing and amplitudes
+
+---
+
+## F) Layout audit (photo-first refactor)
+
+### Duplicazioni rilevate prima del refactor
+- Home e pagine interne ripetevano blocchi simili: processo operativo, trust/value proposition, CTA finale con copy quasi identica.
+- Hero interni prevalentemente testuali senza media dedicata.
+- Home con densità elevata (hero + servizi + processo + trust + FAQ + form) e overlap informativo con pagine interne.
+
+### Gerarchia adottata
+- **Home = overview**: hero visuale, servizi sintetici, perché noi, mini-gallery risultati/cantieri, CTA finale.
+- **Interne = dettaglio**: hero specifica con immagine coerente, 2/3 sezioni approfondimento, processo sintetico, CTA finale.
+
+### Photo slots consigliati
+- Hero: ratio `16:9`.
+- Card servizi / gallery / split visuals: ratio `4:3`.
+- Mobile: layout in stack; immagini con `object-fit: cover` + `aspect-ratio` per evitare CLS.
+- Loading: solo hero home in preload/eager; immagini sotto la fold in lazy.

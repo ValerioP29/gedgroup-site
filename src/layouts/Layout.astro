@@ -11,6 +11,7 @@ const {
   title = `${site.companyName} | Impresa di pulizie`,
   description = site.tagline,
   noIndex = false,
+  preloadImage,
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, site.baseUrl).toString();
@@ -25,6 +26,7 @@ const canonicalUrl = new URL(Astro.url.pathname, site.baseUrl).toString();
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     {noIndex && <meta name="robots" content="noindex,nofollow" />}
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} />}
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />

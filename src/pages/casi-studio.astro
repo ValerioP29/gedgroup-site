@@ -1,83 +1,60 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import InternalPageHero from "../components/InternalPageHero.astro";
-import SectionHeader from "../components/SectionHeader.astro";
-import FinalCtaBand from "../components/FinalCtaBand.astro";
+import PageHero from "../components/PageHero.astro";
+import ImageBand from "../components/ImageBand.astro";
+import FinalCTA from "../components/FinalCTA.astro";
 import { caseStudies } from "../data/case-studies";
+import { pageMedia } from "../data/page-media";
+
+const media = pageMedia.casiStudio;
 ---
 
 <Layout title="Casi studio | GED Group" description="Esempi di casi gestiti e risultati operativi.">
-  <InternalPageHero
+  <PageHero
     eyebrow="Casi studio"
-    title="Esempi concreti di progetti gestiti"
-    subtitle="Una raccolta ordinata di challenge, soluzione e risultati per rafforzare credibilità commerciale e proof operativa."
+    title="Risultati concreti su contesti diversi"
+    subtitle="Ogni caso mostra sfida, soluzione e risultato: contenuto di dettaglio senza ripetere le sezioni overview della home."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Casi studio" }]}
+    image={media.hero.image}
   />
 
   <section class="section-y">
-    <div class="site-container">
-      <SectionHeader
-        eyebrow="Project proof"
-        title="Dalla criticità iniziale a un piano stabile"
-        subtitle="Ogni caso è presentato con una struttura uniforme, facile da leggere anche su mobile."
-      />
-
-      <div class="mt-8 grid gap-4" data-stagger="case-grid">
-        {caseStudies.map((c, idx) => (
-          <article class="panel card-hover" data-stagger-item>
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="rounded-full border border-[color:var(--border)] bg-slate-50 px-2.5 py-1 text-xs text-slate-600">{c.sector}</span>
-              <span class="text-xs text-slate-500">Caso {idx + 1}</span>
+    <div class="site-container grid gap-4" data-stagger="case-grid">
+      {caseStudies.map((c, idx) => (
+        <article class="panel card-hover" data-stagger-item>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded-full border border-[color:var(--border)] bg-slate-50 px-2.5 py-1 text-xs text-slate-600">{c.sector}</span>
+            <span class="text-xs text-slate-500">Caso {idx + 1}</span>
+          </div>
+          <h2 class="mt-3 text-xl font-semibold text-slate-900">{c.title}</h2>
+          <div class="mt-4 grid gap-3 lg:grid-cols-3">
+            <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
+              <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Sfida</div>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{c.challenge}</p>
             </div>
-            <h2 class="mt-3 text-xl font-semibold text-slate-900">{c.title}</h2>
-
-            <div class="mt-4 grid gap-3 lg:grid-cols-3">
-              <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
-                <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Sfida</div>
-                <p class="mt-2 text-sm leading-6 text-slate-600">{c.challenge}</p>
-              </div>
-              <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
-                <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Soluzione</div>
-                <p class="mt-2 text-sm leading-6 text-slate-600">{c.solution}</p>
-              </div>
-              <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
-                <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Risultati</div>
-                <ul class="mt-2 space-y-1 text-sm text-slate-600">
-                  {c.results.map((r) => <li>• {r}</li>)}
-                </ul>
-              </div>
+            <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
+              <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Soluzione</div>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{c.solution}</p>
             </div>
-          </article>
-        ))}
-      </div>
+            <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
+              <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Risultati</div>
+              <ul class="mt-2 space-y-1 text-sm text-slate-600">
+                {c.results.map((r) => <li>• {r}</li>)}
+              </ul>
+            </div>
+          </div>
+        </article>
+      ))}
     </div>
   </section>
 
-  <section class="section-y surface-section">
-    <div class="site-container">
-      <div class="panel" data-reveal="fade-up">
-        <SectionHeader
-          eyebrow="Metriche"
-          title="Blocco proof pronto per KPI reali"
-          subtitle="Possiamo inserire indicatori di continuità servizio, riduzione segnalazioni e SLA rispettati per ciascun settore."
-        />
-        <div class="mt-5 grid gap-3 sm:grid-cols-3" data-stagger="metrics-grid">
-          {[
-            ["Riduzione segnalazioni", "-XX%"],
-            ["Tempo medio risposta", "< XX h"],
-            ["Clienti con rinnovo", "XX%"],
-          ].map(([label, value]) => (
-            <div class="kpi-card" data-stagger-item>
-              <p class="text-xs uppercase tracking-wide text-slate-500">{label}</p>
-              <p class="mt-1 text-xl font-semibold text-slate-900">{value}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
+  <ImageBand
+    title="Gallery cantieri"
+    subtitle="Slot foto 4:3 per raccontare il prima/dopo e il contesto operativo dei progetti."
+    images={media.sections.gallery.images}
+  />
 
-  <FinalCtaBand
+  <FinalCTA
     title="Vuoi una proposta per un caso simile al tuo?"
     subtitle="Analizziamo il contesto, definiamo il capitolato e impostiamo un piano operativo con obiettivi chiari."
     whatsappText="Ciao GED Group, vorrei un preventivo per un caso simile ai vostri case study."

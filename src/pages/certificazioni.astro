@@ -1,60 +1,58 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import InternalPageHero from "../components/InternalPageHero.astro";
-import SectionHeader from "../components/SectionHeader.astro";
-import FinalCtaBand from "../components/FinalCtaBand.astro";
+import PageHero from "../components/PageHero.astro";
+import SplitSection from "../components/SplitSection.astro";
+import ImageBand from "../components/ImageBand.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import { services } from "../data/services";
+
+const certImages = [services[2].detailImages[0], services[3].detailImages[0], services[0].detailImages[1]];
 ---
 
 <Layout title="Certificazioni | GED Group" description="Certificazioni, conformità e standard qualitativi.">
-  <InternalPageHero
+  <PageHero
     eyebrow="Certificazioni"
-    title="Standard, conformità e procedure interne"
-    subtitle="Una pagina trust-oriented per mostrare certificazioni, formazione e documentazione utile in fase commerciale o gara."
+    title="Standard, conformità e procedure documentate"
+    subtitle="Pagina dedicata alla parte trust: certificazioni, sicurezza e formazione in formato sintetico e leggibile."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Certificazioni" }]}
+    image={services[2].heroImage}
   />
 
-  <section class="section-y">
-    <div class="site-container">
-      <SectionHeader
-        eyebrow="Compliance"
-        title="Sistema qualità leggibile e credibile"
-        subtitle="Card uniformi per presentare standard, audit interni e documenti disponibili su richiesta."
-      />
+  <SplitSection
+    eyebrow="Compliance"
+    title="Framework qualità in 3 aree"
+    body={[
+      "Certificazioni e policy interne vengono mantenute allineate ai requisiti dei clienti corporate.",
+      "La documentazione è organizzata per audit, onboarding fornitore e gare.",
+    ]}
+    bullets={[
+      "Qualità del servizio (es. ISO 9001)",
+      "Gestione ambientale e procedure",
+      "Sicurezza operativa e formazione team",
+    ]}
+    image={services[3].detailImages[1]}
+  />
 
-      <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-stagger="cert-grid">
+  <section class="surface-section section-y">
+    <div class="site-container">
+      <h2>Metodo documentale sintetico</h2>
+      <div class="mt-6 grid gap-3 md:grid-cols-3" data-stagger="cert-method">
         {[
-          { title: "ISO 9001", text: "Spazio per certificazione qualità e ambito di applicazione." },
-          { title: "ISO 14001", text: "Spazio per gestione ambientale e policy interne." },
-          { title: "ISO 45001", text: "Spazio per sicurezza e salute sul lavoro." },
-          { title: "Procedure operative", text: "Procedure interne, controlli qualità, gestione segnalazioni." },
-          { title: "Formazione personale", text: "Programmi formativi, aggiornamenti e standard operativi." },
-          { title: "Documentazione su richiesta", text: "Area utile per gare, amministratori e clienti corporate." },
+          "Raccolta e aggiornamento attestazioni",
+          "Condivisione documenti per cliente/progetto",
+          "Verifiche periodiche e azioni correttive",
         ].map((item) => (
-          <article class="panel card-hover" data-stagger-item>
-            <div class="inline-grid h-10 w-10 place-items-center rounded-[var(--radius-md)] bg-slate-900 text-white">✓</div>
-            <h3 class="mt-4 text-lg font-semibold text-slate-900">{item.title}</h3>
-            <p class="mt-2 text-sm leading-6 text-slate-600">{item.text}</p>
-          </article>
+          <article class="card-base p-4 text-sm text-slate-600" data-stagger-item>{item}</article>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="section-y surface-section">
-    <div class="site-container">
-      <div class="panel" data-reveal="fade-up">
-        <h2 class="text-xl font-semibold text-slate-900">Supporto commerciale e documentale</h2>
-        <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
-          Questo blocco è pronto per inserire badge ufficiali, PDF scaricabili e attestazioni reali richieste da procurement,
-          amministratori e clienti corporate.
-        </p>
-      </div>
-    </div>
-  </section>
+  <ImageBand images={certImages} />
 
-  <FinalCtaBand
+  <FinalCTA
     title="Ti serve documentazione per gara o qualifica fornitore?"
-    subtitle="Ti condividiamo il materiale utile e impostiamo una proposta operativa coerente con i tuoi requisiti."
+    subtitle="Condividiamo i materiali necessari e impostiamo una proposta operativa coerente con i requisiti richiesti."
     whatsappText="Ciao GED Group, vorrei informazioni su certificazioni e documentazione aziendale."
   />
 </Layout>

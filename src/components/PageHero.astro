@@ -1,0 +1,73 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+type Crumb = { label: string; href?: string };
+type HeroImage = {
+  src: string;
+  alt: string;
+  ratio?: "16/9" | "4/3" | "3/2" | "1/1" | "21/9";
+  position?: string;
+};
+
+const {
+  variant = "internal",
+  eyebrow,
+  title,
+  subtitle,
+  badge,
+  breadcrumbs = [],
+  image,
+  preload = false,
+} = Astro.props as {
+  variant?: "home" | "internal";
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  badge?: string;
+  breadcrumbs?: Crumb[];
+  image: HeroImage;
+  preload?: boolean;
+};
+
+const hasActions = Astro.slots.has("actions");
+const ratio = image.ratio ?? "16/9";
+---
+
+<section class="hero-grid border-b border-[color:var(--border)]">
+  <div class="site-container section-y">
+    <div class={`grid gap-8 lg:items-center ${variant === "home" ? "lg:grid-cols-[1fr_1fr]" : "lg:grid-cols-[0.92fr_1.08fr]"}`} data-hero>
+      <div class="space-y-5" data-hero-el="copy">
+        {breadcrumbs.length > 0 && (
+          <nav aria-label="breadcrumb" class="text-sm text-slate-500">
+            <ol class="flex flex-wrap items-center gap-2">
+              {breadcrumbs.map((crumb, idx) => (
+                <li class="inline-flex items-center gap-2">
+                  {idx > 0 && <span aria-hidden="true">/</span>}
+                  {crumb.href ? <a href={crumb.href} class="hover:underline">{crumb.label}</a> : <span class="text-slate-700">{crumb.label}</span>}
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
+
+        {badge && <p class="inline-flex rounded-full border border-[color:var(--border)] bg-white px-3 py-1 text-xs font-medium text-slate-600">{badge}</p>}
+
+        <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
+
+        {hasActions && <div class="flex flex-wrap gap-3" data-hero-el="ctas"><slot name="actions" /></div>}
+      </div>
+
+      <figure class="card-base overflow-hidden" data-hero-el="visual" data-parallax="-4">
+        <img
+          src={image.src}
+          alt={image.alt}
+          class="hero-media"
+          style={`aspect-ratio:${ratio};object-position:${image.position ?? "center"};`}
+          loading={preload ? "eager" : "lazy"}
+          fetchpriority={preload ? "high" : "auto"}
+          decoding="async"
+        />
+      </figure>
+    </div>
+  </div>
+</section>
