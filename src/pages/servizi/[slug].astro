@@ -5,6 +5,7 @@ import SplitSection from "../../components/SplitSection.astro";
 import ImageBand from "../../components/ImageBand.astro";
 import FaqAccordion from "../../components/FaqAccordion.astro";
 import FinalCTA from "../../components/FinalCTA.astro";
+import ServiceProofBlock from "../../components/ServiceProofBlock.astro";
 import { services } from "../../data/services";
 import { getWhatsAppUrl } from "../../data/site";
 
@@ -48,7 +49,16 @@ const { service } = Astro.props;
     image={service.detailImages[0]}
   />
 
-  <section class="surface-section section-y">
+  <ServiceProofBlock
+    title="Proof operativa del servizio"
+    responseTime={service.responseTime}
+    coverage={service.coverage}
+    outputs={service.serviceOutputs}
+    proofBullets={service.proofBullets}
+    miniCase={service.miniCase}
+  />
+
+  <section class="section-y">
     <div class="site-container grid gap-6 lg:grid-cols-[1fr_1fr]">
       <article class="panel" data-reveal="fade-up">
         <h2 class="text-xl font-semibold text-slate-900">Processo sintetico</h2>
@@ -74,7 +84,11 @@ const { service } = Astro.props;
     </div>
   </section>
 
-  <ImageBand images={service.detailImages} />
+  <ImageBand
+    title="Evidenze visuali servizio"
+    subtitle="Immagini di contesti reali: setup operativo, aree trattate e standard risultato atteso."
+    images={service.detailImages}
+  />
 
   <section class="section-y">
     <div class="site-container panel" data-reveal="fade-up">
@@ -86,8 +100,10 @@ const { service } = Astro.props;
   </section>
 
   <FinalCTA
-    title={`Vuoi attivare ${service.title} con un piano chiaro?`}
-    subtitle="Confrontiamoci su spazi, frequenze e obiettivi: prepariamo una proposta operativa pronta all'avvio."
-    whatsappText={`Ciao GED Group, vorrei un preventivo per ${service.title}.`}
+    title={`Vuoi attivare ${service.title} con standard verificabili?`}
+    subtitle={`Condividiamo output, tempi e piano qualità per ${service.title.toLowerCase()} prima dell'avvio operativo.`}
+    primaryLabel="Richiedi approfondimento servizio"
+    whatsappText={`Ciao GED Group, vorrei un confronto operativo su ${service.title}.`}
+    compact={true}
   />
 </Layout>

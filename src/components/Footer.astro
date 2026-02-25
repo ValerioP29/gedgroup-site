@@ -1,13 +1,14 @@
 ---
 import { site, getWhatsAppUrl } from "../data/site";
+import UiIcon from "./icons/UiIcon.astro";
 ---
 
-<footer class="mt-14 border-t border-[color:var(--border)] bg-slate-950 text-slate-100">
+<footer class="mt-8 md:mt-10 border-t border-[#13254f] bg-[#081733] text-slate-100">
   <div class="site-container section-y">
     <div class="grid gap-10 md:grid-cols-12 md:gap-8">
       <div class="md:col-span-5">
         <div class="flex items-center gap-3">
-          <div class="grid h-11 w-11 place-items-center rounded-[var(--radius-md)] bg-white/95 text-base font-bold text-slate-900">
+          <div class="grid h-11 w-11 place-items-center rounded-[var(--radius-md)] bg-white/95 text-base font-bold text-[#0b1f4d]">
             G
           </div>
           <div>
@@ -41,19 +42,19 @@ import { site, getWhatsAppUrl } from "../data/site";
       <div class="md:col-span-4">
         <h3 class="text-sm font-semibold uppercase tracking-[0.14em] text-slate-300">Contatti</h3>
         <ul class="mt-4 space-y-2.5 text-sm text-slate-200">
-          <li>{site.address}</li>
+          <li class="inline-flex items-center gap-2"><UiIcon name="map-pin" /> {site.address}</li>
           <li>
-            <a href={`tel:${site.phoneHref}`} class="hover:text-white" data-track="click_phone">{site.phoneDisplay}</a>
+            <a href={`tel:${site.phoneHref}`} class="inline-flex items-center gap-2 hover:text-white" data-track="click_phone"><UiIcon name="phone" />{site.phoneDisplay}</a>
           </li>
           <li>
-            <a href={`mailto:${site.email}`} class="hover:text-white" data-track="click_email">{site.email}</a>
+            <a href={`mailto:${site.email}`} class="inline-flex items-center gap-2 hover:text-white" data-track="click_email"><UiIcon name="mail" />{site.email}</a>
           </li>
           <li>
-            <a href={getWhatsAppUrl()} target="_blank" rel="noopener" class="hover:text-white" data-track="click_whatsapp">Chatta su WhatsApp</a>
+            <a href={getWhatsAppUrl()} target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:text-white" data-track="click_whatsapp"><UiIcon name="whatsapp" />Chatta su WhatsApp</a>
           </li>
         </ul>
 
-        <div class="mt-5 rounded-[var(--radius-md)] border border-white/15 bg-white/5 p-3 text-xs text-slate-300">
+        <div class="mt-5 rounded-[var(--radius-md)] border border-white/20 bg-white/8 p-3 text-xs text-slate-200">
           Risposta rapida su telefono e WhatsApp, con referente dedicato per clienti attivi.
         </div>
       </div>

@@ -5,33 +5,72 @@ import ContactForm from "../components/ContactForm.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import { site, getWhatsAppUrl } from "../data/site";
 import { services } from "../data/services";
+
+const nextSteps = [
+  "Analisi rapida della richiesta e verifica del contesto operativo.",
+  "Contatto del referente commerciale per chiarimenti e priorità.",
+  "Proposta operativa con sopralluogo e attivazione pianificata.",
+];
 ---
 
-<Layout title="Contatti | GED Group" description="Contatta GED Group per richiedere un preventivo o un sopralluogo.">
+<Layout title="Contatti | GED Group" description="Richiedi un preventivo o un sopralluogo GED Group per la tua struttura.">
   <PageHero
-    eyebrow="Contatti"
-    title="Parliamo del tuo servizio"
-    subtitle="Raccontaci spazi, frequenze e priorità: impostiamo una proposta credibile con sopralluogo e piano operativo chiaro."
+    eyebrow="Nuovi contatti"
+    title="Richiedi un sopralluogo o una proposta su misura"
+    subtitle="Pagina dedicata ai nuovi lead: raccontaci il contesto e ti ricontattiamo con un piano operativo chiaro, tempi e prossimi step."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Contatti" }]}
     image={services[0].heroImage}
   >
-    <a slot="actions" href={`tel:${site.phoneHref}`} class="btn btn-primary" data-track="click_phone">{site.phoneDisplay}</a>
-    <a slot="actions" href={getWhatsAppUrl()} target="_blank" rel="noopener" class="btn btn-secondary" data-track="click_whatsapp">
-      Scrivici ora
+    <a slot="actions" href="/contatti#lead-form" class="btn btn-primary">Richiedi preventivo</a>
+    <a slot="actions" href={getWhatsAppUrl("Ciao GED Group, vorrei richiedere un sopralluogo.")} target="_blank" rel="noopener" class="btn btn-secondary" data-track="click_whatsapp">
+      WhatsApp commerciale
     </a>
   </PageHero>
 
   <section class="section-y">
-    <div class="site-container grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-      <article class="panel" data-reveal="fade-up">
-        <h2 class="text-xl font-semibold text-slate-900">Canali diretti</h2>
-        <ul class="mt-4 grid gap-3 text-sm text-slate-600">
-          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-900">Telefono:</strong> {site.phoneDisplay}</li>
-          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-900">Email:</strong> {site.email}</li>
-          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-900">Sede:</strong> {site.address}</li>
-        </ul>
-        <img src={services[1].detailImages[0].src} alt={services[1].detailImages[0].alt} class="section-media mt-5 rounded-[var(--radius-md)]" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
-      </article>
+    <div class="site-container grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+      <div class="grid gap-6" data-reveal="fade-up">
+        <article class="panel">
+          <h2 class="text-xl font-semibold text-slate-900">Prima di inviare: tempi e copertura</h2>
+          <div class="mt-4 grid gap-3 sm:grid-cols-2 text-sm text-slate-600">
+            <div class="card-base bg-slate-50 p-3">
+              <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Risposta</div>
+              <p class="mt-1"><strong class="text-slate-900">{site.trust.leadResponseTime}</strong></p>
+            </div>
+            <div class="card-base bg-slate-50 p-3">
+              <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Copertura area</div>
+              <p class="mt-1"><strong class="text-slate-900">{site.trust.serviceArea}</strong></p>
+            </div>
+            <div class="card-base bg-slate-50 p-3 sm:col-span-2">
+              <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Sopralluogo</div>
+              <p class="mt-1"><strong class="text-slate-900">{site.trust.surveyTime}</strong> dalla conferma dati.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2 class="text-xl font-semibold text-slate-900">Cosa succede dopo la richiesta</h2>
+          <ol class="mt-4 grid gap-2" data-stagger="lead-next-steps">
+            {nextSteps.map((step, i) => (
+              <li class="card-base bg-slate-50 px-3 py-2 text-sm text-slate-600" data-stagger-item>
+                <strong class="text-slate-900">{i + 1}.</strong> {step}
+              </li>
+            ))}
+          </ol>
+        </article>
+
+        <article class="panel">
+          <h2 class="text-xl font-semibold text-slate-900">Canali diretti nuovi clienti</h2>
+          <ul class="mt-4 grid gap-3 text-sm text-slate-600">
+            <li class="card-base bg-slate-50 p-3"><strong class="text-slate-900">Telefono:</strong> <a class="hover:underline" href={`tel:${site.phoneHref}`}>{site.phoneDisplay}</a></li>
+            <li class="card-base bg-slate-50 p-3"><strong class="text-slate-900">WhatsApp:</strong> chat commerciale rapida</li>
+            <li class="card-base bg-slate-50 p-3"><strong class="text-slate-900">Email:</strong> <a class="hover:underline" href={`mailto:${site.email}`}>{site.email}</a></li>
+          </ul>
+          <p class="mt-4 text-sm text-slate-600">
+            Sei già cliente GED Group? Vai alla pagina <a href="/customer-care" class="font-semibold text-slate-900 hover:underline">Customer care</a> per assistenza operativa e amministrativa.
+          </p>
+        </article>
+      </div>
 
       <div data-reveal="fade-left">
         <ContactForm />
@@ -40,10 +79,11 @@ import { services } from "../data/services";
   </section>
 
   <FinalCTA
-    title="Preferisci un contatto rapido?"
-    subtitle="Scrivici su WhatsApp e ti richiamiamo con una prima valutazione della richiesta."
-    primaryLabel="Apri WhatsApp"
-    primaryHref={getWhatsAppUrl()}
-    whatsappText="Ciao GED Group, vorrei essere ricontattato per un preventivo."
+    title="Preferisci un confronto rapido prima del form?"
+    subtitle={`Puoi chiamarci o scriverci su WhatsApp: risposta ${site.trust.leadResponseTime}.`}
+    primaryLabel="Chiama ora"
+    primaryHref={`tel:${site.phoneHref}`}
+    whatsappText="Ciao GED Group, vorrei parlare con un referente commerciale per un preventivo."
+    compact={true}
   />
 </Layout>

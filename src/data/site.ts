@@ -15,6 +15,13 @@ export const site = {
     instagram: "https://instagram.com/",
     linkedin: "https://linkedin.com/company/",
   },
+  trust: {
+    leadResponseTime: "entro 4 ore lavorative",
+    serviceArea: "Latina, Roma Sud e provincia (placeholder)",
+    surveyTime: "entro 3 giorni lavorativi",
+    customerCareSla: "presa in carico entro 2 ore lavorative",
+    urgencySla: "gestione prioritaria su canale dedicato",
+  },
   gtmId: "", // es: "GTM-XXXXXXX" (lo aggiungiamo dopo)
 };
 

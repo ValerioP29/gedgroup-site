@@ -1,24 +1,91 @@
 ---
 import { site, getWhatsAppUrl } from "../data/site";
+import UiIcon from "./icons/UiIcon.astro";
+
+const currentPath = Astro.url.pathname;
+
+const primaryAction = currentPath.startsWith("/customer-care")
+  ? {
+      href: getWhatsAppUrl("Ciao GED Group, sono cliente attivo e ho bisogno di assistenza."),
+      label: "Assistenza",
+      className: "btn btn-whatsapp",
+      track: "click_whatsapp",
+      external: true,
+      icon: "whatsapp" as const,
+    }
+  : {
+      href: "/contatti",
+      label: "Preventivo",
+      className: "btn btn-primary",
+      track: "click_nav_lead",
+      external: false,
+      icon: "clipboard" as const,
+    };
+
+const secondaryAction = currentPath.startsWith("/customer-care")
+  ? {
+      href: `tel:${site.phoneHref}`,
+      label: "Chiama",
+      className: "btn btn-secondary",
+      track: "click_phone",
+      external: false,
+      icon: "phone" as const,
+    }
+  : {
+      href: getWhatsAppUrl(),
+      label: "WhatsApp",
+      className: "btn btn-whatsapp",
+      track: "click_whatsapp",
+      external: true,
+      icon: "whatsapp" as const,
+    };
 ---
 
-<div class="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-40 flex flex-col gap-2">
+<div
+  id="floating-actions"
+  class="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-40 flex flex-col gap-2 transition-all duration-300 lg:bottom-6 lg:right-6 lg:translate-y-4 lg:opacity-0 lg:pointer-events-none"
+>
   <a
-    href={getWhatsAppUrl()}
-    target="_blank"
-    rel="noopener"
-    class="btn btn-whatsapp tap-target shadow-lg shadow-black/10"
-    data-track="click_whatsapp"
-    aria-label="Apri chat WhatsApp"
+    href={primaryAction.href}
+    target={primaryAction.external ? "_blank" : undefined}
+    rel={primaryAction.external ? "noopener" : undefined}
+    class={`${primaryAction.className} tap-target shadow-lg shadow-black/12`}
+    data-track={primaryAction.track}
   >
-    WhatsApp
+    <UiIcon name={primaryAction.icon} />
+    {primaryAction.label}
   </a>
   <a
-    href={`tel:${site.phoneHref}`}
-    class="btn btn-primary tap-target shadow-lg shadow-black/10"
-    data-track="click_phone"
-    aria-label="Chiama ora GED Group"
+    href={secondaryAction.href}
+    target={secondaryAction.external ? "_blank" : undefined}
+    rel={secondaryAction.external ? "noopener" : undefined}
+    class={`${secondaryAction.className} tap-target shadow-lg shadow-black/10`}
+    data-track={secondaryAction.track}
   >
-    Chiama ora
+    <UiIcon name={secondaryAction.icon} />
+    {secondaryAction.label}
   </a>
 </div>
+
+<script is:inline>
+  const floating = document.getElementById("floating-actions");
+  const desktopQuery = window.matchMedia("(min-width: 1024px)");
+
+  if (floating) {
+    const setDesktopVisibility = () => {
+      if (!desktopQuery.matches) {
+        floating.classList.remove("lg:opacity-0", "lg:pointer-events-none", "lg:translate-y-4");
+        return;
+      }
+
+      const shouldShow = window.scrollY > 320;
+      floating.classList.toggle("lg:opacity-0", !shouldShow);
+      floating.classList.toggle("lg:pointer-events-none", !shouldShow);
+      floating.classList.toggle("lg:translate-y-4", !shouldShow);
+    };
+
+    setDesktopVisibility();
+    window.addEventListener("scroll", setDesktopVisibility, { passive: true });
+    desktopQuery.addEventListener("change", setDesktopVisibility);
+  }
+</script>

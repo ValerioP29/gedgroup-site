@@ -13,6 +13,11 @@ export type ServiceItem = {
   sectors: string[];
   process: string[];
   faqs: { q: string; a: string }[];
+  serviceOutputs: string[];
+  proofBullets: string[];
+  responseTime: string;
+  coverage: string;
+  miniCase?: { title: string; context: string; outcome: string };
 };
 
 const base = "https://images.unsplash.com";
@@ -75,6 +80,23 @@ export const services: ServiceItem[] = [
         a: "Sì. Per ogni cliente prevediamo un referente operativo per comunicazioni rapide e verifiche.",
       },
     ],
+    serviceOutputs: [
+      "Calendario interventi condiviso con frequenze per area",
+      "Checklist ambienti critici (postazioni, sale meeting, bagni)",
+      "Report sintetico periodico su esecuzione e allineamenti",
+    ],
+    proofBullets: [
+      "Controllo giornaliero punti ad alto contatto",
+      "Verifica settimanale standard pulizia aree comuni",
+      "Allineamento mensile con referente cliente",
+    ],
+    responseTime: "Presa in carico richiesta entro 4 ore lavorative (placeholder)",
+    coverage: "Latina, Roma Sud e provincia (placeholder)",
+    miniCase: {
+      title: "Sede direzionale multi-piano",
+      context: "Incremento flussi e necessità di mantenere sale meeting sempre pronte.",
+      outcome: "Riduzione segnalazioni interne e standard visivo omogeneo su tutti i piani.",
+    },
   },
   {
     slug: "pulizie-condomini",
@@ -133,6 +155,23 @@ export const services: ServiceItem[] = [
         a: "Sì. Possiamo concordare un piano visibile e condiviso con amministratore o portineria.",
       },
     ],
+    serviceOutputs: [
+      "Piano settimanale aree comuni e ingressi",
+      "Registro interventi condivisibile con amministratore",
+      "Gestione richieste extra con canale dedicato",
+    ],
+    proofBullets: [
+      "Controllo rotazione scale/ascensori per fasce orarie",
+      "Verifica periodica vetri e superfici ad alto traffico",
+      "Aggiornamento mensile con amministrazione condominiale",
+    ],
+    responseTime: "Presa in carico segnalazioni entro 4 ore lavorative (placeholder)",
+    coverage: "Latina, Terracina, Fondi e aree limitrofe (placeholder)",
+    miniCase: {
+      title: "Condominio ad alto traffico",
+      context: "Lamentele ricorrenti su androne e ascensori nelle ore di punta.",
+      outcome: "Migliore regolarità percepita e riduzione segnalazioni nel primo trimestre.",
+    },
   },
   {
     slug: "pulizie-industriali",
@@ -191,6 +230,23 @@ export const services: ServiceItem[] = [
         a: "Sì. Allineiamo procedure e accessi con il vostro referente HSE o di stabilimento.",
       },
     ],
+    serviceOutputs: [
+      "Capitolato operativo con finestre compatibili con la produzione",
+      "Checklist sicurezza e conformità per area",
+      "Report periodico con criticità e azioni correttive",
+    ],
+    proofBullets: [
+      "Controllo pre-intervento su accessi e permessi",
+      "Verifica post-intervento su zone critiche e percorsi logistici",
+      "Riesame periodico con referente di stabilimento",
+    ],
+    responseTime: "Attivazione piano operativo entro 5 giorni lavorativi (placeholder)",
+    coverage: "Aree industriali Lazio sud (placeholder)",
+    miniCase: {
+      title: "Hub logistico su turni estesi",
+      context: "Necessità di pulizia senza interferire con movimentazione merci H24.",
+      outcome: "Routine stabile in finestre dedicate e continuità operativa mantenuta.",
+    },
   },
   {
     slug: "sanificazioni-e-straordinari",
@@ -249,5 +305,22 @@ export const services: ServiceItem[] = [
         a: "Sì. Gli straordinari possono essere singoli o diventare periodici se necessario.",
       },
     ],
+    serviceOutputs: [
+      "Obiettivo intervento condiviso prima dell'avvio",
+      "Checklist consegna finale area per area",
+      "Report sintetico di chiusura attività",
+    ],
+    proofBullets: [
+      "Pianificazione materiali e attrezzature in base al contesto",
+      "Verifica intermedia su aree prioritarie",
+      "Conferma finale con referente cliente",
+    ],
+    responseTime: "Valutazione preliminare entro 24 ore lavorative (placeholder)",
+    coverage: "Interventi spot su Lazio sud e area Pontina (placeholder)",
+    miniCase: {
+      title: "Ripristino post-lavori in sede retail",
+      context: "Apertura imminente con necessità di consegna in tempi brevi.",
+      outcome: "Locale consegnato entro la finestra concordata con standard verificato.",
+    },
   },
 ];

@@ -26,7 +26,7 @@ export const pageMedia: Record<string, PageMediaConfig> = {
       why: {
         image: {
           src: `${base}/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80`,
-          alt: "Operatore con attrezzatura professionale in un corridoio aziendale",
+          alt: "Operatore GED Group con checklist qualità durante controllo intervento",
           ratio: "4/3",
           position: "center",
         },
@@ -35,17 +35,12 @@ export const pageMedia: Record<string, PageMediaConfig> = {
         images: [
           {
             src: `${base}/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80`,
-            alt: "Ingresso condominiale pulito e ordinato",
+            alt: "Caso condominiale: area ingresso verificata dopo piano interventi",
             ratio: "4/3",
           },
           {
-            src: `${base}/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80`,
-            alt: "Open space aziendale sanificato e pronto all'uso",
-            ratio: "4/3",
-          },
-          {
-            src: `${base}/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1000&q=80`,
-            alt: "Area logistica con pavimentazione tecnica pulita",
+            src: `${base}/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1000&q=80`,
+            alt: "Caso industriale: corsia logistica pulita e pronta al turno successivo",
             ratio: "4/3",
           },
         ],
@@ -72,12 +67,12 @@ export const pageMedia: Record<string, PageMediaConfig> = {
         images: [
           {
             src: `${base}/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80`,
-            alt: "Checklist qualità compilata in cantiere",
+            alt: "Checklist qualità compilata in cantiere con evidenze attività",
             ratio: "4/3",
           },
           {
             src: `${base}/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80`,
-            alt: "Macchinari professionali pronti per intervento",
+            alt: "Attrezzature e DPI pronti per intervento operativo",
             ratio: "4/3",
           },
         ],
@@ -93,6 +88,54 @@ export const pageMedia: Record<string, PageMediaConfig> = {
       },
     },
     sections: {},
+  },
+  certificazioni: {
+    hero: {
+      image: {
+        src: `${base}/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=80`,
+        alt: "Documentazione certificativa e audit qualità su scrivania operativa",
+        ratio: "16/9",
+      },
+    },
+    sections: {
+      badges: {
+        images: [
+          {
+            src: `${base}/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1000&q=80`,
+            alt: "Documento di audit qualità con campi compilati",
+            ratio: "4/3",
+          },
+          {
+            src: `${base}/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80`,
+            alt: "Registro procedure ambientali in contesto ufficio",
+            ratio: "4/3",
+          },
+          {
+            src: `${base}/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=80`,
+            alt: "Badge e documenti di conformità in fase di verifica",
+            ratio: "4/3",
+          },
+        ],
+      },
+    },
+  },
+  customerCare: {
+    hero: {
+      image: {
+        src: `${base}/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1800&q=80`,
+        alt: "Desk operativo customer care con gestione richieste clienti",
+        ratio: "16/9",
+      },
+    },
+    sections: {
+      workflow: {
+        image: {
+          src: `${base}/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80`,
+          alt: "Team assistenza durante coordinamento richieste operative",
+          ratio: "4/3",
+        },
+      },
+    },
   },
   serviceDetail: {
     hero: {
@@ -132,17 +175,17 @@ export const pageMedia: Record<string, PageMediaConfig> = {
         images: [
           {
             src: `${base}/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1000&q=80`,
-            alt: "Sala riunioni preparata dopo intervento",
+            alt: "Caso uffici multi-sede: sala riunioni pronta all'apertura",
             ratio: "4/3",
           },
           {
             src: `${base}/photo-1507209696998-3c532be9b2b5?auto=format&fit=crop&w=1000&q=80`,
-            alt: "Androne condominiale in ordine",
+            alt: "Caso condominio: androne ad alto traffico con standard mantenuto",
             ratio: "4/3",
           },
           {
             src: `${base}/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1000&q=80`,
-            alt: "Area produttiva pulita e sicura",
+            alt: "Caso logistica: area produttiva riattivata dopo intervento pianificato",
             ratio: "4/3",
           },
         ],

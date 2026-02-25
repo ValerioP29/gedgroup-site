@@ -2,7 +2,6 @@
 import Layout from "../../layouts/Layout.astro";
 import PageHero from "../../components/PageHero.astro";
 import ServiceCardsGrid from "../../components/ServiceCardsGrid.astro";
-import SplitSection from "../../components/SplitSection.astro";
 import FinalCTA from "../../components/FinalCTA.astro";
 import { services } from "../../data/services";
 import { getWhatsAppUrl } from "../../data/site";
@@ -13,55 +12,80 @@ const media = pageMedia.servizi;
 
 <Layout
   title="Servizi | GED Group"
-  description="Pulizie uffici, condomìni, ambienti industriali e interventi straordinari."
+  description="Guida ai servizi GED Group: identifica il servizio più adatto tra uffici, condomìni, industriale e straordinari."
 >
   <PageHero
     eyebrow="Servizi"
-    title="Servizi di pulizia ordinaria e straordinaria"
-    subtitle="Panoramica sintetica dei servizi GED Group: ogni pagina dedicata contiene metodo, settori serviti e casi applicativi."
+    title="Trova il servizio più adatto alla tua struttura"
+    subtitle="Questa pagina ti aiuta a orientarti: scegli il contesto giusto e approfondisci la scheda dedicata per dettagli operativi, settori serviti e FAQ."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Servizi" }]}
     image={media.hero.image}
   >
-    <a slot="actions" href="/contatti" class="btn btn-primary">Richiedi preventivo</a>
+    <a slot="actions" href="/contatti" class="btn btn-primary">Ricevi una proposta mirata</a>
     <a
       slot="actions"
-      href={getWhatsAppUrl("Ciao GED Group, vorrei informazioni sui vostri servizi.")}
+      href={getWhatsAppUrl("Ciao GED Group, mi aiutate a scegliere il servizio più adatto?")}
       target="_blank"
       rel="noopener"
       class="btn btn-secondary"
       data-track="click_whatsapp"
     >
-      Consulenza rapida
+      Aiuto rapido su WhatsApp
     </a>
   </PageHero>
 
   <ServiceCardsGrid
-    eyebrow="Catalogo"
-    title="Seleziona il servizio più adatto"
-    subtitle="Card visuali con mini anteprime: entra nelle schede per vedere dettagli e processo dedicato."
+    eyebrow="Catalogo servizi"
+    title="Scegli l'area di intervento"
+    subtitle="Ogni scheda servizio mostra cosa include, processo operativo, settori serviti e risposte rapide alle domande più frequenti."
     services={services}
+    cardCtaLabel="Approfondisci"
   />
 
-  <SplitSection
-    eyebrow="Metodo"
-    title="Processo sintetico, attivazione rapida"
-    body={[
-      "Ogni nuova commessa segue una traccia chiara: analisi, capitolato, avvio e monitoraggio.",
-      "Riduciamo complessità e allineiamo subito frequenze, responsabilità e canali di contatto.",
-    ]}
-    bullets={[
-      "Sopralluogo tecnico",
-      "Proposta personalizzata",
-      "Coordinamento operativo",
-      "Verifiche qualità",
-    ]}
-    image={services[0].detailImages[0]}
-    reverse={true}
-  />
+  <section class="section-y">
+    <div class="site-container panel" data-reveal="fade-up">
+      <h2 class="text-xl font-semibold text-slate-900">Guida rapida alla scelta</h2>
+      <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+        Se non hai ancora un capitolato definito, parti da qui: individua il contesto prevalente e il risultato atteso.
+        In questo modo la proposta sarà più chiara, comparabile e veloce da attivare.
+      </p>
+
+      <div class="mt-6 grid gap-3 md:grid-cols-3" data-stagger="services-choice-guide">
+        <article class="card-base bg-slate-50 p-4 text-sm text-slate-600" data-stagger-item>
+          <h3 class="text-base font-semibold text-slate-900">Quando scegliere</h3>
+          <ul class="mt-2 grid gap-1.5">
+            <li>• Uffici e studi: continuità quotidiana e ordine costante.</li>
+            <li>• Condomini: aree comuni ad alta frequenza e coordinamento con amministrazione.</li>
+            <li>• Industriale: finestre operative, sicurezza e procedure dedicate.</li>
+          </ul>
+        </article>
+
+        <article class="card-base bg-slate-50 p-4 text-sm text-slate-600" data-stagger-item>
+          <h3 class="text-base font-semibold text-slate-900">Output attesi</h3>
+          <ul class="mt-2 grid gap-1.5">
+            <li>• Piano attività e frequenze condivise.</li>
+            <li>• Referente operativo unico per allineamenti rapidi.</li>
+            <li>• Controlli qualità periodici e ottimizzazione del servizio.</li>
+          </ul>
+        </article>
+
+        <article class="card-base bg-slate-50 p-4 text-sm text-slate-600" data-stagger-item>
+          <h3 class="text-base font-semibold text-slate-900">Tempi e modalità</h3>
+          <ul class="mt-2 grid gap-1.5">
+            <li>• Primo confronto su esigenze e priorità operative.</li>
+            <li>• Sopralluogo tecnico e proposta su misura.</li>
+            <li>• Avvio con calendario condiviso e canali di contatto definiti.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
 
   <FinalCTA
-    title="Hai già un capitolato o vuoi partire da zero?"
-    subtitle="Ti aiutiamo a definire frequenze, attività e piano qualità con una proposta concreta."
-    whatsappText="Ciao GED Group, vorrei impostare una proposta servizi su misura."
+    title="Hai bisogno di aiuto per scegliere il servizio giusto?"
+    subtitle="Raccontaci il contesto: ti guidiamo verso la soluzione più adatta con una proposta operativa concreta."
+    primaryLabel="Ricevi proposta per il servizio più adatto"
+    whatsappText="Ciao GED Group, vorrei capire quale servizio è più adatto alla mia struttura."
+    compact={true}
   />
 </Layout>

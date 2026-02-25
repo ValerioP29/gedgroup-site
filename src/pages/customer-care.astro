@@ -4,66 +4,111 @@ import PageHero from "../components/PageHero.astro";
 import FaqAccordion from "../components/FaqAccordion.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import { getWhatsAppUrl, site } from "../data/site";
-import { services } from "../data/services";
+import { pageMedia } from "../data/page-media";
+
+const supportAreas = [
+  {
+    title: "Segnalazione operativa",
+    text: "Per anomalie su servizio attivo, extra interventi e richieste in cantiere.",
+  },
+  {
+    title: "Amministrazione e fatturazione",
+    text: "Per documenti amministrativi, fatture e aggiornamenti anagrafici.",
+  },
+  {
+    title: "Urgenza",
+    text: "Per richieste prioritarie con gestione immediata su canale dedicato.",
+  },
+  {
+    title: "Modifica piano servizio",
+    text: "Per revisione frequenze, perimetro attività o turni operativi.",
+  },
+];
+
+const workflowMedia = pageMedia.customerCare.sections.workflow as { image: { src: string; alt: string } };
 
 const faqs = [
   {
-    q: "Come posso segnalare un'esigenza o una richiesta extra?",
-    a: "Puoi usare i canali indicati in questa pagina. Possiamo anche attivare flussi dedicati per urgenze e richieste extra.",
+    q: "Come apro una segnalazione operativa?",
+    a: "Usa telefono o WhatsApp indicando sede e priorità. Il referente registra la richiesta e conferma la presa in carico.",
   },
   {
-    q: "È possibile programmare interventi straordinari?",
-    a: "Sì. Gli interventi straordinari vengono pianificati con il referente operativo.",
+    q: "In quanto tempo ricevo riscontro?",
+    a: `Per richieste standard la presa in carico è ${site.trust.customerCareSla}.`,
   },
   {
-    q: "Chi contatto per modifiche al servizio ricorrente?",
-    a: "Il referente commerciale o operativo assegnato al tuo contratto.",
+    q: "Come richiedo una variazione del servizio ricorrente?",
+    a: "Contatta il referente operativo/commerciale: definiamo insieme nuova frequenza e data di aggiornamento.",
   },
 ];
 ---
 
-<Layout title="Customer care | GED Group" description="Assistenza clienti, canali rapidi e FAQ.">
+<Layout title="Customer care | GED Group" description="Assistenza dedicata ai clienti GED Group con canali e tempi di presa in carico chiari.">
   <PageHero
     eyebrow="Customer care"
-    title="Assistenza clienti chiara e centralizzata"
-    subtitle="Canali, tempi e FAQ organizzati per ridurre dispersione e velocizzare le risposte operative."
+    title="Assistenza dedicata ai clienti attivi"
+    subtitle="Questa pagina è riservata al supporto post-vendita: segnalazioni operative, urgenze, amministrazione e aggiornamenti del servizio in corso."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Customer care" }]}
-    image={services[3].heroImage}
+    image={pageMedia.customerCare.hero.image}
   >
-    <a slot="actions" href="/contatti" class="btn btn-primary">Apri una richiesta</a>
-    <a slot="actions" href={getWhatsAppUrl("Ciao GED Group, avrei bisogno di assistenza.")} target="_blank" rel="noopener" class="btn btn-secondary" data-track="click_whatsapp">
-      Supporto WhatsApp
+    <a slot="actions" href={getWhatsAppUrl("Ciao GED Group, sono cliente attivo e ho bisogno di assistenza.")} target="_blank" rel="noopener" class="btn btn-primary" data-track="click_whatsapp">
+      Apri assistenza WhatsApp
     </a>
+    <a slot="actions" href={`tel:${site.phoneHref}`} class="btn btn-secondary" data-track="click_phone">Linea customer care</a>
   </PageHero>
 
   <section class="section-y">
-    <div class="site-container grid gap-6 lg:grid-cols-[1fr_1fr]">
+    <div class="site-container grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
       <article class="panel" data-reveal="fade-up">
-        <h2 class="text-xl font-semibold text-slate-900">Canali di supporto</h2>
-        <ul class="mt-4 space-y-3 text-sm text-slate-600">
-          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-800">Telefono:</strong> {site.phoneDisplay}</li>
-          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-800">Email:</strong> {site.email}</li>
-          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-800">WhatsApp:</strong> chat diretta</li>
-        </ul>
-        <div class="mt-4 grid gap-3 sm:grid-cols-2 text-sm">
-          <div class="card-base bg-slate-50 p-3"><div class="font-medium text-slate-900">Lun - Ven</div><div>08:30 - 18:00</div></div>
-          <div class="card-base bg-slate-50 p-3"><div class="font-medium text-slate-900">Urgenze</div><div>Gestione su canale dedicato</div></div>
+        <h2 class="text-xl font-semibold text-slate-900">Ambiti di supporto</h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2" data-stagger="care-areas">
+          {supportAreas.map((item) => (
+            <div class="card-base bg-slate-50 p-4 text-sm text-slate-600" data-stagger-item>
+              <h3 class="text-base font-semibold text-slate-900">{item.title}</h3>
+              <p class="mt-2">{item.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-5 grid gap-3 sm:grid-cols-2 text-sm">
+          <div class="card-base bg-slate-50 p-3">
+            <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Presa in carico</div>
+            <div class="mt-1 font-semibold text-slate-900">{site.trust.customerCareSla}</div>
+          </div>
+          <div class="card-base bg-slate-50 p-3">
+            <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Urgenze</div>
+            <div class="mt-1 font-semibold text-slate-900">{site.trust.urgencySla}</div>
+          </div>
         </div>
       </article>
 
       <article class="panel" data-reveal="fade-left">
-        <h2 class="text-xl font-semibold text-slate-900">FAQ assistenza</h2>
-        <div class="mt-4">
-          <FaqAccordion items={faqs} />
-        </div>
+        <h2 class="text-xl font-semibold text-slate-900">Canali customer care</h2>
+        <ul class="mt-4 space-y-3 text-sm text-slate-600">
+          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-800">Telefono:</strong> {site.phoneDisplay}</li>
+          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-800">Email:</strong> {site.email}</li>
+          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-800">WhatsApp:</strong> assistenza clienti attivi</li>
+        </ul>
+        <img src={workflowMedia.image.src} alt={workflowMedia.image.alt} class="section-media mt-5 rounded-[var(--radius-md)]" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
       </article>
     </div>
   </section>
 
+  <section class="section-y">
+    <div class="site-container panel" data-reveal="fade-up">
+      <h2 class="text-xl font-semibold text-slate-900">FAQ assistenza clienti attivi</h2>
+      <div class="mt-4">
+        <FaqAccordion items={faqs} />
+      </div>
+    </div>
+  </section>
+
   <FinalCTA
-    title="Hai una richiesta specifica sul servizio attivo?"
-    subtitle="Apriamo subito il canale corretto e definiamo tempi di gestione in base alla priorità."
-    primaryLabel="Vai ai contatti"
-    whatsappText="Ciao GED Group, ho bisogno di supporto operativo su un servizio attivo."
+    title="Non sei ancora cliente GED Group?"
+    subtitle="Per richieste di preventivo e sopralluogo usa la pagina Contatti dedicata ai nuovi lead."
+    primaryLabel="Vai a Contatti"
+    primaryHref="/contatti"
+    whatsappText="Ciao GED Group, non sono ancora cliente e vorrei richiedere un preventivo."
+    compact={true}
   />
 </Layout>

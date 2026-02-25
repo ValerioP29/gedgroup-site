@@ -5,15 +5,16 @@ import ImageBand from "../components/ImageBand.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import { caseStudies } from "../data/case-studies";
 import { pageMedia } from "../data/page-media";
+import { getWhatsAppUrl } from "../data/site";
 
 const media = pageMedia.casiStudio;
 ---
 
-<Layout title="Casi studio | GED Group" description="Esempi di casi gestiti e risultati operativi.">
+<Layout title="Casi studio | GED Group" description="Esempi verificabili di casi gestiti e risultati operativi GED Group.">
   <PageHero
     eyebrow="Casi studio"
     title="Risultati concreti su contesti diversi"
-    subtitle="Ogni caso mostra sfida, soluzione e risultato: contenuto di dettaglio senza ripetere le sezioni overview della home."
+    subtitle="Ogni caso mostra sfida, soluzione, risultati e una CTA dedicata al settore per passare da esempio a proposta operativa."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Casi studio" }]}
     image={media.hero.image}
   />
@@ -22,25 +23,53 @@ const media = pageMedia.casiStudio;
     <div class="site-container grid gap-4" data-stagger="case-grid">
       {caseStudies.map((c, idx) => (
         <article class="panel card-hover" data-stagger-item>
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="rounded-full border border-[color:var(--border)] bg-slate-50 px-2.5 py-1 text-xs text-slate-600">{c.sector}</span>
-            <span class="text-xs text-slate-500">Caso {idx + 1}</span>
-          </div>
-          <h2 class="mt-3 text-xl font-semibold text-slate-900">{c.title}</h2>
-          <div class="mt-4 grid gap-3 lg:grid-cols-3">
-            <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
-              <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Sfida</div>
-              <p class="mt-2 text-sm leading-6 text-slate-600">{c.challenge}</p>
-            </div>
-            <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
-              <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Soluzione</div>
-              <p class="mt-2 text-sm leading-6 text-slate-600">{c.solution}</p>
-            </div>
-            <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
-              <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Risultati</div>
-              <ul class="mt-2 space-y-1 text-sm text-slate-600">
-                {c.results.map((r) => <li>• {r}</li>)}
-              </ul>
+          <div class="grid gap-4 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+            <figure class="card-base overflow-hidden">
+              <img
+                src={c.image.src}
+                alt={c.image.alt}
+                class="section-media"
+                style={`aspect-ratio:${c.image.ratio};`}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="rounded-full border border-[color:var(--border)] bg-slate-50 px-2.5 py-1 text-xs text-slate-600">{c.sector}</span>
+                <span class="text-xs text-slate-500">Caso {idx + 1}</span>
+              </div>
+              <h2 class="mt-3 text-xl font-semibold text-slate-900">{c.title}</h2>
+
+              <div class="mt-4 grid gap-3 lg:grid-cols-3">
+                <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
+                  <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Sfida</div>
+                  <p class="mt-2 text-sm leading-6 text-slate-600">{c.challenge}</p>
+                </div>
+                <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
+                  <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Soluzione</div>
+                  <p class="mt-2 text-sm leading-6 text-slate-600">{c.solution}</p>
+                </div>
+                <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4">
+                  <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Risultati</div>
+                  <ul class="mt-2 space-y-1 text-sm text-slate-600">
+                    {c.results.map((r) => <li>• {r}</li>)}
+                  </ul>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <a
+                  href={getWhatsAppUrl(c.ctaMessage)}
+                  target="_blank"
+                  rel="noopener"
+                  class="btn btn-secondary"
+                  data-track="click_whatsapp"
+                >
+                  {c.ctaLabel}
+                </a>
+              </div>
             </div>
           </div>
         </article>
@@ -49,14 +78,16 @@ const media = pageMedia.casiStudio;
   </section>
 
   <ImageBand
-    title="Gallery cantieri"
-    subtitle="Slot foto 4:3 per raccontare il prima/dopo e il contesto operativo dei progetti."
+    title="Evidenze visuali per settore"
+    subtitle="Selezione rapida di evidenze operative: uffici multi-sede, condomìni ad alto traffico e logistica su turni estesi."
     images={media.sections.gallery.images}
   />
 
   <FinalCTA
     title="Vuoi una proposta per un caso simile al tuo?"
-    subtitle="Analizziamo il contesto, definiamo il capitolato e impostiamo un piano operativo con obiettivi chiari."
-    whatsappText="Ciao GED Group, vorrei un preventivo per un caso simile ai vostri case study."
+    subtitle="Analizziamo il contesto, definiamo standard e KPI operativi prima dell'avvio." 
+    primaryLabel="Richiedi confronto sul tuo caso"
+    whatsappText="Ciao GED Group, vorrei un confronto su un caso operativo simile ai vostri case study."
+    compact={true}
   />
 </Layout>
