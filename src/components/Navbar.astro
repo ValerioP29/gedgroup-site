@@ -26,19 +26,23 @@ const currentPath = Astro.url.pathname;
         </div>
       </a>
 
-      <nav class="hidden items-center gap-1 lg:flex">
-        {links.map((link) => (
-          <a
-            href={link.href}
-            class={`btn min-h-10 px-3 text-sm font-medium ${
-              currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
-                ? "bg-slate-900 text-white"
-                : "btn-ghost text-slate-700"
-            }`}
-          >
-            {link.label}
-          </a>
-        ))}
+      <nav class="hidden items-center gap-1 lg:flex" aria-label="Menu principale desktop">
+        {links.map((link) => {
+          const isCurrent = currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href));
+          return (
+            <a
+              href={link.href}
+              aria-current={isCurrent ? "page" : undefined}
+              class={`btn min-h-10 px-3 text-sm font-medium ${
+                isCurrent
+                  ? "bg-slate-900 text-white"
+                  : "btn-ghost text-slate-700"
+              }`}
+            >
+              {link.label}
+            </a>
+          );
+        })}
       </nav>
 
       <div class="hidden items-center gap-2 lg:flex">
@@ -47,7 +51,7 @@ const currentPath = Astro.url.pathname;
           href={getWhatsAppUrl()}
           target="_blank"
           rel="noopener"
-          class="btn bg-green-600 text-white hover:brightness-105"
+          class="btn btn-whatsapp"
           data-track="click_whatsapp"
         >
           WhatsApp
@@ -56,7 +60,7 @@ const currentPath = Astro.url.pathname;
 
       <button
         id="menu-toggle"
-        class="grid h-10 w-10 place-items-center rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white text-slate-700 lg:hidden"
+        class="grid h-11 w-11 place-items-center rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white text-slate-700 lg:hidden"
         aria-expanded="false"
         aria-controls="mobile-menu"
         aria-label="Apri menu"
@@ -68,27 +72,31 @@ const currentPath = Astro.url.pathname;
 
   <div id="mobile-menu" class="hidden border-t border-[color:var(--border)] bg-white lg:hidden">
     <div class="site-container py-3">
-      <nav class="flex flex-col gap-1.5">
-        {links.map((link) => (
-          <a
-            href={link.href}
-            class={`btn justify-start px-3 text-sm ${
-              currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
-                ? "bg-slate-900 text-white"
-                : "btn-ghost text-slate-700"
-            }`}
-          >
-            {link.label}
-          </a>
-        ))}
+      <nav class="flex flex-col gap-1.5" aria-label="Menu principale mobile">
+        {links.map((link) => {
+          const isCurrent = currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href));
+          return (
+            <a
+              href={link.href}
+              aria-current={isCurrent ? "page" : undefined}
+              class={`btn tap-target justify-start px-3 text-sm ${
+                isCurrent
+                  ? "bg-slate-900 text-white"
+                  : "btn-ghost text-slate-700"
+              }`}
+            >
+              {link.label}
+            </a>
+          );
+        })}
       </nav>
       <div class="mt-3 grid grid-cols-2 gap-2">
-        <a href={`tel:${site.phoneHref}`} class="btn btn-secondary" data-track="click_phone">Chiama</a>
+        <a href={`tel:${site.phoneHref}`} class="btn btn-secondary tap-target" data-track="click_phone">Chiama</a>
         <a
           href={getWhatsAppUrl()}
           target="_blank"
           rel="noopener"
-          class="btn bg-green-600 text-white hover:brightness-105"
+          class="btn btn-whatsapp tap-target"
           data-track="click_whatsapp"
         >
           WhatsApp
@@ -103,10 +111,23 @@ const currentPath = Astro.url.pathname;
   const menu = document.getElementById("mobile-menu");
 
   if (btn && menu) {
+    const setOpen = (open) => {
+      menu.classList.toggle("hidden", !open);
+      btn.setAttribute("aria-expanded", String(open));
+      btn.setAttribute("aria-label", open ? "Chiudi menu" : "Apri menu");
+    };
+
     btn.addEventListener("click", () => {
       const isOpen = !menu.classList.contains("hidden");
-      menu.classList.toggle("hidden");
-      btn.setAttribute("aria-expanded", String(!isOpen));
+      setOpen(!isOpen);
+    });
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setOpen(false));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false);
     });
   }
 </script>
