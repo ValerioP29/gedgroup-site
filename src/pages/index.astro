@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import PageHero from "../components/PageHero.astro";
 import ServiceCardsGrid from "../components/ServiceCardsGrid.astro";
+import StatsCounters from "../components/StatsCounters.astro";
 import SplitSection from "../components/SplitSection.astro";
 import ImageBand from "../components/ImageBand.astro";
 import ServiceChooser from "../components/ServiceChooser.astro";
@@ -11,6 +12,7 @@ import { site, getWhatsAppUrl } from "../data/site";
 import { services } from "../data/services";
 import { caseStudies } from "../data/case-studies";
 import { pageMedia } from "../data/page-media";
+import { homeStats } from "../data/stats";
 
 const media = pageMedia.home;
 ---
@@ -22,9 +24,9 @@ const media = pageMedia.home;
 >
   <PageHero
     variant="home"
-    badge="Preventivi rapidi • Referente dedicato • Piani scalabili"
+    eyebrow="GED Group Srl"
     title="Pulizie professionali con un impatto visibile, ogni giorno"
-    subtitle="GED Group affianca aziende e amministratori con servizi di pulizia professionale: qui trovi una panoramica rapida, nelle pagine interne tutti i dettagli operativi."
+    subtitle="GED Group affianca aziende e amministratori con servizi di pulizia professionale. In home trovi una panoramica rapida, nelle pagine interne tutti i dettagli operativi."
     image={media.hero.image}
     heroVideo={media.hero.video}
     preload={true}
@@ -42,6 +44,13 @@ const media = pageMedia.home;
     </a>
     <a slot="actions" href={`tel:${site.phoneHref}`} class="btn btn-ghost" data-track="click_phone">{site.phoneDisplay}</a>
   </PageHero>
+
+  <StatsCounters
+    stats={homeStats}
+    eyebrow="Numeri che contano"
+    title="Affidabilità operativa in cifre"
+    intro="Una sintesi immediata dei KPI che descrivono volumi gestiti, continuità e rapidità di risposta del nostro team."
+  />
 
   <ServiceCardsGrid
     title="I nostri servizi principali"

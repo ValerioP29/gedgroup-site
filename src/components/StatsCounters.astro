@@ -1,0 +1,109 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+
+type StatItem = {
+  label: string;
+  value: number;
+  suffix?: string;
+  prefix?: string;
+};
+
+const {
+  eyebrow = "Numeri che contano",
+  title = "Risultati misurabili, ogni giorno",
+  intro = "Indicatori sintetici per raccontare metodo, continuità e rapidità operativa GED Group.",
+  stats,
+} = Astro.props as {
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+  stats: StatItem[];
+};
+
+const formatter = new Intl.NumberFormat("it-IT");
+const formatStat = (item: StatItem) => `${item.prefix ?? ""}${formatter.format(item.value)}${item.suffix ?? ""}`;
+---
+
+<section class="section-y stats-section motion-reveal-up" data-stats-counters data-reveal="fade-up">
+  <div class="site-container">
+    <SectionHeader eyebrow={eyebrow} title={title} subtitle={intro} />
+
+    <div class="stats-grid mt-8 motion-stagger" data-stagger="stats-grid">
+      {stats.map((item) => (
+        <article class="kpi-card stats-card card-hover motion-stagger-item" data-stagger-item>
+          <p
+            class="stats-card__value"
+            data-counter
+            data-value={item.value}
+            data-suffix={item.suffix ?? ""}
+            data-prefix={item.prefix ?? ""}
+          >
+            {formatStat(item)}
+          </p>
+          <p class="stats-card__label">{item.label}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  const sections = document.querySelectorAll("[data-stats-counters]");
+  if (!sections.length) {
+    // no-op
+  } else {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const formatCounter = (value) => new Intl.NumberFormat("it-IT").format(Math.round(value));
+
+    const animateCounter = (el, duration = 1200) => {
+      if (!el) return;
+      const target = Number(el.dataset.value || "0");
+      const suffix = el.dataset.suffix || "";
+      const prefix = el.dataset.prefix || "";
+
+      if (prefersReducedMotion || target <= 0) {
+        el.textContent = `${prefix}${formatCounter(target)}${suffix}`;
+        return;
+      }
+
+      const startTime = performance.now();
+      const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+      const tick = (now) => {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = easeOutCubic(progress);
+        const current = target * eased;
+        el.textContent = `${prefix}${formatCounter(current)}${suffix}`;
+
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        }
+      };
+
+      el.textContent = `${prefix}0${suffix}`;
+      requestAnimationFrame(tick);
+    };
+
+    const startSection = (section) => {
+      if (section.dataset.countersDone === "true") return;
+      section.dataset.countersDone = "true";
+      section.querySelectorAll("[data-counter]").forEach((counterEl, idx) => {
+        window.setTimeout(() => animateCounter(counterEl), idx * 90);
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          startSection(entry.target);
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.3, rootMargin: "0px 0px -10% 0px" },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  }
+</script>

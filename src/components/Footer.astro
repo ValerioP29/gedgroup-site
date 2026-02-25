@@ -20,21 +20,27 @@ import UiIcon from "./icons/UiIcon.astro";
           Progettiamo servizi ordinari e straordinari per uffici, condomìni e ambienti produttivi,
           con un approccio operativo chiaro e orientato alla continuità.
         </p>
-        <div class="flex flex-wrap gap-2.5">
-          <a href={site.social.facebook} target="_blank" rel="noopener" class="btn btn-footer-quiet">Facebook</a>
-          <a href={site.social.instagram} target="_blank" rel="noopener" class="btn btn-footer-quiet">Instagram</a>
-          <a href={site.social.linkedin} target="_blank" rel="noopener" class="btn btn-footer-quiet">LinkedIn</a>
+        <div class="footer-socials" aria-label="Social GED Group">
+          <a href={site.social.facebook} target="_blank" rel="noopener" class="btn btn-footer-quiet footer-social-btn" aria-label="Facebook GED Group">
+            <UiIcon name="facebook" />
+          </a>
+          <a href={site.social.instagram} target="_blank" rel="noopener" class="btn btn-footer-quiet footer-social-btn" aria-label="Instagram GED Group">
+            <UiIcon name="instagram" />
+          </a>
+          <a href={site.social.linkedin} target="_blank" rel="noopener" class="btn btn-footer-quiet footer-social-btn" aria-label="LinkedIn GED Group">
+            <UiIcon name="linkedin" />
+          </a>
         </div>
       </div>
 
       <div class="lg:col-span-2">
         <h3 class="footer-heading">Servizi</h3>
         <ul class="footer-links mt-4">
-          <li><a href="/servizi">Pulizie professionali</a></li>
-          <li><a href="/servizi">Uffici e studi</a></li>
-          <li><a href="/servizi">Condomìni</a></li>
-          <li><a href="/servizi">Ambienti produttivi</a></li>
-          <li><a href="/casi-studio">Casi studio</a></li>
+          <li><a class="motion-link" href="/servizi">Pulizie professionali</a></li>
+          <li><a class="motion-link" href="/servizi">Uffici e studi</a></li>
+          <li><a class="motion-link" href="/servizi">Condomìni</a></li>
+          <li><a class="motion-link" href="/servizi">Ambienti produttivi</a></li>
+          <li><a class="motion-link" href="/casi-studio">Casi studio</a></li>
         </ul>
       </div>
 
@@ -55,24 +61,35 @@ import UiIcon from "./icons/UiIcon.astro";
             </a>
           </li>
         </ul>
+
+        <div class="footer-map-wrap mt-4">
+          <iframe
+            title="Mappa sede GED Group"
+            src={site.mapEmbedUrl}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="footer-map"
+          ></iframe>
+          <a href={site.mapLink} target="_blank" rel="noopener" class="footer-map-link motion-link">
+            Apri in Google Maps
+            <UiIcon name="arrow-right" />
+          </a>
+        </div>
       </div>
 
-      <div class="space-y-3 lg:col-span-3">
+      <div class="space-y-2.5 lg:col-span-3">
         <h3 class="footer-heading">Azioni rapide</h3>
-        <a href="/contatti" class="btn btn-primary w-full justify-center" data-track="click_footer_lead">
+        <a href="/contatti#lead-form" class="btn btn-secondary w-full justify-center" data-track="click_footer_lead">
           <UiIcon name="clipboard" />
           Richiedi preventivo
         </a>
         <a href={getWhatsAppUrl()} target="_blank" rel="noopener" class="btn btn-whatsapp w-full justify-center" data-track="click_whatsapp">
           <UiIcon name="whatsapp" />
-          Scrivici su WhatsApp
+          WhatsApp
         </a>
-        <a href="/customer-care" class="btn btn-secondary w-full justify-center">
+        <a href="/customer-care" class="btn btn-footer-quiet w-full justify-center">
           Customer care clienti attivi
         </a>
-        <p class="rounded-[var(--radius-md)] border border-white/18 bg-white/7 px-3 py-2 text-xs leading-5 text-slate-300">
-          Risposta rapida su telefono e WhatsApp, con referente dedicato per clienti attivi.
-        </p>
       </div>
     </div>
   </div>
@@ -81,9 +98,9 @@ import UiIcon from "./icons/UiIcon.astro";
     <div class="site-container flex flex-col gap-3 py-4 text-xs text-slate-400 md:flex-row md:items-center md:justify-between">
       <p>{site.legalName} • {site.vatNumber} • {site.rea}</p>
       <div class="flex flex-wrap items-center gap-4">
-        <a href="/chi-siamo" class="hover:text-white">Chi siamo</a>
-        <a href="/privacy" class="hover:text-white">Privacy</a>
-        <a href="/cookie" class="hover:text-white">Cookie</a>
+        <a href="/chi-siamo" class="hover:text-white motion-link">Chi siamo</a>
+        <a href="/privacy" class="hover:text-white motion-link">Privacy</a>
+        <a href="/cookie" class="hover:text-white motion-link">Cookie</a>
       </div>
     </div>
   </div>

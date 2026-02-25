@@ -10,6 +10,10 @@ export const site = {
   address: "Via Esempio 123, Terracina (LT)",
   vatNumber: "P.IVA 00000000000",
   rea: "REA LT-000000",
+  mapEmbedUrl:
+    "https://www.google.com/maps?q=Via%20Esempio%20123%2C%20Terracina%20(LT)&output=embed",
+  mapLink:
+    "https://www.google.com/maps/search/?api=1&query=Via+Esempio+123,+Terracina+(LT)",
   social: {
     facebook: "https://facebook.com/",
     instagram: "https://instagram.com/",

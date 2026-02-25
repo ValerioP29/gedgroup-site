@@ -1,6 +1,5 @@
 ---
 import SectionHeader from "./SectionHeader.astro";
-import HeroVideoMask from "./HeroVideoMask.astro";
 
 type Crumb = { label: string; href?: string };
 type HeroImage = {
@@ -43,58 +42,97 @@ const {
 const hasActions = Astro.slots.has("actions");
 const ratio = image.ratio ?? "16/9";
 const isHome = variant === "home";
+
+const titleLines = isHome ? (heroVideo?.lines?.length ? heroVideo.lines : [title]) : [title];
+const posterImage = heroVideo?.poster ?? image.src;
 ---
 
-<section class="hero-grid border-b border-[color:var(--border)]">
-  <div class="site-container section-y">
-    <div class={`grid gap-8 lg:items-center ${isHome ? "lg:grid-cols-[1fr_1fr]" : "lg:grid-cols-[0.92fr_1.08fr]"}`} data-hero>
-      <div class="space-y-5" data-hero-el="copy">
-        {breadcrumbs.length > 0 && (
-          <nav aria-label="breadcrumb" class="text-sm text-slate-500">
-            <ol class="flex flex-wrap items-center gap-2">
-              {breadcrumbs.map((crumb, idx) => (
-                <li class="inline-flex items-center gap-2">
-                  {idx > 0 && <span aria-hidden="true">/</span>}
-                  {crumb.href ? <a href={crumb.href} class="hover:underline">{crumb.label}</a> : <span class="text-slate-700">{crumb.label}</span>}
-                </li>
-              ))}
-            </ol>
-          </nav>
-        )}
-
-        {badge && <p class="pill-soft inline-flex rounded-full px-3 py-1 text-xs font-semibold" data-hero-el="badge">{badge}</p>}
-
-        {isHome && heroVideo ? (
-          <div class="space-y-4">
-            <HeroVideoMask
-              title={title}
-              lines={heroVideo.lines}
-              video={{ webm: heroVideo.webm, mp4: heroVideo.mp4 }}
-              poster={heroVideo.poster}
-              label={heroVideo.label ?? title}
-            />
-            {subtitle && <p class="hero-subtitle max-w-2xl text-base leading-7 text-slate-600 md:text-lg" data-hero-el="subtitle">{subtitle}</p>}
-          </div>
-        ) : (
-          <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
-        )}
-
-        {hasActions && <div class="flex flex-wrap gap-3" data-hero-el="ctas"><slot name="actions" /></div>}
-
-        {isHome && <div class="hero-scroll-hint" aria-hidden="true"><span></span></div>}
-      </div>
-
-      <figure class="card-base overflow-hidden hero-visual-frame" data-hero-el="visual" data-parallax="-4">
-        <img
-          src={image.src}
-          alt={image.alt}
-          class="hero-media"
-          style={`aspect-ratio:${ratio};object-position:${image.position ?? "center"};`}
-          loading={preload ? "eager" : "lazy"}
-          fetchpriority={preload ? "high" : "auto"}
-          decoding="async"
-        />
-      </figure>
+{isHome ? (
+  <section class="home-hero" data-hero>
+    <div class="home-hero__media-wrap" data-hero-el="visual" aria-hidden="true">
+      <img
+        src={posterImage}
+        alt=""
+        class="home-hero__poster"
+        loading={preload ? "eager" : "lazy"}
+        fetchpriority={preload ? "high" : "auto"}
+        decoding="async"
+      />
+      {heroVideo && (
+        <video
+          class="home-hero__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster={posterImage}
+          aria-label={heroVideo.label ?? title}
+        >
+          {heroVideo.webm && <source src={heroVideo.webm} type="video/webm" />}
+          {heroVideo.mp4 && <source src={heroVideo.mp4} type="video/mp4" />}
+        </video>
+      )}
+      <div class="home-hero__overlay"></div>
     </div>
-  </div>
-</section>
+
+    <div class="site-container home-hero__container">
+      <div class="home-hero__content">
+        {eyebrow && <p class="home-hero__eyebrow" data-hero-el="badge">{eyebrow}</p>}
+
+        <h1 class="home-hero__title" data-hero-el="title">
+          {titleLines.map((line) => (
+            <span class="hero-title-line">{line}</span>
+          ))}
+        </h1>
+
+        {subtitle && (
+          <p class="home-hero__subtitle" data-hero-el="subtitle">
+            {subtitle}
+          </p>
+        )}
+
+        {hasActions && <div class="home-hero__actions" data-hero-el="ctas"><slot name="actions" /></div>}
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="hero-grid border-b border-[color:var(--border)]">
+    <div class="site-container section-y">
+      <div class={`grid gap-8 lg:items-center ${isHome ? "lg:grid-cols-[1fr_1fr]" : "lg:grid-cols-[0.92fr_1.08fr]"}`} data-hero>
+        <div class="space-y-5" data-hero-el="copy">
+          {breadcrumbs.length > 0 && (
+            <nav aria-label="breadcrumb" class="text-sm text-slate-500">
+              <ol class="flex flex-wrap items-center gap-2">
+                {breadcrumbs.map((crumb, idx) => (
+                  <li class="inline-flex items-center gap-2">
+                    {idx > 0 && <span aria-hidden="true">/</span>}
+                    {crumb.href ? <a href={crumb.href} class="hover:underline">{crumb.label}</a> : <span class="text-slate-700">{crumb.label}</span>}
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
+
+          {badge && <p class="pill-soft inline-flex rounded-full px-3 py-1 text-xs font-semibold" data-hero-el="badge">{badge}</p>}
+
+          <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
+
+          {hasActions && <div class="flex flex-wrap gap-3" data-hero-el="ctas"><slot name="actions" /></div>}
+        </div>
+
+        <figure class="card-base overflow-hidden hero-visual-frame" data-hero-el="visual" data-parallax="-4">
+          <img
+            src={image.src}
+            alt={image.alt}
+            class="hero-media"
+            style={`aspect-ratio:${ratio};object-position:${image.position ?? "center"};`}
+            loading={preload ? "eager" : "lazy"}
+            fetchpriority={preload ? "high" : "auto"}
+            decoding="async"
+          />
+        </figure>
+      </div>
+    </div>
+  </section>
+)}
