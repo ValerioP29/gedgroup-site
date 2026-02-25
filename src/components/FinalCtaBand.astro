@@ -1,37 +1,6 @@
 ---
-import { getWhatsAppUrl } from "../data/site";
-
-const {
-  title = "Parliamo del tuo progetto",
-  subtitle = "Contattaci per un piano su misura e una proposta operativa chiara.",
-  primaryLabel = "Richiedi preventivo",
-  primaryHref = "/contatti",
-  whatsappText,
-} = Astro.props;
+import FinalCTA from "./FinalCTA.astro";
+const props = Astro.props;
 ---
 
-<section class="section-y">
-  <div class="site-container">
-    <div class="card-base gradient-card p-6 md:p-8" data-reveal="scale-in">
-      <div class="grid gap-5 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-        <div>
-          <h2 class="text-balance text-slate-900">{title}</h2>
-          <p class="mt-3 max-w-2xl text-slate-600">{subtitle}</p>
-        </div>
-        <div class="flex flex-wrap gap-3 lg:justify-end" data-stagger="cta-actions">
-          <a href={primaryHref} class="btn btn-primary" data-stagger-item>{primaryLabel}</a>
-          <a
-            href={getWhatsAppUrl(whatsappText)}
-            target="_blank"
-            rel="noopener"
-            class="btn btn-secondary"
-            data-track="click_whatsapp"
-            data-stagger-item
-          >
-            WhatsApp
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<FinalCTA {...props} />

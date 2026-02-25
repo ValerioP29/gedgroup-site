@@ -1,100 +1,66 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import InternalPageHero from "../components/InternalPageHero.astro";
-import SectionHeader from "../components/SectionHeader.astro";
+import PageHero from "../components/PageHero.astro";
 import FaqAccordion from "../components/FaqAccordion.astro";
-import FinalCtaBand from "../components/FinalCtaBand.astro";
+import FinalCTA from "../components/FinalCTA.astro";
 import { getWhatsAppUrl, site } from "../data/site";
+import { services } from "../data/services";
 
 const faqs = [
   {
     q: "Come posso segnalare un'esigenza o una richiesta extra?",
-    a: "Puoi usare i canali indicati in questa pagina. Nella versione finale possiamo creare un flusso dedicato con form assistenza o area clienti.",
+    a: "Puoi usare i canali indicati in questa pagina. Possiamo anche attivare flussi dedicati per urgenze e richieste extra.",
   },
   {
     q: "È possibile programmare interventi straordinari?",
-    a: "Sì. Gli interventi straordinari possono essere richiesti e pianificati con il referente operativo.",
+    a: "Sì. Gli interventi straordinari vengono pianificati con il referente operativo.",
   },
   {
     q: "Chi contatto per modifiche al servizio ricorrente?",
-    a: "Il referente commerciale o operativo indicato nel contratto. In questa pagina possiamo inserire nominativi reali e canali dedicati.",
-  },
-  {
-    q: "Posso richiedere un sopralluogo?",
-    a: "Sì. Puoi richiederlo dai contatti o tramite WhatsApp e pianificare una visita tecnica.",
+    a: "Il referente commerciale o operativo assegnato al tuo contratto.",
   },
 ];
 ---
 
 <Layout title="Customer care | GED Group" description="Assistenza clienti, canali rapidi e FAQ.">
-  <InternalPageHero
+  <PageHero
     eyebrow="Customer care"
     title="Assistenza clienti chiara e centralizzata"
     subtitle="Canali, tempi e FAQ organizzati per ridurre dispersione e velocizzare le risposte operative."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Customer care" }]}
+    image={services[3].heroImage}
   >
     <a slot="actions" href="/contatti" class="btn btn-primary">Apri una richiesta</a>
-    <a
-      slot="actions"
-      href={getWhatsAppUrl("Ciao GED Group, avrei bisogno di assistenza.")}
-      target="_blank"
-      rel="noopener"
-      class="btn btn-secondary"
-      data-track="click_whatsapp"
-    >
+    <a slot="actions" href={getWhatsAppUrl("Ciao GED Group, avrei bisogno di assistenza.")} target="_blank" rel="noopener" class="btn btn-secondary" data-track="click_whatsapp">
       Supporto WhatsApp
     </a>
-  </InternalPageHero>
+  </PageHero>
 
   <section class="section-y">
     <div class="site-container grid gap-6 lg:grid-cols-[1fr_1fr]">
-      <div class="space-y-6">
-        <article class="panel" data-reveal="fade-up">
-          <SectionHeader eyebrow="Canali" title="Contattaci dal canale più comodo" />
-          <ul class="mt-4 space-y-3 text-sm text-slate-600" data-stagger="care-channels">
-            <li class="card-base bg-slate-50 p-3" data-stagger-item>
-              <strong class="text-slate-800">Telefono:</strong>
-              <a href={`tel:${site.phoneHref}`} class="ml-1 hover:underline" data-track="click_phone">{site.phoneDisplay}</a>
-            </li>
-            <li class="card-base bg-slate-50 p-3" data-stagger-item>
-              <strong class="text-slate-800">Email:</strong>
-              <a href={`mailto:${site.email}`} class="ml-1 hover:underline" data-track="click_email">{site.email}</a>
-            </li>
-            <li class="card-base bg-slate-50 p-3" data-stagger-item>
-              <strong class="text-slate-800">WhatsApp:</strong>
-              <a href={getWhatsAppUrl("Ciao GED Group, avrei bisogno di assistenza.")} target="_blank" rel="noopener" class="ml-1 hover:underline" data-track="click_whatsapp">
-                chat diretta
-              </a>
-            </li>
-          </ul>
-        </article>
+      <article class="panel" data-reveal="fade-up">
+        <h2 class="text-xl font-semibold text-slate-900">Canali di supporto</h2>
+        <ul class="mt-4 space-y-3 text-sm text-slate-600">
+          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-800">Telefono:</strong> {site.phoneDisplay}</li>
+          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-800">Email:</strong> {site.email}</li>
+          <li class="card-base bg-slate-50 p-3"><strong class="text-slate-800">WhatsApp:</strong> chat diretta</li>
+        </ul>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2 text-sm">
+          <div class="card-base bg-slate-50 p-3"><div class="font-medium text-slate-900">Lun - Ven</div><div>08:30 - 18:00</div></div>
+          <div class="card-base bg-slate-50 p-3"><div class="font-medium text-slate-900">Urgenze</div><div>Gestione su canale dedicato</div></div>
+        </div>
+      </article>
 
-        <article class="panel" data-reveal="fade-up">
-          <h2 class="text-xl font-semibold text-slate-900">Disponibilità assistenza</h2>
-          <div class="mt-4 grid gap-3 text-sm text-slate-600" data-stagger="care-hours">
-            <div class="card-base bg-slate-50 p-3" data-stagger-item>
-              <div class="font-medium text-slate-900">Lun - Ven</div>
-              <div>08:30 - 18:00 (placeholder)</div>
-            </div>
-            <div class="card-base bg-slate-50 p-3" data-stagger-item>
-              <div class="font-medium text-slate-900">Urgenze</div>
-              <div>Gestione su canale dedicato (da definire)</div>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <div class="panel" data-reveal="fade-left">
+      <article class="panel" data-reveal="fade-left">
         <h2 class="text-xl font-semibold text-slate-900">FAQ assistenza</h2>
-        <p class="mt-2 text-sm text-slate-600">Risposte rapide alle richieste più frequenti dei clienti attivi.</p>
         <div class="mt-4">
           <FaqAccordion items={faqs} />
         </div>
-      </div>
+      </article>
     </div>
   </section>
 
-  <FinalCtaBand
+  <FinalCTA
     title="Hai una richiesta specifica sul servizio attivo?"
     subtitle="Apriamo subito il canale corretto e definiamo tempi di gestione in base alla priorità."
     primaryLabel="Vai ai contatti"

@@ -1,22 +1,26 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import InternalPageHero from "../../components/InternalPageHero.astro";
-import SectionHeader from "../../components/SectionHeader.astro";
-import ServiceCard from "../../components/ServiceCard.astro";
-import FinalCtaBand from "../../components/FinalCtaBand.astro";
+import PageHero from "../../components/PageHero.astro";
+import ServiceCardsGrid from "../../components/ServiceCardsGrid.astro";
+import SplitSection from "../../components/SplitSection.astro";
+import FinalCTA from "../../components/FinalCTA.astro";
 import { services } from "../../data/services";
 import { getWhatsAppUrl } from "../../data/site";
+import { pageMedia } from "../../data/page-media";
+
+const media = pageMedia.servizi;
 ---
 
 <Layout
   title="Servizi | GED Group"
   description="Pulizie uffici, condomìni, ambienti industriali e interventi straordinari."
 >
-  <InternalPageHero
+  <PageHero
     eyebrow="Servizi"
     title="Servizi di pulizia ordinaria e straordinaria"
-    subtitle="Un catalogo chiaro per scegliere il servizio giusto, con processi operativi pensati per aziende, condomìni e contesti ad alta esigenza."
+    subtitle="Panoramica sintetica dei servizi GED Group: ogni pagina dedicata contiene metodo, settori serviti e casi applicativi."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Servizi" }]}
+    image={media.hero.image}
   >
     <a slot="actions" href="/contatti" class="btn btn-primary">Richiedi preventivo</a>
     <a
@@ -29,57 +33,35 @@ import { getWhatsAppUrl } from "../../data/site";
     >
       Consulenza rapida
     </a>
-  </InternalPageHero>
+  </PageHero>
 
-  <section class="section-y">
-    <div class="site-container">
-      <SectionHeader
-        eyebrow="Panoramica"
-        title="Scegli il servizio più adatto alla tua struttura"
-        subtitle="Ogni scheda servizio include benefici, processo, FAQ e call to action dedicate alla conversione."
-      />
+  <ServiceCardsGrid
+    eyebrow="Catalogo"
+    title="Seleziona il servizio più adatto"
+    subtitle="Card visuali con mini anteprime: entra nelle schede per vedere dettagli e processo dedicato."
+    services={services}
+  />
 
-      <div class="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4" data-stagger="services-grid">
-        {services.map((service) => (
-          <div data-stagger-item>
-            <ServiceCard service={service} />
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+  <SplitSection
+    eyebrow="Metodo"
+    title="Processo sintetico, attivazione rapida"
+    body={[
+      "Ogni nuova commessa segue una traccia chiara: analisi, capitolato, avvio e monitoraggio.",
+      "Riduciamo complessità e allineiamo subito frequenze, responsabilità e canali di contatto.",
+    ]}
+    bullets={[
+      "Sopralluogo tecnico",
+      "Proposta personalizzata",
+      "Coordinamento operativo",
+      "Verifiche qualità",
+    ]}
+    image={services[0].detailImages[0]}
+    reverse={true}
+  />
 
-  <section class="section-y surface-section">
-    <div class="site-container">
-      <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        <div class="panel" data-reveal="fade-right">
-          <SectionHeader
-            eyebrow="Metodo"
-            title="Come impostiamo ogni nuova commessa"
-            subtitle="Workflow operativo pensato per essere chiaro per il cliente e sostenibile per il team sul campo."
-          />
-        </div>
-
-        <ol class="grid gap-3 sm:grid-cols-2" data-stagger="process-grid">
-          {[
-            "Sopralluogo e analisi esigenze",
-            "Proposta con frequenze e capitolato",
-            "Avvio servizio e coordinamento",
-            "Controlli qualità e supporto continuo",
-          ].map((step, idx) => (
-            <li class="card-base p-4" data-stagger-item>
-              <p class="text-xs uppercase tracking-[0.16em] text-slate-500">Step {idx + 1}</p>
-              <p class="mt-2 text-sm font-medium text-slate-700">{step}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </div>
-  </section>
-
-  <FinalCtaBand
+  <FinalCTA
     title="Hai già un capitolato o vuoi partire da zero?"
-    subtitle="Ti aiutiamo a definire frequenze, attività e piano di controllo qualità con una proposta concreta."
+    subtitle="Ti aiutiamo a definire frequenze, attività e piano qualità con una proposta concreta."
     whatsappText="Ciao GED Group, vorrei impostare una proposta servizi su misura."
   />
 </Layout>
