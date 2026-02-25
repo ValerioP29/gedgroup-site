@@ -49,7 +49,7 @@ const posterImage = heroVideo?.poster ?? image.src;
 
 {isHome ? (
   <section class="home-hero" data-hero>
-    <div class="home-hero__media-wrap" data-hero-el="visual" aria-hidden="true">
+    <div class="home-hero__media-wrap" data-hero-el="visual" data-video-state={heroVideo ? "loading" : "fallback"} aria-hidden="true">
       <img
         src={posterImage}
         alt=""
@@ -67,6 +67,7 @@ const posterImage = heroVideo?.poster ?? image.src;
           playsinline
           preload="metadata"
           poster={posterImage}
+          data-hero-video
           aria-label={heroVideo.label ?? title}
         >
           {heroVideo.webm && <source src={heroVideo.webm} type="video/webm" />}
@@ -135,4 +136,61 @@ const posterImage = heroVideo?.poster ?? image.src;
       </div>
     </div>
   </section>
+)}
+
+
+{isHome && heroVideo && (
+  <script is:inline>
+    const initHeroVideo = () => {
+      const heroes = document.querySelectorAll(".home-hero");
+
+      heroes.forEach((hero) => {
+        if (hero.dataset.heroVideoInit === "true") return;
+
+        const mediaWrap = hero.querySelector(".home-hero__media-wrap");
+        const video = hero.querySelector("video[data-hero-video]");
+
+        if (!mediaWrap || !video) return;
+
+        hero.dataset.heroVideoInit = "true";
+
+        const setState = (state) => {
+          mediaWrap.dataset.videoState = state;
+        };
+
+        const setReady = () => setState("ready");
+        const setFallback = () => setState("fallback");
+
+        const tryPlay = () => {
+          const maybePromise = video.play();
+          if (maybePromise && typeof maybePromise.catch === "function") {
+            maybePromise.catch(() => setFallback());
+          }
+        };
+
+        video.addEventListener("loadeddata", setReady, { once: true });
+        video.addEventListener("canplay", setReady, { once: true });
+        video.addEventListener("error", setFallback, { once: true });
+
+        if (video.readyState >= 2) {
+          setReady();
+        }
+
+        if (video.autoplay) {
+          tryPlay();
+        }
+      });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initHeroVideo, { once: true });
+    } else {
+      initHeroVideo();
+    }
+
+    if (!window.__heroVideoBootBound) {
+      document.addEventListener("astro:page-load", initHeroVideo);
+      window.__heroVideoBootBound = true;
+    }
+  </script>
 )}
