@@ -37,8 +37,8 @@ const secondaryCta = currentPath.startsWith("/customer-care")
 ---
 
 <header class="sticky top-0 z-40 border-b border-[color:var(--border)] bg-white/90 backdrop-blur-sm">
-  <div class="site-container">
-    <div class="flex items-center justify-between gap-3 py-3.5">
+  <div class="site-container-wide">
+    <div class="flex items-center justify-between gap-3 py-3.5 xl:gap-4">
       <a href="/" class="flex items-center gap-3 rounded-md pr-2">
         <div class="grid h-10 w-10 place-items-center rounded-[var(--radius-md)] bg-[color:var(--accent)] text-sm font-bold text-white shadow-sm">
           G
@@ -49,14 +49,14 @@ const secondaryCta = currentPath.startsWith("/customer-care")
         </div>
       </a>
 
-      <nav class="hidden items-center gap-1 lg:flex" aria-label="Menu principale desktop">
+      <nav class="hidden flex-1 items-center justify-center gap-0.5 px-2 lg:flex xl:gap-1" aria-label="Menu principale desktop">
         {links.map((link) => {
           const isCurrent = currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href));
           return (
             <a
               href={link.href}
               aria-current={isCurrent ? "page" : undefined}
-              class={`btn nav-item text-sm font-medium ${isCurrent ? "nav-item-active" : "btn-ghost text-slate-700"}`}
+              class={`btn nav-item text-[0.88rem] font-medium xl:text-sm ${isCurrent ? "nav-item-active" : "btn-ghost text-slate-700"}`}
             >
               {link.label}
             </a>
@@ -65,7 +65,7 @@ const secondaryCta = currentPath.startsWith("/customer-care")
       </nav>
 
       <div class="hidden items-center gap-2 lg:flex">
-        <a href={primaryCta.href} class="btn btn-primary" data-track={primaryCta.track}>
+        <a href={primaryCta.href} class="btn btn-primary min-w-[11.2rem]" data-track={primaryCta.track}>
           <UiIcon name={primaryCta.icon} />
           {primaryCta.label}
         </a>
@@ -73,7 +73,7 @@ const secondaryCta = currentPath.startsWith("/customer-care")
           href={secondaryCta.href}
           target={secondaryCta.isExternal ? "_blank" : undefined}
           rel={secondaryCta.isExternal ? "noopener" : undefined}
-          class={secondaryCta.className}
+          class={`${secondaryCta.className} min-w-[10.8rem]`}
           data-track={secondaryCta.track}
         >
           <UiIcon name={secondaryCta.icon} />
@@ -109,7 +109,7 @@ const secondaryCta = currentPath.startsWith("/customer-care")
           );
         })}
       </nav>
-      <div class="mt-3 grid grid-cols-2 gap-2">
+      <div class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
         <a href={primaryCta.href} class="btn btn-primary tap-target" data-track={primaryCta.track}>
           <UiIcon name={primaryCta.icon} />
           {primaryCta.label}

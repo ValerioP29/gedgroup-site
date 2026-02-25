@@ -5,6 +5,7 @@ import FaqAccordion from "../components/FaqAccordion.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import { getWhatsAppUrl, site } from "../data/site";
 import { pageMedia } from "../data/page-media";
+import UiIcon from "../components/icons/UiIcon.astro";
 
 const supportAreas = [
   {
@@ -52,9 +53,13 @@ const faqs = [
     image={pageMedia.customerCare.hero.image}
   >
     <a slot="actions" href={getWhatsAppUrl("Ciao GED Group, sono cliente attivo e ho bisogno di assistenza.")} target="_blank" rel="noopener" class="btn btn-primary" data-track="click_whatsapp">
+      <UiIcon name="whatsapp" />
       Apri assistenza WhatsApp
     </a>
-    <a slot="actions" href={`tel:${site.phoneHref}`} class="btn btn-secondary" data-track="click_phone">Linea customer care</a>
+    <a slot="actions" href={`tel:${site.phoneHref}`} class="btn btn-secondary" data-track="click_phone">
+      <UiIcon name="phone" />
+      Linea customer care
+    </a>
   </PageHero>
 
   <section class="section-y">
