@@ -42,6 +42,7 @@ const {
 const hasActions = Astro.slots.has("actions");
 const ratio = image.ratio ?? "16/9";
 const isHome = variant === "home";
+const isPriorityHeroMedia = isHome || preload;
 
 const titleLines = isHome ? (heroVideo?.lines?.length ? heroVideo.lines : [title]) : [title];
 const posterImage = heroVideo?.poster ?? image.src;
@@ -54,9 +55,9 @@ const posterImage = heroVideo?.poster ?? image.src;
         src={posterImage}
         alt=""
         class="home-hero__poster"
-        loading={preload ? "eager" : "lazy"}
-        fetchpriority={preload ? "high" : "auto"}
-        decoding="async"
+        loading={isPriorityHeroMedia ? "eager" : "lazy"}
+        fetchpriority={isPriorityHeroMedia ? "high" : "auto"}
+        decoding={isPriorityHeroMedia ? "sync" : "async"}
       />
       {heroVideo && (
         <video

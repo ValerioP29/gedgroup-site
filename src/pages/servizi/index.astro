@@ -3,7 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import PageHero from "../../components/PageHero.astro";
 import ServiceCardsGrid from "../../components/ServiceCardsGrid.astro";
 import FinalCTA from "../../components/FinalCTA.astro";
-import { services } from "../../data/services";
+import { catalogServices } from "../../data/services";
 import { getWhatsAppUrl } from "../../data/site";
 import { pageMedia } from "../../data/page-media";
 
@@ -38,7 +38,7 @@ const media = pageMedia.servizi;
     eyebrow="Catalogo servizi"
     title="Scegli l'area di intervento"
     subtitle="Ogni scheda servizio mostra cosa include, processo operativo, settori serviti e risposte rapide alle domande più frequenti."
-    services={services}
+    services={catalogServices}
     cardCtaLabel="Approfondisci"
   />
 

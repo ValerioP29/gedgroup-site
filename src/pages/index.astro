@@ -9,7 +9,7 @@ import ServiceChooser from "../components/ServiceChooser.astro";
 import CasePreviewInteractive from "../components/CasePreviewInteractive.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import { site, getWhatsAppUrl } from "../data/site";
-import { services } from "../data/services";
+import { homeServices, services } from "../data/services";
 import { caseStudies } from "../data/case-studies";
 import { pageMedia } from "../data/page-media";
 import { homeStats } from "../data/stats";
@@ -55,8 +55,7 @@ const media = pageMedia.home;
   <ServiceCardsGrid
     title="I nostri servizi principali"
     subtitle="Tre aree chiave per capire subito se siamo il partner giusto. Nel catalogo servizi trovi la gamma completa."
-    services={services}
-    maxItems={3}
+    services={homeServices}
     cardCtaLabel="Vedi servizio"
   />
 
