@@ -4,9 +4,12 @@ import PageHero from "../components/PageHero.astro";
 import ServiceCardsGrid from "../components/ServiceCardsGrid.astro";
 import SplitSection from "../components/SplitSection.astro";
 import ImageBand from "../components/ImageBand.astro";
+import ServiceChooser from "../components/ServiceChooser.astro";
+import CasePreviewInteractive from "../components/CasePreviewInteractive.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import { site, getWhatsAppUrl } from "../data/site";
 import { services } from "../data/services";
+import { caseStudies } from "../data/case-studies";
 import { pageMedia } from "../data/page-media";
 
 const media = pageMedia.home;
@@ -23,6 +26,7 @@ const media = pageMedia.home;
     title="Pulizie professionali con un impatto visibile, ogni giorno"
     subtitle="GED Group affianca aziende e amministratori con servizi di pulizia professionale: qui trovi una panoramica rapida, nelle pagine interne tutti i dettagli operativi."
     image={media.hero.image}
+    heroVideo={media.hero.video}
     preload={true}
   >
     <a slot="actions" href="/contatti" class="btn btn-primary">Richiedi preventivo</a>
@@ -46,6 +50,10 @@ const media = pageMedia.home;
     maxItems={3}
     cardCtaLabel="Vedi servizio"
   />
+
+  <ServiceChooser services={services} />
+
+  <CasePreviewInteractive items={caseStudies} />
 
   <SplitSection
     eyebrow="Perché noi"

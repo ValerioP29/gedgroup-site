@@ -13,59 +13,52 @@ const links = [
 ];
 const currentPath = Astro.url.pathname;
 
-const primaryCta = currentPath.startsWith("/customer-care")
+const isCustomerCare = currentPath.startsWith("/customer-care");
+
+const primaryCta = isCustomerCare
   ? { href: "/contatti", label: "Nuovo preventivo", track: "click_nav_lead", icon: "clipboard" as const }
   : { href: "/contatti", label: "Richiedi preventivo", track: "click_nav_lead", icon: "clipboard" as const };
 
-const secondaryCta = currentPath.startsWith("/customer-care")
-  ? {
-      href: getWhatsAppUrl("Ciao GED Group, sono cliente attivo e ho bisogno di assistenza."),
-      label: "WhatsApp assistenza",
-      isExternal: true,
-      track: "click_whatsapp",
-      className: "btn btn-whatsapp",
-      icon: "whatsapp" as const,
-    }
-  : {
-      href: getWhatsAppUrl(),
-      label: "WhatsApp",
-      isExternal: true,
-      track: "click_whatsapp",
-      className: "btn btn-whatsapp",
-      icon: "whatsapp" as const,
-    };
+const secondaryCta = {
+  href: isCustomerCare
+    ? getWhatsAppUrl("Ciao GED Group, sono cliente attivo e ho bisogno di assistenza.")
+    : getWhatsAppUrl(),
+  label: isCustomerCare ? "WhatsApp assistenza" : "WhatsApp",
+  isExternal: true,
+  track: "click_whatsapp",
+  className: "btn btn-whatsapp",
+  icon: "whatsapp" as const,
+};
 ---
 
-<header class="sticky top-0 z-40 border-b border-[color:var(--border)] bg-white/90 backdrop-blur-sm">
+<header id="site-header" class="site-header sticky top-0 z-40">
   <div class="site-container-wide">
-    <div class="flex items-center justify-between gap-3 py-3.5 xl:gap-4">
-      <a href="/" class="flex items-center gap-3 rounded-md pr-2">
-        <div class="grid h-10 w-10 place-items-center rounded-[var(--radius-md)] bg-[color:var(--accent)] text-sm font-bold text-white shadow-sm">
-          G
-        </div>
-        <div>
-          <div class="text-sm font-semibold leading-tight text-slate-900">{site.companyName}</div>
-          <div class="text-xs leading-tight text-slate-500">Impresa di pulizie</div>
+    <div class="site-header-shell">
+      <a href="/" class="header-brand" aria-label="Torna alla Home GED Group">
+        <div class="header-brand-mark">G</div>
+        <div class="min-w-0">
+          <p class="header-brand-title">{site.companyName}</p>
+          <p class="header-brand-subtitle">Impresa di pulizie</p>
         </div>
       </a>
 
-      <nav class="hidden flex-1 items-center justify-center gap-0.5 px-2 lg:flex xl:gap-1" aria-label="Menu principale desktop">
+      <nav class="header-nav" aria-label="Menu principale desktop">
         {links.map((link) => {
           const isCurrent = currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href));
           return (
-            <a
-              href={link.href}
-              aria-current={isCurrent ? "page" : undefined}
-              class={`btn nav-item text-[0.88rem] font-medium xl:text-sm ${isCurrent ? "nav-item-active" : "btn-ghost text-slate-700"}`}
-            >
-              {link.label}
+            <a href={link.href} aria-current={isCurrent ? "page" : undefined} class={`header-nav-link ${isCurrent ? "is-active" : ""}`}>
+              <span>{link.label}</span>
             </a>
           );
         })}
       </nav>
 
-      <div class="hidden items-center gap-2 lg:flex">
-        <a href={primaryCta.href} class="btn btn-primary min-w-[11.2rem]" data-track={primaryCta.track}>
+      <div class="header-cta-row">
+        <a href={`tel:${site.phoneHref}`} class="btn btn-secondary header-cta-call" data-track="click_phone">
+          <UiIcon name="phone" />
+          Chiama
+        </a>
+        <a href={primaryCta.href} class="btn btn-primary header-cta-primary" data-track={primaryCta.track}>
           <UiIcon name={primaryCta.icon} />
           {primaryCta.label}
         </a>
@@ -73,7 +66,7 @@ const secondaryCta = currentPath.startsWith("/customer-care")
           href={secondaryCta.href}
           target={secondaryCta.isExternal ? "_blank" : undefined}
           rel={secondaryCta.isExternal ? "noopener" : undefined}
-          class={`${secondaryCta.className} min-w-[10.8rem]`}
+          class={`${secondaryCta.className} header-cta-secondary`}
           data-track={secondaryCta.track}
         >
           <UiIcon name={secondaryCta.icon} />
@@ -83,47 +76,43 @@ const secondaryCta = currentPath.startsWith("/customer-care")
 
       <button
         id="menu-toggle"
-        class="grid h-11 w-11 place-items-center rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white text-slate-700 lg:hidden"
+        class="menu-toggle"
         aria-expanded="false"
         aria-controls="mobile-menu"
         aria-label="Apri menu"
       >
-        <span class="text-lg">☰</span>
+        <span class="text-lg" aria-hidden="true">☰</span>
       </button>
     </div>
   </div>
 
-  <div id="mobile-menu" class="hidden border-t border-[color:var(--border)] bg-white lg:hidden">
+  <div id="mobile-menu" class="mobile-menu hidden lg:hidden">
     <div class="site-container py-3">
-      <nav class="flex flex-col gap-1.5" aria-label="Menu principale mobile">
-        {links.map((link) => {
-          const isCurrent = currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href));
-          return (
-            <a
-              href={link.href}
-              aria-current={isCurrent ? "page" : undefined}
-              class={`btn tap-target justify-start px-3 text-sm ${isCurrent ? "nav-item-active" : "btn-ghost text-slate-700"}`}
-            >
-              {link.label}
-            </a>
-          );
-        })}
-      </nav>
-      <div class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <a href={primaryCta.href} class="btn btn-primary tap-target" data-track={primaryCta.track}>
-          <UiIcon name={primaryCta.icon} />
-          {primaryCta.label}
-        </a>
-        <a
-          href={secondaryCta.href}
-          target={secondaryCta.isExternal ? "_blank" : undefined}
-          rel={secondaryCta.isExternal ? "noopener" : undefined}
-          class="btn btn-whatsapp tap-target"
-          data-track={secondaryCta.track}
-        >
-          <UiIcon name={secondaryCta.icon} />
-          {secondaryCta.label}
-        </a>
+      <div class="mobile-menu-panel">
+        <nav class="mobile-menu-links" aria-label="Menu principale mobile">
+          {links.map((link) => {
+            const isCurrent = currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href));
+            return (
+              <a href={link.href} aria-current={isCurrent ? "page" : undefined} class={`mobile-menu-link ${isCurrent ? "is-active" : ""}`}>
+                {link.label}
+              </a>
+            );
+          })}
+        </nav>
+        <div class="mobile-menu-cta-grid">
+          <a href={primaryCta.href} class="btn btn-primary tap-target" data-track={primaryCta.track}>
+            <UiIcon name={primaryCta.icon} />
+            {primaryCta.label}
+          </a>
+          <a href={secondaryCta.href} target="_blank" rel="noopener" class="btn btn-whatsapp tap-target" data-track={secondaryCta.track}>
+            <UiIcon name="whatsapp" />
+            {secondaryCta.label}
+          </a>
+          <a href={`tel:${site.phoneHref}`} class="btn btn-secondary tap-target sm:col-span-2" data-track="click_phone">
+            <UiIcon name="phone" />
+            {site.phoneDisplay}
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -132,12 +121,24 @@ const secondaryCta = currentPath.startsWith("/customer-care")
 <script is:inline>
   const btn = document.getElementById("menu-toggle");
   const menu = document.getElementById("mobile-menu");
+  const header = document.getElementById("site-header");
+
+  const syncHeaderScroll = () => {
+    if (!header) return;
+    header.classList.toggle("is-scrolled", window.scrollY > 8);
+  };
+
+  syncHeaderScroll();
+  window.addEventListener("scroll", syncHeaderScroll, { passive: true });
+  document.body.classList.remove("mobile-menu-open");
 
   if (btn && menu) {
     const setOpen = (open) => {
       menu.classList.toggle("hidden", !open);
       btn.setAttribute("aria-expanded", String(open));
       btn.setAttribute("aria-label", open ? "Chiudi menu" : "Apri menu");
+      header?.classList.toggle("menu-open", open);
+      document.body.classList.toggle("mobile-menu-open", open);
     };
 
     btn.addEventListener("click", () => {

@@ -41,11 +41,11 @@ const {
       )}
     </div>
 
-    <figure class={`card-base overflow-hidden ${reverse ? "lg:order-1" : ""}`} data-reveal="fade-left">
+    <figure class={`card-base overflow-hidden split-figure ${reverse ? "lg:order-1" : ""}`} data-reveal="fade-left">
       <img
         src={image.src}
         alt={image.alt}
-        class="section-media"
+        class="section-media split-figure-media"
         style={`aspect-ratio:${image.ratio ?? "4/3"};object-position:${image.position ?? "center"};`}
         loading="lazy"
         decoding="async"

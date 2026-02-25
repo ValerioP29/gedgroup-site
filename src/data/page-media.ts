@@ -5,16 +5,35 @@ export type MediaImage = {
   position?: string;
 };
 
+export type HeroVideoConfig = {
+  webm?: string;
+  mp4?: string;
+  poster?: string;
+  label?: string;
+  lines?: string[];
+};
+
 export type PageMediaConfig = {
-  hero: { image: MediaImage };
+  hero: { image: MediaImage; video?: HeroVideoConfig };
   sections: Record<string, { image: MediaImage } | { images: MediaImage[] }>;
 };
 
 const base = "https://images.unsplash.com";
 
+
+// Sostituisci questi URL placeholder con asset CDN (es. Cloudflare Stream/R2)
+const heroVideoPlaceholder = {
+  webm: "https://cdn.example.com/ged/home-hero-texture.webm",
+  mp4: "https://cdn.example.com/ged/home-hero-texture.mp4",
+  poster: `${base}/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=75`,
+  label: "Texture video per titolo hero GED Group",
+  lines: ["Pulizie professionali", "con un impatto visibile, ogni giorno"],
+};
+
 export const pageMedia: Record<string, PageMediaConfig> = {
   home: {
     hero: {
+      video: heroVideoPlaceholder,
       image: {
         src: `${base}/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1800&q=80`,
         alt: "Team GED Group durante un intervento di pulizia professionale in ufficio",

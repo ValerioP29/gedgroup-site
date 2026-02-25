@@ -1,0 +1,86 @@
+---
+import type { CaseStudy } from "../data/case-studies";
+import { getWhatsAppUrl } from "../data/site";
+
+const { items = [] } = Astro.props as { items: CaseStudy[] };
+const first = items[0];
+---
+
+{first && (
+  <section class="section-y" data-reveal="fade-up">
+    <div class="site-container">
+      <div class="panel case-preview" data-case-preview>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Preview dinamica</p>
+          <h2 class="mt-2">Confronta in pochi secondi i casi più simili al tuo</h2>
+        </div>
+
+        <div class="case-preview__layout">
+          <div class="case-preview__list" role="tablist" aria-label="Seleziona caso studio">
+            {items.map((item, idx) => (
+              <button type="button" class={`case-preview__item ${idx === 0 ? "is-active" : ""}`} data-case-trigger={item.slug} aria-selected={idx === 0 ? "true" : "false"}>
+                <span class="text-xs uppercase tracking-[0.12em] text-slate-500">{item.sector}</span>
+                <span class="mt-1 block text-sm font-semibold text-slate-900">{item.title}</span>
+              </button>
+            ))}
+          </div>
+
+          <article class="case-preview__card" data-case-stage>
+            {items.map((item, idx) => (
+              <div class={`case-preview__panel ${idx === 0 ? "is-active" : ""}`} data-case-panel={item.slug}>
+                <img src={item.image.src} alt={item.image.alt} class="case-preview__image" loading="lazy" decoding="async" />
+                <div class="case-preview__content">
+                  <h3 class="text-lg font-semibold text-slate-900">{item.title}</h3>
+                  <p class="mt-2 text-sm leading-7 text-slate-600">{item.solution}</p>
+                  <ul class="mt-4 grid gap-2 text-sm text-slate-700">
+                    {item.results.map((result) => (
+                      <li class="case-preview__result">{result}</li>
+                    ))}
+                  </ul>
+                  <a href={getWhatsAppUrl(item.ctaMessage)} target="_blank" rel="noopener" class="btn btn-secondary mt-5">{item.ctaLabel}</a>
+                </div>
+              </div>
+            ))}
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<script is:inline>
+  const previewRoots = document.querySelectorAll("[data-case-preview]");
+
+  previewRoots.forEach((root) => {
+    const triggers = root.querySelectorAll("[data-case-trigger]");
+    const panels = root.querySelectorAll("[data-case-panel]");
+    if (!triggers.length || !panels.length) return;
+
+    const activate = (slug) => {
+      triggers.forEach((trigger) => {
+        const active = trigger.getAttribute("data-case-trigger") === slug;
+        trigger.classList.toggle("is-active", active);
+        trigger.setAttribute("aria-selected", String(active));
+      });
+
+      panels.forEach((panel) => {
+        const active = panel.getAttribute("data-case-panel") === slug;
+        panel.classList.toggle("is-active", active);
+      });
+    };
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("mouseenter", () => {
+        if (window.matchMedia("(hover: hover)").matches) {
+          const slug = trigger.getAttribute("data-case-trigger");
+          if (slug) activate(slug);
+        }
+      });
+
+      trigger.addEventListener("click", () => {
+        const slug = trigger.getAttribute("data-case-trigger");
+        if (slug) activate(slug);
+      });
+    });
+  });
+</script>

@@ -1,5 +1,6 @@
 ---
 import SectionHeader from "./SectionHeader.astro";
+import HeroVideoMask from "./HeroVideoMask.astro";
 
 type Crumb = { label: string; href?: string };
 type HeroImage = {
@@ -7,6 +8,14 @@ type HeroImage = {
   alt: string;
   ratio?: "16/9" | "4/3" | "3/2" | "1/1" | "21/9";
   position?: string;
+};
+
+type HeroVideo = {
+  webm?: string;
+  mp4?: string;
+  poster?: string;
+  label?: string;
+  lines?: string[];
 };
 
 const {
@@ -17,6 +26,7 @@ const {
   badge,
   breadcrumbs = [],
   image,
+  heroVideo,
   preload = false,
 } = Astro.props as {
   variant?: "home" | "internal";
@@ -26,16 +36,18 @@ const {
   badge?: string;
   breadcrumbs?: Crumb[];
   image: HeroImage;
+  heroVideo?: HeroVideo;
   preload?: boolean;
 };
 
 const hasActions = Astro.slots.has("actions");
 const ratio = image.ratio ?? "16/9";
+const isHome = variant === "home";
 ---
 
 <section class="hero-grid border-b border-[color:var(--border)]">
   <div class="site-container section-y">
-    <div class={`grid gap-8 lg:items-center ${variant === "home" ? "lg:grid-cols-[1fr_1fr]" : "lg:grid-cols-[0.92fr_1.08fr]"}`} data-hero>
+    <div class={`grid gap-8 lg:items-center ${isHome ? "lg:grid-cols-[1fr_1fr]" : "lg:grid-cols-[0.92fr_1.08fr]"}`} data-hero>
       <div class="space-y-5" data-hero-el="copy">
         {breadcrumbs.length > 0 && (
           <nav aria-label="breadcrumb" class="text-sm text-slate-500">
@@ -50,14 +62,29 @@ const ratio = image.ratio ?? "16/9";
           </nav>
         )}
 
-        {badge && <p class="pill-soft inline-flex rounded-full px-3 py-1 text-xs font-semibold">{badge}</p>}
+        {badge && <p class="pill-soft inline-flex rounded-full px-3 py-1 text-xs font-semibold" data-hero-el="badge">{badge}</p>}
 
-        <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
+        {isHome && heroVideo ? (
+          <div class="space-y-4">
+            <HeroVideoMask
+              title={title}
+              lines={heroVideo.lines}
+              video={{ webm: heroVideo.webm, mp4: heroVideo.mp4 }}
+              poster={heroVideo.poster}
+              label={heroVideo.label ?? title}
+            />
+            {subtitle && <p class="hero-subtitle max-w-2xl text-base leading-7 text-slate-600 md:text-lg" data-hero-el="subtitle">{subtitle}</p>}
+          </div>
+        ) : (
+          <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
+        )}
 
         {hasActions && <div class="flex flex-wrap gap-3" data-hero-el="ctas"><slot name="actions" /></div>}
+
+        {isHome && <div class="hero-scroll-hint" aria-hidden="true"><span></span></div>}
       </div>
 
-      <figure class="card-base overflow-hidden" data-hero-el="visual" data-parallax="-4">
+      <figure class="card-base overflow-hidden hero-visual-frame" data-hero-el="visual" data-parallax="-4">
         <img
           src={image.src}
           alt={image.alt}

@@ -1,17 +1,17 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const EASE_STANDARD = "power2.out";
+const EASE_STANDARD = "power3.out";
 
 const MOTION = {
-  reveal: { duration: 0.56, y: 18 },
-  stagger: { duration: 0.42, y: 14, each: 0.08 },
+  reveal: { duration: 0.46, y: 16 },
+  stagger: { duration: 0.38, y: 12, each: 0.07 },
   hero: {
     badgeDuration: 0.34,
-    titleDuration: 0.5,
-    subtitleDuration: 0.4,
-    ctaDuration: 0.32,
-    visualDuration: 0.56,
+    titleDuration: 0.72,
+    subtitleDuration: 0.45,
+    ctaDuration: 0.34,
+    visualDuration: 0.62,
   },
   hover: { duration: 0.2, y: -2 },
   parallax: { yPercent: -4, scrub: 0.65 },
@@ -44,14 +44,20 @@ export function initReveal(root: ParentNode = document): void {
     const kind = rawKind === "up" ? "fade-up" : rawKind;
     const from = getRevealFrom(kind);
 
+    const clipFrom = kind === "clip-up" ? "inset(100% 0 0 0)" : kind === "clip-right" ? "inset(0 100% 0 0)" : undefined;
+
     gsap.fromTo(
       el,
-      from,
+      {
+        ...from,
+        ...(clipFrom ? { clipPath: clipFrom } : {}),
+      },
       {
         opacity: 1,
         x: 0,
         y: 0,
         scale: 1,
+        clipPath: "inset(0 0 0 0)",
         duration: MOTION.reveal.duration,
         ease: EASE_STANDARD,
         scrollTrigger: {
@@ -96,11 +102,19 @@ export function initHeroMotion(root: ParentNode = document): void {
   const ctas = hero.querySelector<HTMLElement>('[data-hero-el="ctas"]');
   const visual = hero.querySelector<HTMLElement>('[data-hero-el="visual"]');
   const floats = hero.querySelectorAll<HTMLElement>('[data-hero-el="float"]');
+  const hint = hero.querySelector<HTMLElement>(".hero-scroll-hint span");
 
   const timeline = gsap.timeline({ defaults: { ease: EASE_STANDARD } });
 
   if (badge) timeline.from(badge, { y: 10, opacity: 0, duration: MOTION.hero.badgeDuration });
-  if (title) timeline.from(title, { y: 16, opacity: 0, duration: MOTION.hero.titleDuration }, "-=0.16");
+  if (title) {
+    const titleLines = title.querySelectorAll(".hero-video-mask__fallback span");
+    if (titleLines.length) {
+      timeline.from(titleLines, { yPercent: 100, opacity: 0, stagger: 0.1, duration: MOTION.hero.titleDuration }, "-=0.14");
+    } else {
+      timeline.from(title, { y: 16, opacity: 0, duration: MOTION.hero.titleDuration }, "-=0.16");
+    }
+  }
   if (subtitle) timeline.from(subtitle, { y: 12, opacity: 0, duration: MOTION.hero.subtitleDuration }, "-=0.24");
   if (ctas?.children.length) {
     timeline.from(
@@ -115,6 +129,11 @@ export function initHeroMotion(root: ParentNode = document): void {
     );
   }
   if (visual) timeline.from(visual, { x: 18, opacity: 0, duration: MOTION.hero.visualDuration }, "-=0.26");
+  if (hint) {
+    timeline.from(hint, { y: 8, opacity: 0, duration: 0.3 }, "-=0.15");
+    gsap.to(hint, { y: 5, duration: 1.4, ease: "sine.inOut", repeat: -1, yoyo: true });
+  }
+
   if (floats.length) {
     timeline.from(floats, { y: 8, opacity: 0, duration: 0.32, stagger: 0.1 }, "-=0.24");
   }
