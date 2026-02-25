@@ -1,145 +1,26 @@
 <script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { cleanupMotion, initMotionSystem } from "../lib/motion";
 
-  gsap.registerPlugin(ScrollTrigger);
+  let teardown = () => {};
 
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const start = () => {
+    teardown();
+    cleanupMotion();
+    teardown = initMotionSystem(document);
+  };
 
-  if (!prefersReducedMotion) {
-    const header = document.querySelector("header");
-    if (header) {
-      gsap.from(header, {
-        y: -10,
-        opacity: 0,
-        duration: 0.42,
-        ease: "power2.out",
-      });
-    }
+  const stop = () => {
+    teardown();
+    teardown = () => {};
+    cleanupMotion();
+  };
 
-    const heroCopy = document.querySelector("[data-hero-copy]");
-    const heroVisual = document.querySelector("[data-hero-visual]");
-    const heroBadge = document.querySelector("[data-hero-badge]");
-    const heroTitle = heroCopy?.querySelector("h1");
-    const heroSubtitle = heroCopy?.querySelector("p");
-    const heroCtas = heroCopy?.querySelector("[data-hero-ctas]");
-    const heroFloats = heroVisual?.querySelectorAll("[data-hero-float]") ?? [];
-
-    const heroTl = gsap.timeline({ defaults: { ease: "power2.out" } });
-
-    if (heroBadge) heroTl.from(heroBadge, { y: 12, opacity: 0, duration: 0.35 });
-    if (heroTitle) heroTl.from(heroTitle, { y: 18, opacity: 0, duration: 0.52 }, "-=0.15");
-    if (heroSubtitle) heroTl.from(heroSubtitle, { y: 14, opacity: 0, duration: 0.42 }, "-=0.25");
-    if (heroCtas) heroTl.from(heroCtas.children, { y: 10, opacity: 0, duration: 0.32, stagger: 0.06 }, "-=0.22");
-    if (heroVisual) heroTl.from(heroVisual, { x: 22, opacity: 0, duration: 0.58 }, "-=0.3");
-    if (heroFloats.length) {
-      heroTl.from(heroFloats, { y: 10, opacity: 0, duration: 0.35, stagger: 0.1 }, "-=0.3");
-    }
-
-    heroFloats.forEach((el, index) => {
-      if (!(el instanceof HTMLElement)) return;
-      gsap.to(el, {
-        y: index % 2 === 0 ? -7 : 7,
-        duration: 2.6 + index * 0.3,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-      });
-    });
-
-    const revealTargets = document.querySelectorAll("[data-reveal]");
-    revealTargets.forEach((el) => {
-      if (!(el instanceof HTMLElement)) return;
-
-      const kind = el.dataset.reveal;
-      const from = { opacity: 0, y: 20, scale: 1, x: 0 };
-
-      if (kind === "fade-left") {
-        from.x = 26;
-        from.y = 0;
-      } else if (kind === "fade-right") {
-        from.x = -26;
-        from.y = 0;
-      } else if (kind === "scale-in") {
-        from.scale = 0.965;
-        from.y = 14;
-      }
-
-      gsap.fromTo(
-        el,
-        from,
-        {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          scale: 1,
-          duration: 0.56,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 86%",
-            once: true,
-          },
-        },
-      );
-    });
-
-    const staggerGroups = document.querySelectorAll("[data-stagger]");
-    staggerGroups.forEach((group) => {
-      if (!(group instanceof HTMLElement)) return;
-      const items = group.querySelectorAll("[data-stagger-item]");
-      if (!items.length) return;
-
-      gsap.from(items, {
-        y: 16,
-        opacity: 0,
-        duration: 0.42,
-        stagger: 0.08,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: group,
-          start: "top 86%",
-          once: true,
-        },
-      });
-    });
-
-    if (heroVisual instanceof HTMLElement) {
-      gsap.to(heroVisual, {
-        yPercent: -4,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroVisual,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.65,
-        },
-      });
-    }
-
-    const hoverTargets = document.querySelectorAll(".card-hover");
-    hoverTargets.forEach((el) => {
-      if (!(el instanceof HTMLElement)) return;
-
-      el.addEventListener("mouseenter", () => {
-        gsap.to(el, {
-          y: -2,
-          duration: 0.2,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      });
-
-      el.addEventListener("mouseleave", () => {
-        gsap.to(el, {
-          y: 0,
-          duration: 0.2,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      });
-    });
-
-    window.addEventListener("load", () => ScrollTrigger.refresh());
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  } else {
+    start();
   }
+
+  document.addEventListener("astro:before-preparation", stop);
+  document.addEventListener("astro:page-load", start);
 </script>

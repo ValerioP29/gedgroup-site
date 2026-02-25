@@ -1,94 +1,94 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import InternalPageHero from "../components/InternalPageHero.astro";
 import SectionHeader from "../components/SectionHeader.astro";
+import FinalCtaBand from "../components/FinalCtaBand.astro";
 ---
 
 <Layout title="Chi siamo | GED Group" description="Chi siamo, metodo di lavoro e approccio operativo di GED Group.">
-  <section class="mx-auto max-w-7xl px-4 py-12">
-    <SectionHeader
-      eyebrow="Chi siamo"
-      title="Una presentazione credibile, non il solito testo generico"
-      subtitle="Questa pagina è strutturata per raccontare metodo, affidabilità e organizzazione. Poi mettiamo i contenuti reali e smette di sembrare una demo."
-    />
+  <InternalPageHero
+    eyebrow="Chi siamo"
+    title="Metodo, affidabilità e organizzazione al centro"
+    subtitle="Presentiamo la struttura GED Group con un layout orientato alla fiducia: visione, approccio operativo, numeri e prova di affidabilità."
+    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Chi siamo" }]}
+  />
 
-    <div class="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+  <section class="section-y">
+    <div class="site-container grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
       <div class="space-y-6">
-        <div class="panel p-5">
-          <h2 class="text-xl font-semibold">La nostra missione</h2>
-          <p class="mt-3 text-sm leading-6 text-neutral-600">
-            Aiutare aziende, amministratori e strutture a mantenere ambienti ordinati e funzionali
-            con un servizio chiaro, costante e ben organizzato. Qui inseriremo la storia reale di GED Group,
-            i territori serviti e l'esperienza maturata.
+        <article class="panel" data-reveal="fade-up">
+          <SectionHeader eyebrow="Mission" title="Supportiamo ambienti ordinati e funzionali" />
+          <p class="mt-4 text-sm leading-7 text-slate-600">
+            Aiutiamo aziende, amministratori e strutture a mantenere standard costanti con un servizio chiaro, continuativo e misurabile.
+            La pagina è pronta per integrare storia aziendale, territori serviti e posizionamento commerciale reale.
           </p>
-          <p class="mt-3 text-sm leading-6 text-neutral-600">
-            La pagina è già pronta per contenere foto team, immagini operative, numeri aziendali e
-            messaggi più commerciali senza rifare la struttura.
-          </p>
-        </div>
+        </article>
 
-        <div class="panel p-5">
-          <h2 class="text-xl font-semibold">Valori operativi</h2>
-          <div class="mt-4 grid gap-3 md:grid-cols-2">
-            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
-              <h3 class="font-medium">Affidabilità</h3>
-              <p class="mt-2 text-sm text-neutral-600">Routine stabili, presenza costante e gestione chiara delle richieste.</p>
-            </div>
-            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
-              <h3 class="font-medium">Qualità verificabile</h3>
-              <p class="mt-2 text-sm text-neutral-600">Controlli periodici e confronto con il cliente per mantenere lo standard.</p>
-            </div>
-            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
-              <h3 class="font-medium">Flessibilità</h3>
-              <p class="mt-2 text-sm text-neutral-600">Programmi adattabili a orari, turni, accessi e stagionalità.</p>
-            </div>
-            <div class="rounded-xl border border-black/5 bg-neutral-50 p-4">
-              <h3 class="font-medium">Comunicazione</h3>
-              <p class="mt-2 text-sm text-neutral-600">Referente dedicato e canali rapidi per supporto e segnalazioni.</p>
-            </div>
+        <article class="panel" data-reveal="fade-up">
+          <h2 class="text-xl font-semibold text-slate-900">Valori operativi</h2>
+          <div class="mt-4 grid gap-3 md:grid-cols-2" data-stagger="values-grid">
+            {[
+              ["Affidabilità", "Routine stabili, presenza costante e gestione chiara delle richieste."],
+              ["Qualità verificabile", "Controlli periodici e confronto attivo con il cliente."],
+              ["Flessibilità", "Programmi adattabili a orari, turni, accessi e stagionalità."],
+              ["Comunicazione", "Referente dedicato e canali rapidi per supporto e segnalazioni."],
+            ].map(([title, text]) => (
+              <div class="card-base bg-slate-50 p-4" data-stagger-item>
+                <h3 class="font-medium text-slate-900">{title}</h3>
+                <p class="mt-2 text-sm text-slate-600">{text}</p>
+              </div>
+            ))}
           </div>
-        </div>
+        </article>
 
-        <div class="panel p-5">
-          <h2 class="text-xl font-semibold">Come impostiamo un nuovo cliente</h2>
-          <ol class="mt-4 space-y-2 text-sm text-neutral-600">
-            <li class="rounded-xl border border-black/5 bg-neutral-50 px-3 py-2"><strong>1.</strong> Sopralluogo e analisi ambienti</li>
-            <li class="rounded-xl border border-black/5 bg-neutral-50 px-3 py-2"><strong>2.</strong> Proposta operativa e capitolato</li>
-            <li class="rounded-xl border border-black/5 bg-neutral-50 px-3 py-2"><strong>3.</strong> Avvio con pianificazione condivisa</li>
-            <li class="rounded-xl border border-black/5 bg-neutral-50 px-3 py-2"><strong>4.</strong> Verifiche e ottimizzazioni periodiche</li>
+        <article class="panel" data-reveal="fade-up">
+          <h2 class="text-xl font-semibold text-slate-900">Come onboarding di un nuovo cliente</h2>
+          <ol class="mt-4 grid gap-3 sm:grid-cols-2" data-stagger="onboarding-grid">
+            {[
+              "Sopralluogo e analisi ambienti",
+              "Proposta operativa e capitolato",
+              "Avvio con pianificazione condivisa",
+              "Verifiche e ottimizzazioni periodiche",
+            ].map((step, idx) => (
+              <li class="card-base bg-slate-50 px-3 py-3 text-sm text-slate-600" data-stagger-item>
+                <strong class="text-slate-800">{idx + 1}.</strong> {step}
+              </li>
+            ))}
           </ol>
-        </div>
+        </article>
       </div>
 
-      <div class="space-y-6">
-        <div class="panel p-5">
-          <h2 class="text-xl font-semibold">Numeri da inserire</h2>
-          <div class="mt-4 grid gap-3">
-            <div class="rounded-xl border border-black/5 p-4">
-              <div class="text-xs uppercase tracking-wide text-neutral-500">Anni di esperienza</div>
-              <div class="mt-1 text-2xl font-semibold">XX+</div>
-            </div>
-            <div class="rounded-xl border border-black/5 p-4">
-              <div class="text-xs uppercase tracking-wide text-neutral-500">Clienti attivi</div>
-              <div class="mt-1 text-2xl font-semibold">XXX</div>
-            </div>
-            <div class="rounded-xl border border-black/5 p-4">
-              <div class="text-xs uppercase tracking-wide text-neutral-500">Interventi mensili</div>
-              <div class="mt-1 text-2xl font-semibold">XXXX</div>
-            </div>
+      <aside class="space-y-6">
+        <div class="panel" data-reveal="fade-left">
+          <h2 class="text-xl font-semibold text-slate-900">Numeri aziendali</h2>
+          <div class="mt-4 grid gap-3" data-stagger="kpi-about">
+            {[
+              ["Anni di esperienza", "XX+"],
+              ["Clienti attivi", "XXX"],
+              ["Interventi mensili", "XXXX"],
+            ].map(([label, value]) => (
+              <div class="kpi-card" data-stagger-item>
+                <p class="text-xs uppercase tracking-wide text-slate-500">{label}</p>
+                <p class="mt-1 text-2xl font-semibold text-slate-900">{value}</p>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div class="panel p-5">
-          <h2 class="text-xl font-semibold">Team e organizzazione</h2>
-          <p class="mt-3 text-sm leading-6 text-neutral-600">
-            Qui puoi inserire una breve descrizione del team operativo, del coordinamento e dell'area qualità.
-            Se vuoi possiamo aggiungere una sezione “Il nostro team” con foto e ruoli.
+        <div class="panel" data-reveal="fade-left">
+          <h2 class="text-xl font-semibold text-slate-900">Team e approccio</h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600">
+            Spazio pronto per introdurre coordinamento operativo, area qualità e figure chiave del team.
+            Il blocco è predisposto per aggiungere foto e ruoli senza cambiare layout.
           </p>
-          <a href="/contatti" class="mt-4 inline-block text-sm font-medium hover:underline">
-            Parliamone per il tuo caso →
-          </a>
         </div>
-      </div>
+      </aside>
     </div>
   </section>
+
+  <FinalCtaBand
+    title="Vuoi valutare GED Group per la tua struttura?"
+    subtitle="Ti presentiamo un piano operativo con tempi, frequenze e standard qualità in base alle tue esigenze."
+    whatsappText="Ciao GED Group, vorrei conoscerci meglio e valutare una collaborazione."
+  />
 </Layout>

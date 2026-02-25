@@ -2,20 +2,22 @@
 import { site, getWhatsAppUrl } from "../data/site";
 ---
 
-<div class="fixed bottom-4 right-4 z-40 flex flex-col gap-2">
+<div class="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-40 flex flex-col gap-2">
   <a
     href={getWhatsAppUrl()}
     target="_blank"
     rel="noopener"
-    class="rounded-2xl bg-green-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/10 transition hover:translate-y-[-1px] hover:bg-green-700"
+    class="btn btn-whatsapp tap-target shadow-lg shadow-black/10"
     data-track="click_whatsapp"
+    aria-label="Apri chat WhatsApp"
   >
     WhatsApp
   </a>
   <a
     href={`tel:${site.phoneHref}`}
-    class="rounded-2xl bg-neutral-900 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/10 transition hover:translate-y-[-1px] hover:bg-black"
+    class="btn btn-primary tap-target shadow-lg shadow-black/10"
     data-track="click_phone"
+    aria-label="Chiama ora GED Group"
   >
     Chiama ora
   </a>
