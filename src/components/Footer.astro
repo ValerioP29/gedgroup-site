@@ -3,68 +3,85 @@ import { site, getWhatsAppUrl } from "../data/site";
 import UiIcon from "./icons/UiIcon.astro";
 ---
 
-<footer class="mt-8 md:mt-10 border-t border-[#13254f] bg-[#081733] text-slate-100">
-  <div class="site-container section-y">
-    <div class="grid gap-10 md:grid-cols-12 md:gap-8">
-      <div class="md:col-span-5">
+<footer class="mt-8 border-t border-white/10 bg-[#081733] text-slate-100 md:mt-10">
+  <div class="site-container py-12 md:py-14">
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
+      <div class="space-y-4 lg:col-span-4">
         <div class="flex items-center gap-3">
-          <div class="grid h-11 w-11 place-items-center rounded-[var(--radius-md)] bg-white/95 text-base font-bold text-[#0b1f4d]">
+          <div class="grid h-10 w-10 place-items-center rounded-[var(--radius-md)] bg-white/95 text-sm font-bold text-[#0b1f4d]">
             G
           </div>
           <div>
-            <div class="font-semibold">{site.companyName}</div>
-            <div class="text-sm text-slate-300">Servizi professionali di pulizia</div>
+            <p class="text-sm font-semibold text-white">{site.companyName}</p>
+            <p class="text-xs text-slate-300">Servizi professionali di pulizia</p>
           </div>
         </div>
-        <p class="mt-4 max-w-md text-sm leading-6 text-slate-300">
+        <p class="max-w-sm text-sm leading-6 text-slate-300">
           Progettiamo servizi ordinari e straordinari per uffici, condomìni e ambienti produttivi,
           con un approccio operativo chiaro e orientato alla continuità.
         </p>
-        <div class="mt-5 flex flex-wrap gap-2">
-          <a href={site.social.facebook} target="_blank" rel="noopener" class="btn btn-secondary !border-white/20 !bg-white/10 !text-white">Facebook</a>
-          <a href={site.social.instagram} target="_blank" rel="noopener" class="btn btn-secondary !border-white/20 !bg-white/10 !text-white">Instagram</a>
-          <a href={site.social.linkedin} target="_blank" rel="noopener" class="btn btn-secondary !border-white/20 !bg-white/10 !text-white">LinkedIn</a>
+        <div class="flex flex-wrap gap-2.5">
+          <a href={site.social.facebook} target="_blank" rel="noopener" class="btn btn-footer-quiet">Facebook</a>
+          <a href={site.social.instagram} target="_blank" rel="noopener" class="btn btn-footer-quiet">Instagram</a>
+          <a href={site.social.linkedin} target="_blank" rel="noopener" class="btn btn-footer-quiet">LinkedIn</a>
         </div>
       </div>
 
-      <div class="md:col-span-3">
-        <h3 class="text-sm font-semibold uppercase tracking-[0.14em] text-slate-300">Navigazione</h3>
-        <ul class="mt-4 space-y-2.5 text-sm text-slate-200">
-          <li><a href="/servizi" class="hover:text-white">Servizi</a></li>
-          <li><a href="/chi-siamo" class="hover:text-white">Chi siamo</a></li>
-          <li><a href="/casi-studio" class="hover:text-white">Casi studio</a></li>
-          <li><a href="/certificazioni" class="hover:text-white">Certificazioni</a></li>
-          <li><a href="/customer-care" class="hover:text-white">Customer care</a></li>
-          <li><a href="/contatti" class="hover:text-white">Contatti</a></li>
+      <div class="lg:col-span-2">
+        <h3 class="footer-heading">Servizi</h3>
+        <ul class="footer-links mt-4">
+          <li><a href="/servizi">Pulizie professionali</a></li>
+          <li><a href="/servizi">Uffici e studi</a></li>
+          <li><a href="/servizi">Condomìni</a></li>
+          <li><a href="/servizi">Ambienti produttivi</a></li>
+          <li><a href="/casi-studio">Casi studio</a></li>
         </ul>
       </div>
 
-      <div class="md:col-span-4">
-        <h3 class="text-sm font-semibold uppercase tracking-[0.14em] text-slate-300">Contatti</h3>
-        <ul class="mt-4 space-y-2.5 text-sm text-slate-200">
-          <li class="inline-flex items-center gap-2"><UiIcon name="map-pin" /> {site.address}</li>
+      <div class="lg:col-span-3">
+        <h3 class="footer-heading">Contatti</h3>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li class="footer-contact-row"><UiIcon name="map-pin" /> <span>{site.address}</span></li>
           <li>
-            <a href={`tel:${site.phoneHref}`} class="inline-flex items-center gap-2 hover:text-white" data-track="click_phone"><UiIcon name="phone" />{site.phoneDisplay}</a>
+            <a href={`tel:${site.phoneHref}`} class="footer-contact-row footer-contact-link" data-track="click_phone">
+              <UiIcon name="phone" />
+              <span>{site.phoneDisplay}</span>
+            </a>
           </li>
           <li>
-            <a href={`mailto:${site.email}`} class="inline-flex items-center gap-2 hover:text-white" data-track="click_email"><UiIcon name="mail" />{site.email}</a>
-          </li>
-          <li>
-            <a href={getWhatsAppUrl()} target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:text-white" data-track="click_whatsapp"><UiIcon name="whatsapp" />Chatta su WhatsApp</a>
+            <a href={`mailto:${site.email}`} class="footer-contact-row footer-contact-link" data-track="click_email">
+              <UiIcon name="mail" />
+              <span>{site.email}</span>
+            </a>
           </li>
         </ul>
+      </div>
 
-        <div class="mt-5 rounded-[var(--radius-md)] border border-white/20 bg-white/8 p-3 text-xs text-slate-200">
+      <div class="space-y-3 lg:col-span-3">
+        <h3 class="footer-heading">Azioni rapide</h3>
+        <a href="/contatti" class="btn btn-primary w-full justify-center" data-track="click_footer_lead">
+          <UiIcon name="clipboard" />
+          Richiedi preventivo
+        </a>
+        <a href={getWhatsAppUrl()} target="_blank" rel="noopener" class="btn btn-whatsapp w-full justify-center" data-track="click_whatsapp">
+          <UiIcon name="whatsapp" />
+          Scrivici su WhatsApp
+        </a>
+        <a href="/customer-care" class="btn btn-secondary w-full justify-center">
+          Customer care clienti attivi
+        </a>
+        <p class="rounded-[var(--radius-md)] border border-white/18 bg-white/7 px-3 py-2 text-xs leading-5 text-slate-300">
           Risposta rapida su telefono e WhatsApp, con referente dedicato per clienti attivi.
-        </div>
+        </p>
       </div>
     </div>
   </div>
 
   <div class="border-t border-white/10">
-    <div class="site-container flex flex-col gap-2 py-4 text-xs text-slate-400 md:flex-row md:items-center md:justify-between">
-      <div>{site.legalName} • {site.vatNumber} • {site.rea}</div>
-      <div class="flex flex-wrap gap-3">
+    <div class="site-container flex flex-col gap-3 py-4 text-xs text-slate-400 md:flex-row md:items-center md:justify-between">
+      <p>{site.legalName} • {site.vatNumber} • {site.rea}</p>
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="/chi-siamo" class="hover:text-white">Chi siamo</a>
         <a href="/privacy" class="hover:text-white">Privacy</a>
         <a href="/cookie" class="hover:text-white">Cookie</a>
       </div>

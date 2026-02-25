@@ -3,14 +3,53 @@ type Faq = { q: string; a: string };
 const { items = [] } = Astro.props as { items: Faq[] };
 ---
 
-<div class="space-y-3">
-  {items.map((item) => (
-    <details class="group card-base p-4 open:shadow-[var(--shadow-elevated)]">
-      <summary class="flex cursor-pointer list-none items-center justify-between gap-4">
+<div class="space-y-3" data-faq-accordion>
+  {items.map((item, idx) => (
+    <article class="faq-item card-base" data-faq-item>
+      <button class="faq-trigger" type="button" aria-expanded={idx === 0 ? "true" : "false"} data-faq-trigger>
         <span class="font-medium text-slate-900">{item.q}</span>
-        <span class="text-slate-500 transition group-open:rotate-45">+</span>
-      </summary>
-      <p class="mt-3 text-sm leading-6 text-slate-600">{item.a}</p>
-    </details>
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </button>
+      <div class={`faq-panel ${idx === 0 ? "is-open" : ""}`} data-faq-panel>
+        <p class="faq-panel-inner text-sm leading-6 text-slate-600">{item.a}</p>
+      </div>
+    </article>
   ))}
 </div>
+
+<script is:inline>
+  const accordions = document.querySelectorAll("[data-faq-accordion]");
+
+  accordions.forEach((accordion) => {
+    const items = accordion.querySelectorAll("[data-faq-item]");
+
+    items.forEach((item) => {
+      const trigger = item.querySelector("[data-faq-trigger]");
+      const panel = item.querySelector("[data-faq-panel]");
+      if (!trigger || !panel) return;
+
+      const setPanelHeight = (open) => {
+        if (open) {
+          panel.classList.add("is-open");
+          panel.style.maxHeight = `${panel.scrollHeight}px`;
+        } else {
+          panel.style.maxHeight = `${panel.scrollHeight}px`;
+          requestAnimationFrame(() => {
+            panel.style.maxHeight = "0px";
+            panel.classList.remove("is-open");
+          });
+        }
+      };
+
+      if (trigger.getAttribute("aria-expanded") === "true") {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+      }
+
+      trigger.addEventListener("click", () => {
+        const isOpen = trigger.getAttribute("aria-expanded") === "true";
+        trigger.setAttribute("aria-expanded", String(!isOpen));
+        setPanelHeight(!isOpen);
+      });
+    });
+  });
+</script>

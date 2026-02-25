@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import PageHero from "../components/PageHero.astro";
 import ImageBand from "../components/ImageBand.astro";
+import CasePreviewInteractive from "../components/CasePreviewInteractive.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import { caseStudies } from "../data/case-studies";
 import { pageMedia } from "../data/page-media";
@@ -18,6 +19,8 @@ const media = pageMedia.casiStudio;
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Casi studio" }]}
     image={media.hero.image}
   />
+
+  <CasePreviewInteractive items={caseStudies} />
 
   <section class="section-y">
     <div class="site-container grid gap-4" data-stagger="case-grid">

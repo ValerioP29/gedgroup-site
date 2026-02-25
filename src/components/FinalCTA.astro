@@ -20,18 +20,18 @@ const primaryIcon: "phone" | "arrow-right" | "clipboard" = String(primaryHref).s
 
 <section class={compact ? "pt-8 pb-4 md:pt-10 md:pb-2" : "section-y"}>
   <div class="site-container">
-    <div class="card-base gradient-card p-6 md:p-8" data-reveal="scale-in">
+    <div class="card-base gradient-card final-cta-card p-6 md:p-8" data-reveal="scale-in">
       <div class="grid gap-5 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
         <div class="max-w-2xl lg:max-w-none lg:pr-2">
           <h2 class="text-balance text-slate-900 lg:text-left">{title}</h2>
           <p class="mt-3 max-w-2xl text-slate-600 lg:text-left">{subtitle}</p>
         </div>
-        <div class="flex flex-wrap gap-3 lg:justify-end" data-stagger="cta-actions">
-          <a href={primaryHref} class="btn btn-primary" data-stagger-item>
+        <div class="final-cta-actions flex flex-wrap gap-3 lg:justify-end">
+          <a href={primaryHref} class="btn btn-primary">
             <UiIcon name={primaryIcon} />
             {primaryLabel}
           </a>
-          <a href={getWhatsAppUrl(whatsappText)} target="_blank" rel="noopener" class="btn btn-whatsapp" data-track="click_whatsapp" data-stagger-item>
+          <a href={getWhatsAppUrl(whatsappText)} target="_blank" rel="noopener" class="btn btn-whatsapp" data-track="click_whatsapp">
             <UiIcon name="whatsapp" />
             WhatsApp
           </a>

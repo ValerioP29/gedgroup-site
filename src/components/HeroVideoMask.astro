@@ -1,0 +1,71 @@
+---
+const {
+  title,
+  lines,
+  video,
+  poster,
+  label = "Video texture title",
+} = Astro.props as {
+  title: string;
+  lines?: string[];
+  video?: { webm?: string; mp4?: string };
+  poster?: string;
+  label?: string;
+};
+
+const textLines = lines?.length ? lines : [title];
+const clipId = `hero-text-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+const viewW = 1720;
+const viewH = 400;
+const startY = textLines.length > 1 ? 150 : 214;
+const lineGap = 148;
+const hasVideo = Boolean(video?.webm || video?.mp4);
+---
+
+<div class="hero-video-mask" data-hero-video-mask data-hero-el="title" aria-label={label}>
+  <h1 class="hero-video-mask__fallback text-balance">
+    {textLines.map((line) => (
+      <span class="block">{line}</span>
+    ))}
+  </h1>
+
+  <svg class="hero-video-mask__svg" viewBox={`0 0 ${viewW} ${viewH}`} role="img" aria-label={label} preserveAspectRatio="xMinYMid slice">
+    <defs>
+      <clipPath id={clipId}>
+        {textLines.map((line, idx) => (
+          <text x="48" y={startY + idx * lineGap} font-size="118" font-family="Inter, Arial, sans-serif" font-weight="700">
+            {line}
+          </text>
+        ))}
+      </clipPath>
+    </defs>
+
+    <foreignObject x="0" y="0" width={viewW} height={viewH} clip-path={`url(#${clipId})`}>
+      <div xmlns="http://www.w3.org/1999/xhtml" class="hero-video-mask__fo">
+        <div class="hero-video-mask__poster" style={poster ? `background-image:url('${poster}');` : undefined}></div>
+        {hasVideo && (
+          <video class="hero-video-mask__video" muted autoplay loop playsinline preload="metadata" poster={poster}>
+            {video?.webm && <source src={video.webm} type="video/webm" />}
+            {video?.mp4 && <source src={video.mp4} type="video/mp4" />}
+          </video>
+        )}
+      </div>
+    </foreignObject>
+
+    {textLines.map((line, idx) => (
+      <text x="48" y={startY + idx * lineGap} font-size="118" font-family="Inter, Arial, sans-serif" font-weight="700" fill="none" stroke="rgba(15,23,42,0.22)" stroke-width="2">
+        {line}
+      </text>
+    ))}
+  </svg>
+</div>
+
+<script is:inline>
+  const roots = document.querySelectorAll("[data-hero-video-mask]");
+  roots.forEach((root) => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const supportsFo = typeof SVGForeignObjectElement !== "undefined";
+    root.classList.toggle("video-svg-ready", supportsFo && !reduce && !isMobile);
+  });
+</script>
