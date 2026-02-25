@@ -418,6 +418,12 @@ body {
     inset: 0;
   }
 
+  .home-hero__media-wrap {
+    background:
+      radial-gradient(circle at 18% 22%, rgba(29, 78, 216, 0.34), transparent 45%),
+      linear-gradient(140deg, #09162f 0%, #0b1f4d 52%, #0f2f7b 100%);
+  }
+
   .home-hero__poster,
   .home-hero__video {
     width: 100%;

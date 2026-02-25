@@ -324,3 +324,6 @@ export const services: ServiceItem[] = [
     },
   },
 ];
+
+export const homeServices: ServiceItem[] = services.slice(0, 3);
+export const catalogServices: ServiceItem[] = services;

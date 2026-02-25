@@ -1,20 +1,20 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const EASE_STANDARD = "power3.out";
+const EASE_STANDARD = "power2.out";
 
 const MOTION = {
-  reveal: { duration: 0.46, y: 16 },
-  stagger: { duration: 0.38, y: 12, each: 0.07 },
+  reveal: { duration: 0.7, y: 16 },
+  stagger: { duration: 0.58, y: 12, each: 0.11 },
   hero: {
-    badgeDuration: 0.34,
-    titleDuration: 0.72,
-    subtitleDuration: 0.45,
-    ctaDuration: 0.34,
-    visualDuration: 0.62,
+    badgeDuration: 0.5,
+    titleDuration: 1,
+    subtitleDuration: 0.68,
+    ctaDuration: 0.5,
+    visualDuration: 0.9,
   },
-  hover: { duration: 0.2, y: -2 },
-  parallax: { yPercent: -4, scrub: 0.65 },
+  hover: { duration: 0.3, y: -2 },
+  parallax: { yPercent: -4, scrub: 0.95 },
 } as const;
 
 type Cleanup = () => void;
@@ -124,7 +124,7 @@ export function initHeroMotion(root: ParentNode = document): void {
   if (title) {
     const titleLines = title.querySelectorAll(".hero-video-mask__fallback span, .hero-title-line");
     if (titleLines.length) {
-      timeline.from(titleLines, { yPercent: 100, opacity: 0, stagger: 0.1, duration: MOTION.hero.titleDuration }, "-=0.14");
+      timeline.from(titleLines, { yPercent: 100, opacity: 0, stagger: 0.15, duration: MOTION.hero.titleDuration }, "-=0.14");
     } else {
       timeline.from(title, { y: 16, opacity: 0, duration: MOTION.hero.titleDuration }, "-=0.16");
     }
@@ -137,25 +137,25 @@ export function initHeroMotion(root: ParentNode = document): void {
         y: 9,
         opacity: 0,
         duration: MOTION.hero.ctaDuration,
-        stagger: 0.06,
+        stagger: 0.09,
       },
       "-=0.2",
     );
   }
   if (visual) timeline.from(visual, { x: 18, opacity: 0, duration: MOTION.hero.visualDuration }, "-=0.26");
   if (hint) {
-    timeline.from(hint, { y: 8, opacity: 0, duration: 0.3 }, "-=0.15");
-    gsap.to(hint, { y: 5, duration: 1.4, ease: "sine.inOut", repeat: -1, yoyo: true });
+    timeline.from(hint, { y: 8, opacity: 0, duration: 0.45 }, "-=0.15");
+    gsap.to(hint, { y: 5, duration: 1.9, ease: "sine.inOut", repeat: -1, yoyo: true });
   }
 
   if (floats.length) {
-    timeline.from(floats, { y: 8, opacity: 0, duration: 0.32, stagger: 0.1 }, "-=0.24");
+    timeline.from(floats, { y: 8, opacity: 0, duration: 0.5, stagger: 0.15 }, "-=0.24");
   }
 
   floats.forEach((el, index) => {
     gsap.to(el, {
       y: index % 2 === 0 ? -7 : 7,
-      duration: 2.6 + index * 0.3,
+      duration: 3.4 + index * 0.35,
       ease: "sine.inOut",
       repeat: -1,
       yoyo: true,
