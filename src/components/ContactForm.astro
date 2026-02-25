@@ -1,8 +1,21 @@
 ---
-const apiBase = import.meta.env.PUBLIC_API_BASE ?? "";
+const {
+  actionUrl = import.meta.env.PUBLIC_LEAD_FORM_ACTION ?? "",
+} = Astro.props as {
+  actionUrl?: string;
+};
+
+const normalizedAction = actionUrl.trim();
+const hasEndpoint = normalizedAction.length > 0;
 ---
 
-<form id="lead-form" class="card-base p-5 md:p-6">
+<form id="lead-form" class="card-base p-5 md:p-6" data-has-endpoint={hasEndpoint ? "true" : "false"}>
+  <div class="mb-4 rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-3 text-sm text-slate-600">
+    Compila la richiesta: ti ricontattiamo {" "}
+    <span class="font-semibold text-slate-900">al recapito che preferisci</span>
+    {" "}(telefono o email).
+  </div>
+
   <div class="grid gap-4 md:grid-cols-2">
     <div>
       <label for="name" class="mb-1 block text-sm font-medium text-slate-700">Nome e cognome</label>
@@ -10,54 +23,50 @@ const apiBase = import.meta.env.PUBLIC_API_BASE ?? "";
         id="name"
         name="name"
         required
+        autocomplete="name"
         class="w-full rounded-xl border border-[color:var(--border)] px-3 py-2.5 outline-none ring-0 focus:border-slate-400"
         placeholder="Mario Rossi"
       />
     </div>
+
     <div>
-      <label for="company" class="mb-1 block text-sm font-medium text-slate-700">Azienda / Condominio</label>
-      <input
-        id="company"
-        name="company"
+      <label for="service" class="mb-1 block text-sm font-medium text-slate-700">Servizio/interesse</label>
+      <select
+        id="service"
+        name="service"
         class="w-full rounded-xl border border-[color:var(--border)] px-3 py-2.5 outline-none ring-0 focus:border-slate-400"
-        placeholder="Nome struttura"
+      >
+        <option value="">Seleziona (opzionale)</option>
+        <option>Pulizie uffici</option>
+        <option>Pulizie condomìni</option>
+        <option>Pulizie industriali</option>
+        <option>Sanificazioni / Straordinari</option>
+        <option>Altro</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="phone" class="mb-1 block text-sm font-medium text-slate-700">Telefono</label>
+      <input
+        id="phone"
+        name="phone"
+        autocomplete="tel"
+        class="w-full rounded-xl border border-[color:var(--border)] px-3 py-2.5 outline-none ring-0 focus:border-slate-400"
+        placeholder="+39 ..."
       />
     </div>
+
     <div>
       <label for="email" class="mb-1 block text-sm font-medium text-slate-700">Email</label>
       <input
         id="email"
         type="email"
         name="email"
-        required
+        autocomplete="email"
         class="w-full rounded-xl border border-[color:var(--border)] px-3 py-2.5 outline-none ring-0 focus:border-slate-400"
         placeholder="nome@azienda.it"
       />
     </div>
-    <div>
-      <label for="phone" class="mb-1 block text-sm font-medium text-slate-700">Telefono</label>
-      <input
-        id="phone"
-        name="phone"
-        class="w-full rounded-xl border border-[color:var(--border)] px-3 py-2.5 outline-none ring-0 focus:border-slate-400"
-        placeholder="+39 ..."
-      />
-    </div>
-  </div>
-
-  <div class="mt-4">
-    <label for="service" class="mb-1 block text-sm font-medium text-slate-700">Servizio richiesto</label>
-    <select
-      id="service"
-      name="service"
-      class="w-full rounded-xl border border-[color:var(--border)] px-3 py-2.5 outline-none ring-0 focus:border-slate-400"
-    >
-      <option>Pulizie uffici</option>
-      <option>Pulizie condomìni</option>
-      <option>Pulizie industriali</option>
-      <option>Sanificazioni / Straordinari</option>
-      <option>Altro</option>
-    </select>
   </div>
 
   <div class="mt-4">
@@ -73,63 +82,97 @@ const apiBase = import.meta.env.PUBLIC_API_BASE ?? "";
   </div>
 
   <div class="mt-4 flex items-start gap-2">
-    <input id="privacy-check" type="checkbox" required class="mt-1 h-4 w-4 rounded border-[color:var(--border)]" />
+    <input id="privacy-check" name="privacy" type="checkbox" required class="mt-1 h-4 w-4 rounded border-[color:var(--border)]" />
     <label for="privacy-check" class="text-sm text-slate-600">
       Ho letto l'informativa privacy e acconsento al trattamento dei dati per la gestione della richiesta.
     </label>
   </div>
 
+  <input type="hidden" name="source" value="website-contact" />
+
   <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
     <button
+      id="lead-submit"
       type="submit"
-      class="btn btn-primary disabled:opacity-60"
+      class="btn btn-primary disabled:cursor-not-allowed disabled:opacity-60"
+      disabled={!hasEndpoint}
     >
       Invia richiesta
     </button>
-    <p id="lead-status" class="text-sm text-slate-600" aria-live="polite"></p>
+    <p id="lead-status" class="text-sm text-slate-600" aria-live="polite">Pronto all'invio.</p>
   </div>
 
-  <p class="mt-3 text-xs text-slate-500">
-    Form pronto per collegamento API. Finché l'API non è attiva, la demo simula l'invio per test UI.
-  </p>
+  {!hasEndpoint && (
+    <p class="mt-3 text-xs text-slate-500">
+      Invio online temporaneamente non disponibile. Usa telefono o WhatsApp: il team commerciale prende in carico subito la richiesta.
+    </p>
+  )}
 </form>
 
-<script is:inline define:vars={{ apiBase }}>
-  const API_BASE = apiBase ?? "";
+<script is:inline define:vars={{ endpoint: normalizedAction }}>
+  const ENDPOINT = endpoint ?? "";
   const form = document.getElementById("lead-form");
   const statusEl = document.getElementById("lead-status");
+  const submitBtn = document.getElementById("lead-submit");
 
-  if (form && statusEl) {
+  if (form && statusEl && submitBtn) {
+    const emailInput = form.querySelector("#email");
+    const phoneInput = form.querySelector("#phone");
+
+    const validateContactChannel = () => {
+      if (!emailInput || !phoneInput) return true;
+      const hasEmail = String(emailInput.value || "").trim().length > 0;
+      const hasPhone = String(phoneInput.value || "").trim().length > 0;
+      const valid = hasEmail || hasPhone;
+      const msg = valid ? "" : "Inserisci almeno telefono o email per essere ricontattato.";
+      emailInput.setCustomValidity(msg);
+      phoneInput.setCustomValidity(msg);
+      return valid;
+    };
+
+    [emailInput, phoneInput].forEach((input) => {
+      if (input) {
+        input.addEventListener("input", () => {
+          validateContactChannel();
+        });
+      }
+    });
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const button = form.querySelector('button[type="submit"]');
-      if (button) button.disabled = true;
+
+      if (!validateContactChannel() || !form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      if (!ENDPOINT) {
+        statusEl.textContent = "Invio online non attivo. Contattaci via telefono o WhatsApp.";
+        return;
+      }
+
+      submitBtn.setAttribute("disabled", "true");
       statusEl.textContent = "Invio in corso...";
 
-      const formData = new FormData(form);
-
       try {
-        if (API_BASE) {
-          const response = await fetch(`${API_BASE}/v1/leads`, {
-            method: "POST",
-            headers: { Accept: "application/json" },
-            body: formData,
-          });
+        const formData = new FormData(form);
+        const response = await fetch(ENDPOINT, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: formData,
+        });
 
-          if (!response.ok) throw new Error("API error");
-        } else {
-          await new Promise((resolve) => setTimeout(resolve, 700));
-        }
+        if (!response.ok) throw new Error("Lead submit failed");
 
-        statusEl.textContent = "Richiesta inviata. Ti ricontattiamo al più presto.";
+        statusEl.textContent = "Richiesta inviata con successo. Ti ricontattiamo a breve.";
         form.reset();
 
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ event: "generate_lead" });
-      } catch (err) {
-        statusEl.textContent = "Invio non riuscito. Riprova o contattaci via WhatsApp.";
+      } catch (error) {
+        statusEl.textContent = "Invio non riuscito. Riprova tra poco o usa i canali diretti.";
       } finally {
-        if (button) button.disabled = false;
+        submitBtn.removeAttribute("disabled");
       }
     });
   }

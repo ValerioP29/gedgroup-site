@@ -1,0 +1,66 @@
+---
+type MiniCase = {
+  title: string;
+  context: string;
+  outcome: string;
+};
+
+const {
+  title = "Proof operativa",
+  responseTime,
+  coverage,
+  outputs = [],
+  proofBullets = [],
+  miniCase,
+} = Astro.props as {
+  title?: string;
+  responseTime: string;
+  coverage: string;
+  outputs: string[];
+  proofBullets: string[];
+  miniCase?: MiniCase;
+};
+---
+
+<section class="surface-section section-y">
+  <div class="site-container grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+    <article class="panel" data-reveal="fade-up">
+      <h2 class="text-xl font-semibold text-slate-900">{title}</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2 text-sm">
+        <div class="card-base bg-slate-50 p-3">
+          <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Tempi operativi</div>
+          <p class="mt-1 font-semibold text-slate-900">{responseTime}</p>
+        </div>
+        <div class="card-base bg-slate-50 p-3">
+          <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Copertura</div>
+          <p class="mt-1 font-semibold text-slate-900">{coverage}</p>
+        </div>
+      </div>
+
+      <h3 class="mt-5 text-base font-semibold text-slate-900">Output attesi</h3>
+      <ul class="mt-2 grid gap-2 text-sm text-slate-600" data-stagger="service-proof-outputs">
+        {outputs.map((item) => (
+          <li class="card-base bg-slate-50 px-3 py-2" data-stagger-item>• {item}</li>
+        ))}
+      </ul>
+    </article>
+
+    <article class="panel" data-reveal="fade-left">
+      <h3 class="text-base font-semibold text-slate-900">Checklist qualità sintetica</h3>
+      <ul class="mt-3 grid gap-2 text-sm text-slate-600" data-stagger="service-proof-checklist">
+        {proofBullets.map((item) => (
+          <li class="card-base bg-slate-50 px-3 py-2" data-stagger-item>{item}</li>
+        ))}
+      </ul>
+
+      {miniCase && (
+        <div class="mt-5 rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white p-4 text-sm text-slate-600">
+          <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Mini caso</div>
+          <h4 class="mt-2 text-base font-semibold text-slate-900">{miniCase.title}</h4>
+          <p class="mt-2"><strong class="text-slate-900">Contesto:</strong> {miniCase.context}</p>
+          <p class="mt-1.5"><strong class="text-slate-900">Esito:</strong> {miniCase.outcome}</p>
+        </div>
+      )}
+    </article>
+  </div>
+</section>

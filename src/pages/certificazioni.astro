@@ -1,58 +1,101 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import PageHero from "../components/PageHero.astro";
-import SplitSection from "../components/SplitSection.astro";
 import ImageBand from "../components/ImageBand.astro";
 import FinalCTA from "../components/FinalCTA.astro";
-import { services } from "../data/services";
+import { certifications } from "../data/certifications";
+import { pageMedia } from "../data/page-media";
 
-const certImages = [services[2].detailImages[0], services[3].detailImages[0], services[0].detailImages[1]];
+const certImages = certifications.map((item) => item.badgeImage);
+const certProofSteps = [
+  "Verifica periodica validità documenti e scadenze con registro centralizzato.",
+  "Allineamento certificazioni ai requisiti di gara/onboarding cliente.",
+  "Condivisione evidenze documentali al referente in fase commerciale o audit.",
+];
+
+const media = pageMedia.certificazioni;
 ---
 
-<Layout title="Certificazioni | GED Group" description="Certificazioni, conformità e standard qualitativi.">
+<Layout title="Certificazioni | GED Group" description="Certificazioni e standard GED Group con dati verificabili su ente, scope e validità.">
   <PageHero
     eyebrow="Certificazioni"
-    title="Standard, conformità e procedure documentate"
-    subtitle="Pagina dedicata alla parte trust: certificazioni, sicurezza e formazione in formato sintetico e leggibile."
+    title="Standard verificabili e documentazione tracciabile"
+    subtitle="Proof hub dedicato: per ogni certificazione trovi ente, ambito applicativo, stato e disponibilità documentale."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Certificazioni" }]}
-    image={services[2].heroImage}
+    image={media.hero.image}
   />
 
-  <SplitSection
-    eyebrow="Compliance"
-    title="Framework qualità in 3 aree"
-    body={[
-      "Certificazioni e policy interne vengono mantenute allineate ai requisiti dei clienti corporate.",
-      "La documentazione è organizzata per audit, onboarding fornitore e gare.",
-    ]}
-    bullets={[
-      "Qualità del servizio (es. ISO 9001)",
-      "Gestione ambientale e procedure",
-      "Sicurezza operativa e formazione team",
-    ]}
-    image={services[3].detailImages[1]}
-  />
+  <section class="section-y">
+    <div class="site-container" data-stagger="cert-grid">
+      <h2>Elenco certificazioni e conformità</h2>
+      <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+        Dati strutturati per supportare gare, onboarding fornitore e verifiche interne. I link documento possono essere aggiornati con URL Cloudflare non appena disponibili.
+      </p>
 
-  <section class="surface-section section-y">
-    <div class="site-container">
-      <h2>Metodo documentale sintetico</h2>
-      <div class="mt-6 grid gap-3 md:grid-cols-3" data-stagger="cert-method">
-        {[
-          "Raccolta e aggiornamento attestazioni",
-          "Condivisione documenti per cliente/progetto",
-          "Verifiche periodiche e azioni correttive",
-        ].map((item) => (
-          <article class="card-base p-4 text-sm text-slate-600" data-stagger-item>{item}</article>
+      <div class="mt-6 grid gap-4">
+        {certifications.map((cert) => (
+          <article class="panel" data-stagger-item>
+            <div class="grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+              <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-slate-50 p-4 text-sm text-slate-600">
+                <div class="text-xs uppercase tracking-[0.14em] text-slate-500">{cert.code}</div>
+                <h3 class="mt-1 text-lg font-semibold text-slate-900">{cert.name}</h3>
+                <ul class="mt-3 space-y-1.5">
+                  <li><strong class="text-slate-900">Ente:</strong> {cert.certifyingBody}</li>
+                  <li><strong class="text-slate-900">Scope:</strong> {cert.scope}</li>
+                  <li><strong class="text-slate-900">Stato:</strong> {cert.status}</li>
+                  <li><strong class="text-slate-900">Scadenza:</strong> {cert.expiry}</li>
+                </ul>
+              </div>
+
+              <div class="grid gap-3 sm:grid-cols-[0.44fr_0.56fr] sm:items-center">
+                <img
+                  src={cert.badgeImage.src}
+                  alt={cert.badgeImage.alt}
+                  class="section-media rounded-[var(--radius-md)] border border-[color:var(--border)]"
+                  style={`aspect-ratio:${cert.badgeImage.ratio};`}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="rounded-[var(--radius-md)] border border-[color:var(--border)] bg-white p-4 text-sm text-slate-600">
+                  <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Documento</div>
+                  {cert.documentHref ? (
+                    <a href={cert.documentHref} target="_blank" rel="noopener" class="mt-2 inline-flex font-semibold text-slate-900 hover:underline">
+                      {cert.documentLabel}
+                    </a>
+                  ) : (
+                    <p class="mt-2">{cert.documentLabel} • link PDF in pubblicazione (placeholder)</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </article>
         ))}
       </div>
     </div>
   </section>
 
-  <ImageBand images={certImages} />
+  <section class="surface-section section-y">
+    <div class="site-container">
+      <h2>Come applichiamo gli standard nel lavoro operativo</h2>
+      <div class="mt-6 grid gap-3 md:grid-cols-3" data-stagger="cert-method">
+        {certProofSteps.map((item) => (
+          <article class="card-base bg-white p-4 text-sm text-slate-600" data-stagger-item>{item}</article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ImageBand
+    title="Badge e evidenze documentali"
+    subtitle="Slot visuali dedicati a certificazioni e verifiche: sostituire con asset ufficiali in Cloudflare quando disponibili."
+    images={certImages}
+  />
 
   <FinalCTA
-    title="Ti serve documentazione per gara o qualifica fornitore?"
-    subtitle="Condividiamo i materiali necessari e impostiamo una proposta operativa coerente con i requisiti richiesti."
-    whatsappText="Ciao GED Group, vorrei informazioni su certificazioni e documentazione aziendale."
+    title="Vuoi verificare standard e documentazione per la tua struttura?"
+    subtitle="Condividiamo le evidenze necessarie e allineiamo i requisiti prima del sopralluogo." 
+    primaryLabel="Richiedi approfondimento standard"
+    whatsappText="Ciao GED Group, vorrei approfondire standard e documentazione per il mio progetto."
+    compact={true}
   />
 </Layout>

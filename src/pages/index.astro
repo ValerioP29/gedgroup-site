@@ -21,7 +21,7 @@ const media = pageMedia.home;
     variant="home"
     badge="Preventivi rapidi • Referente dedicato • Piani scalabili"
     title="Pulizie professionali con un impatto visibile, ogni giorno"
-    subtitle="GED Group supporta aziende, amministratori e strutture con servizi ordinari e straordinari: home orientata all'overview, dettagli completi nelle pagine interne."
+    subtitle="GED Group affianca aziende e amministratori con servizi di pulizia professionale: qui trovi una panoramica rapida, nelle pagine interne tutti i dettagli operativi."
     image={media.hero.image}
     preload={true}
   >
@@ -40,35 +40,38 @@ const media = pageMedia.home;
   </PageHero>
 
   <ServiceCardsGrid
-    title="Servizi principali"
-    subtitle="Sintesi rapida dei servizi GED Group con mini immagini: il dettaglio completo è nelle singole pagine servizio."
+    title="I nostri servizi principali"
+    subtitle="Tre aree chiave per capire subito se siamo il partner giusto. Nel catalogo servizi trovi la gamma completa."
     services={services}
+    maxItems={3}
+    cardCtaLabel="Vedi servizio"
   />
 
   <SplitSection
     eyebrow="Perché noi"
-    title="Metodo operativo chiaro, qualità costante"
+    title="Affidabilità operativa e comunicazione semplice"
     body={[
-      "Un unico referente, capitolato condiviso e verifiche periodiche riducono incomprensioni e migliorano la continuità.",
-      "Lavoriamo con processi semplici: sopralluogo, proposta, avvio e controllo qualità.",
+      "Un referente unico, pianificazione condivisa e verifiche periodiche riducono incomprensioni e migliorano la continuità del servizio.",
+      "Ti aggiorniamo con canali chiari e un piano coerente con i ritmi reali della tua struttura.",
     ]}
     bullets={[
-      "Capitolato trasparente e scalabile",
-      "Comunicazione diretta con il referente",
-      "Controlli qualità periodici",
+      "Referente dedicato",
+      "Pianificazione su misura",
+      "Controlli qualità programmati",
     ]}
     image={media.sections.why.image}
   />
 
   <ImageBand
-    title="Risultati e cantieri"
-    subtitle="Spazio gallery pensato per foto reali di cantieri, prima/dopo e ambienti gestiti."
+    title="Anteprima dei nostri interventi"
+    subtitle="Una selezione rapida dei contesti in cui operiamo. Nei Casi Studio trovi esempi completi con sfida, soluzione e risultati."
     images={media.sections.projects.images}
   />
 
   <FinalCTA
-    title="Vuoi una proposta su misura per la tua struttura?"
-    subtitle="Condividi spazi e frequenze: prepariamo un piano operativo chiaro e attivabile in tempi rapidi."
+    title="Vuoi un sopralluogo e una proposta su misura?"
+    subtitle="Condividi spazi e frequenze: ti ricontattiamo con una prima valutazione operativa chiara."
     whatsappText="Ciao GED Group, vorrei una proposta su misura."
+    compact={true}
   />
 </Layout>

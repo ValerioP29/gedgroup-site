@@ -9,52 +9,82 @@ import { pageMedia } from "../data/page-media";
 const media = pageMedia.chiSiamo;
 ---
 
-<Layout title="Chi siamo | GED Group" description="Metodo, team e approccio operativo GED Group.">
+<Layout title="Chi siamo | GED Group" description="Organizzazione, metodo e standard operativi GED Group.">
   <PageHero
     eyebrow="Chi siamo"
-    title="Una squadra operativa, non solo un fornitore"
-    subtitle="Visione, metodo e responsabilità chiare: qui il dettaglio aziendale senza duplicare i contenuti overview della home."
+    title="Un partner operativo affidabile per la gestione quotidiana"
+    subtitle="Questa pagina raccoglie il nostro approccio aziendale: organizzazione, metodo di lavoro e standard che garantiscono continuità nel tempo."
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Chi siamo" }]}
     image={media.hero.image}
   />
 
   <SplitSection
-    eyebrow="Mission"
-    title="Standard costanti in ambienti dinamici"
+    eyebrow="Affidabilità"
+    title="Organizzazione chiara, responsabilità definite"
     body={[
-      "Supportiamo aziende e amministratori con un modello orientato alla continuità: pianificazione, esecuzione e verifiche.",
-      "L'obiettivo è mantenere ambienti funzionali e rappresentativi, con processi semplici da monitorare.",
+      "Lavoriamo con ruoli operativi e commerciali distinti per ridurre passaggi inutili e velocizzare le decisioni.",
+      "Ogni cliente ha riferimenti precisi, procedure condivise e controllo periodico della qualità erogata.",
     ]}
     bullets={[
-      "Referente dedicato per coordinamento",
-      "Routine adattabili a turni e stagionalità",
-      "Check qualità programmati",
+      "Referente dedicato per coordinamento e allineamenti",
+      "Pianificazione scalabile su sedi, turni e stagionalità",
+      "Monitoraggio continuo con verifiche programmate",
     ]}
     image={media.sections.mission.image}
   />
 
   <section class="surface-section section-y">
-    <div class="site-container">
-      <h2>Metodo in 3 passaggi</h2>
-      <ol class="mt-6 grid gap-3 md:grid-cols-3" data-stagger="about-method">
-        {[
-          "Analisi iniziale e sopralluogo",
-          "Piano operativo con frequenze condivise",
-          "Monitoraggio e ottimizzazione continua",
-        ].map((step, i) => (
-          <li class="card-base p-4 text-sm text-slate-600" data-stagger-item>
-            <strong class="text-slate-900">0{i + 1}.</strong> {step}
-          </li>
-        ))}
-      </ol>
+    <div class="site-container grid gap-6 lg:grid-cols-[1fr_1fr]">
+      <article class="panel" data-reveal="fade-up">
+        <h2 class="text-xl font-semibold text-slate-900">Metodo aziendale in 4 passaggi</h2>
+        <ol class="mt-4 grid gap-2" data-stagger="about-method">
+          {[
+            "Analisi iniziale del contesto operativo e dei vincoli",
+            "Definizione piano attività con frequenze e responsabilità",
+            "Avvio del servizio con coordinamento e canali dedicati",
+            "Verifica qualità periodica e miglioramento continuo",
+          ].map((step, i) => (
+            <li class="card-base bg-slate-50 px-3 py-2 text-sm text-slate-600" data-stagger-item>
+              <strong class="text-slate-900">{i + 1}.</strong> {step}
+            </li>
+          ))}
+        </ol>
+      </article>
+
+      <article class="panel" data-reveal="fade-left">
+        <h2 class="text-xl font-semibold text-slate-900">Standard operativi (placeholder aggiornabili)</h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2" data-stagger="about-trust-kpi">
+          <div class="card-base bg-slate-50 p-4 text-sm text-slate-600" data-stagger-item>
+            <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Team</div>
+            <p class="mt-2">Organico formato e coordinato con supervisione dedicata.</p>
+          </div>
+          <div class="card-base bg-slate-50 p-4 text-sm text-slate-600" data-stagger-item>
+            <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Continuità</div>
+            <p class="mt-2">Programmazione stabile con adattamento rapido su richieste extra.</p>
+          </div>
+          <div class="card-base bg-slate-50 p-4 text-sm text-slate-600" data-stagger-item>
+            <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Qualità</div>
+            <p class="mt-2">Checklist e verifiche periodiche su attività e risultati concordati.</p>
+          </div>
+          <div class="card-base bg-slate-50 p-4 text-sm text-slate-600" data-stagger-item>
+            <div class="text-xs uppercase tracking-[0.14em] text-slate-500">Comunicazione</div>
+            <p class="mt-2">Canali diretti per allineamenti, urgenze e revisione priorità operative.</p>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
-  <ImageBand title="Team e operatività" images={media.sections.metodo.images} />
+  <ImageBand
+    title="Team e operatività sul campo"
+    subtitle="Spazio visuale dedicato al lavoro quotidiano: coordinamento, controllo qualità e preparazione interventi."
+    images={media.sections.metodo.images}
+  />
 
   <FinalCTA
-    title="Valutiamo insieme una collaborazione?"
-    subtitle="Ti presentiamo il nostro modello operativo in base alle esigenze reali della tua struttura."
-    whatsappText="Ciao GED Group, vorrei conoscere meglio il vostro metodo."
+    title="Vuoi conoscere meglio il nostro approccio aziendale?"
+    subtitle="Confrontiamoci sulla tua struttura: ti presentiamo come lavoriamo e come impostiamo una collaborazione affidabile."
+    whatsappText="Ciao GED Group, vorrei conoscere meglio la vostra organizzazione operativa."
+    compact={true}
   />
 </Layout>
