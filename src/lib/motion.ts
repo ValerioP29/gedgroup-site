@@ -216,31 +216,37 @@ export function initCardHover(root: ParentNode = document): Cleanup {
     listeners.forEach(({ el, enter, leave }) => {
       el.removeEventListener("mouseenter", enter);
       el.removeEventListener("mouseleave", leave);
+      gsap.killTweensOf(el);
+      gsap.set(el, { clearProps: "transform" });
     });
   };
 }
 
 export function cleanupMotion(): void {
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-  gsap.killTweensOf("*");
 }
 
 export function initMotionSystem(root: ParentNode = document): Cleanup {
   gsap.registerPlugin(ScrollTrigger);
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduceMotion) return () => cleanupMotion();
+  if (reduceMotion) return () => {};
+
+  const scope = root instanceof Element ? root : document.body;
+  const context = gsap.context(() => {
+    initHeroMotion(root);
+    initReveal(root);
+    initStagger(root);
+    initParallax(root);
+  }, scope);
 
   const removeHoverListeners = initCardHover(root);
-  initHeroMotion(root);
-  initReveal(root);
-  initStagger(root);
-  initParallax(root);
-
-  window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+  const refreshOnLoad = () => ScrollTrigger.refresh();
+  window.addEventListener("load", refreshOnLoad, { once: true });
 
   return () => {
+    window.removeEventListener("load", refreshOnLoad);
     removeHoverListeners();
-    cleanupMotion();
+    context.revert();
   };
 }

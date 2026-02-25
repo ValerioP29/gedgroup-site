@@ -1,18 +1,16 @@
 <script>
-  import { cleanupMotion, initMotionSystem } from "../lib/motion";
+  import { initMotionSystem } from "../lib/motion";
 
   let teardown = () => {};
 
   const start = () => {
     teardown();
-    cleanupMotion();
     teardown = initMotionSystem(document);
   };
 
   const stop = () => {
     teardown();
     teardown = () => {};
-    cleanupMotion();
   };
 
   if (document.readyState === "loading") {
