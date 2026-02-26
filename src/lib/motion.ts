@@ -294,7 +294,7 @@ export function initHeroMotion(root: ParentNode = document): void {
   if (visual) trackTargets([visual]);
   if (hint) trackTargets([hint]);
 
-  const timeline = gsap.timeline({ paused: true, defaults: { ease: EASE_STANDARD } });
+  const timeline = gsap.timeline({ paused: true, defaults: { ease: EASE_STANDARD, immediateRender: false } });
 
   if (badge) timeline.from(badge, { y: 10, opacity: 0, duration: MOTION.hero.badgeDuration });
 
@@ -338,26 +338,24 @@ export function initHeroMotion(root: ParentNode = document): void {
     });
   };
 
-  if (!visual) {
-    startTimeline();
-    return;
-  }
+  startTimeline();
 
-  gsap.set(visual, { opacity: 0, x: MOTION.hero.visualOffset });
+  if (!visual) return;
+
+  gsap.set(visual, { opacity: 1, x: 0 });
+
+  const media = visual.querySelector<HTMLElement>("video") ?? visual.querySelector<HTMLElement>("img");
+  if (!media) return;
+
+  gsap.set(media, { opacity: 0.001 });
 
   waitForVisualMedia(visual).then(() => {
-    timeline.to(
-      visual,
-      {
-        x: 0,
-        opacity: 1,
-        duration: MOTION.hero.visualDuration,
-        ease: EASE_STANDARD,
-        overwrite: "auto",
-      },
-      "-=0.26",
-    );
-    startTimeline();
+    gsap.to(media, {
+      opacity: 1,
+      duration: MOTION.hero.visualDuration,
+      ease: EASE_STANDARD,
+      overwrite: "auto",
+    });
   });
 }
 

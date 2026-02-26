@@ -418,6 +418,13 @@ body {
     inset: 0;
   }
 
+  .home-hero__media-wrap {
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 18% 14%, rgba(191, 219, 254, 0.36), transparent 38%),
+      linear-gradient(135deg, rgba(24, 41, 84, 0.84), rgba(15, 23, 42, 0.92));
+  }
+
   .home-hero__poster,
   .home-hero__video {
     width: 100%;
