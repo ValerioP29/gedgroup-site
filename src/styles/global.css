@@ -1166,13 +1166,7 @@ body {
     min-height: 2.9rem;
   }
 
-  .motion-reveal-up,
-  .motion-reveal-left,
-  .motion-reveal-right {
-    will-change: transform, opacity;
-  }
-
-  .motion-stagger > .motion-stagger-item {
+  .reveal-item {
     will-change: transform, opacity;
   }
 
