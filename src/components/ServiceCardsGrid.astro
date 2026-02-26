@@ -34,7 +34,7 @@ const gridColsClass =
 
 <section class="section-y surface-section">
   <div class="site-container">
-    <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
+    <div data-reveal="up"><SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} /></div>
 
     <div class={`mt-8 grid gap-5 motion-stagger ${gridColsClass}`} data-stagger="services-grid" data-reveal-group="services-grid">
       {visibleServices.map((service) => (

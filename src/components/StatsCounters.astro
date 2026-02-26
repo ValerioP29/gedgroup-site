@@ -24,9 +24,9 @@ const formatter = new Intl.NumberFormat("it-IT");
 const formatStat = (item: StatItem) => `${item.prefix ?? ""}${formatter.format(item.value)}${item.suffix ?? ""}`;
 ---
 
-<section class="section-y stats-section motion-reveal-up" data-stats-counters data-reveal="auto">
+<section class="section-y stats-section" data-stats-counters data-reveal-group="stats-counters">
   <div class="site-container">
-    <SectionHeader eyebrow={eyebrow} title={title} subtitle={intro} />
+    <div data-reveal="up"><SectionHeader eyebrow={eyebrow} title={title} subtitle={intro} /></div>
 
     <div class="stats-grid mt-8 motion-stagger" data-stagger="stats-grid" data-reveal-group="stats-grid">
       {stats.map((item) => (

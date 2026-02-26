@@ -27,7 +27,7 @@ const {
 };
 ---
 
-<section class="section-y">
+<section class="section-y" data-reveal-group="split-section">
   <div class={`site-container grid gap-8 lg:items-center ${reverse ? "lg:grid-cols-[1.05fr_0.95fr]" : "lg:grid-cols-[0.95fr_1.05fr]"}`}>
     <div class={`space-y-4 ${reverse ? "lg:order-2" : ""}`} data-reveal="auto">
       <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
@@ -41,7 +41,7 @@ const {
       )}
     </div>
 
-    <figure class={`card-base overflow-hidden split-figure ${reverse ? "lg:order-1" : ""}`} data-reveal="left">
+    <figure class={`card-base overflow-hidden split-figure ${reverse ? "lg:order-1" : ""}`} data-reveal={reverse ? "right" : "left"}>
       <img
         src={image.src}
         alt={image.alt}
