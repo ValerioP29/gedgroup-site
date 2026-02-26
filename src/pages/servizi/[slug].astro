@@ -58,9 +58,9 @@ const { service } = Astro.props;
     miniCase={service.miniCase}
   />
 
-  <section class="section-y">
+  <section class="section-y" data-reveal-group="service-faq">
     <div class="site-container grid gap-6 lg:grid-cols-[1fr_1fr]">
-      <article class="panel" data-reveal="auto">
+      <article class="panel" data-reveal="right">
         <h2 class="text-xl font-semibold text-slate-900">Processo sintetico</h2>
         <ol class="mt-4 grid gap-2" data-stagger="service-process">
           {service.process.map((step, i) => (
@@ -90,7 +90,7 @@ const { service } = Astro.props;
     images={service.detailImages}
   />
 
-  <section class="section-y">
+  <section class="section-y" data-reveal-group="service-faq">
     <div class="site-container panel" data-reveal="auto">
       <h2 class="text-xl font-semibold text-slate-900">Domande frequenti</h2>
       <div class="mt-4">

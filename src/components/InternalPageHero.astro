@@ -18,9 +18,9 @@ const {
 const hasActions = Astro.slots.has("actions");
 ---
 
-<section class="hero-grid border-b border-[color:var(--border)]">
+<section class="hero-grid border-b border-[color:var(--border)]" data-reveal-group="internal-hero">
   <div class="site-container section-y">
-    <div class="space-y-6" data-reveal="auto">
+    <div class="space-y-6" data-reveal="up">
       {breadcrumbs.length > 0 && (
         <nav aria-label="breadcrumb" class="text-sm text-slate-500">
           <ol class="flex flex-wrap items-center gap-2">

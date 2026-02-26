@@ -3,84 +3,200 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const EASE_STANDARD = "power3.out";
 
-const MOTION = {
-  reveal: { duration: 0.46, y: 16 },
-  stagger: { duration: 0.38, y: 12, each: 0.07 },
+type MotionConfig = {
+  reveal: { duration: number; distance: number; stagger: number };
+  stagger: { duration: number; y: number; each: number };
+  hero: {
+    badgeDuration: number;
+    titleDuration: number;
+    subtitleDuration: number;
+    ctaDuration: number;
+    visualDuration: number;
+    visualOffset: number;
+    postPaintDelay: number;
+  };
+  hover: { duration: number; y: number };
+  parallax: { yPercent: number; scrub: number };
+};
+
+const MOTION: MotionConfig = {
+  reveal: { duration: 0.52, distance: 18, stagger: 0.06 },
+  stagger: { duration: 0.46, y: 10, each: 0.085 },
   hero: {
     badgeDuration: 0.34,
     titleDuration: 0.72,
     subtitleDuration: 0.45,
-    ctaDuration: 0.34,
-    visualDuration: 0.62,
+    ctaDuration: 0.36,
+    visualDuration: 0.6,
+    visualOffset: 14,
+    postPaintDelay: 180,
   },
   hover: { duration: 0.2, y: -2 },
   parallax: { yPercent: -4, scrub: 0.65 },
 };
 
 type Cleanup = () => void;
+type RevealDirection = "left" | "right" | "up" | "down";
+type RevealKind = RevealDirection | "clip-up" | "clip-right";
 
-type RevealKind = "fade-up" | "fade-left" | "fade-right" | "scale-in" | "clip-up" | "clip-right";
+type BatchLike = ArrayLike<Element> | Element[];
 
-function getRevealKind(el: HTMLElement): RevealKind {
-  if (el.dataset.reveal) {
-    const rawKind = el.dataset.reveal;
-    return (rawKind === "up" ? "fade-up" : rawKind) as RevealKind;
-  }
+const managedTargets = new Set<HTMLElement>();
 
-  if (el.classList.contains("motion-reveal-left")) return "fade-left";
-  if (el.classList.contains("motion-reveal-right")) return "fade-right";
-  return "fade-up";
+function trackTargets(targets: Iterable<HTMLElement>): void {
+  for (const el of targets) managedTargets.add(el);
 }
 
-function getRevealFrom(kind: RevealKind) {
-  const from = { opacity: 0, x: 0, y: MOTION.reveal.y, scale: 1 };
+function toHtmlElements(batch: BatchLike | null | undefined): HTMLElement[] {
+  if (!batch) return [];
+  return Array.from(batch).filter((el): el is HTMLElement => el instanceof HTMLElement);
+}
 
-  if (kind === "fade-left") {
-    from.x = 24;
-    from.y = 0;
-  } else if (kind === "fade-right") {
-    from.x = -24;
-    from.y = 0;
-  } else if (kind === "scale-in") {
-    from.scale = 0.97;
-    from.y = 12;
+function readResolvedKind(el: HTMLElement): RevealKind {
+  const resolved = el.dataset.revealResolved;
+  if (resolved === "left" || resolved === "right" || resolved === "up" || resolved === "down" || resolved === "clip-up" || resolved === "clip-right") {
+    return resolved;
   }
+  return "up";
+}
 
+function pickAutoDirection(index: number): RevealDirection {
+  const mod = index % 10;
+  if (mod === 0) return "up";
+  if (mod === 5) return "down";
+  return index % 2 === 0 ? "left" : "right";
+}
+
+function getRevealKind(el: HTMLElement, index: number): RevealKind {
+  const raw = el.dataset.reveal;
+  if (raw === "auto" || !raw) return pickAutoDirection(index);
+  if (raw === "fade-left") return "left";
+  if (raw === "fade-right") return "right";
+  if (raw === "fade-up") return "up";
+  if (raw === "clip-up" || raw === "clip-right") return raw;
+  if (raw === "left" || raw === "right" || raw === "up" || raw === "down") return raw;
+  return "up";
+}
+
+function getRevealFrom(kind: RevealKind): gsap.TweenVars {
+  const from: gsap.TweenVars = { opacity: 0, x: 0, y: 0 };
+  if (kind === "left") from.x = MOTION.reveal.distance;
+  if (kind === "right") from.x = -MOTION.reveal.distance;
+  if (kind === "up") from.y = MOTION.reveal.distance;
+  if (kind === "down") from.y = -MOTION.reveal.distance;
+  if (kind === "clip-up") {
+    from.y = Math.round(MOTION.reveal.distance * 0.66);
+    from.clipPath = "inset(100% 0 0 0)";
+  }
+  if (kind === "clip-right") {
+    from.x = -Math.round(MOTION.reveal.distance * 0.66);
+    from.clipPath = "inset(0 100% 0 0)";
+  }
   return from;
 }
 
-export function initReveal(root: ParentNode = document): void {
-  const revealTargets = root.querySelectorAll<HTMLElement>(
-    "[data-reveal], .motion-reveal-up, .motion-reveal-left, .motion-reveal-right",
-  );
+function setReducedMotionState(root: ParentNode): void {
+  const revealTargets = root.querySelectorAll<HTMLElement>("[data-reveal], .motion-reveal-up, .motion-reveal-left, .motion-reveal-right");
+  const staggerItems = root.querySelectorAll<HTMLElement>("[data-stagger-item], .motion-stagger-item");
+  const parallaxTargets = root.querySelectorAll<HTMLElement>("[data-parallax]");
+  const hoverTargets = root.querySelectorAll<HTMLElement>(".card-hover");
+  const hero = root.querySelector<HTMLElement>("[data-hero]");
 
-  revealTargets.forEach((el) => {
-    const kind = getRevealKind(el);
-    const from = getRevealFrom(kind);
+  gsap.set([...revealTargets, ...staggerItems, ...parallaxTargets, ...hoverTargets], {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    scale: 1,
+    clearProps: "clipPath,transform",
+  });
 
-    const clipFrom = kind === "clip-up" ? "inset(100% 0 0 0)" : kind === "clip-right" ? "inset(0 100% 0 0)" : undefined;
-
-    gsap.fromTo(
-      el,
-      {
-        ...from,
-        ...(clipFrom ? { clipPath: clipFrom } : {}),
-      },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        clipPath: "inset(0 0 0 0)",
-        duration: MOTION.reveal.duration,
-        ease: EASE_STANDARD,
-        scrollTrigger: {
-          trigger: el,
-          start: "top 86%",
-          once: true,
-        },
-      },
+  if (hero) {
+    const heroTargets = hero.querySelectorAll<HTMLElement>(
+      '[data-hero-el="badge"], [data-hero-el="title"], [data-hero-el="subtitle"], [data-hero-el="ctas"], [data-hero-el="visual"], [data-hero-el="float"]',
     );
+    gsap.set(heroTargets, { opacity: 1, x: 0, y: 0, clearProps: "transform" });
+  }
+}
+
+function getGroupRevealTargets(group: HTMLElement): HTMLElement[] {
+  const inGroup = Array.from(group.querySelectorAll<HTMLElement>("[data-reveal], .motion-reveal-up, .motion-reveal-left, .motion-reveal-right"));
+  if (group.matches("[data-reveal], .motion-reveal-up, .motion-reveal-left, .motion-reveal-right")) {
+    inGroup.unshift(group);
+  }
+  return inGroup;
+}
+
+function prepareRevealTarget(el: HTMLElement, index: number): void {
+  const kind = getRevealKind(el, index);
+  el.dataset.revealResolved = kind;
+  gsap.set(el, getRevealFrom(kind));
+  trackTargets([el]);
+}
+
+function animateRevealTarget(el: HTMLElement, delay = 0): void {
+  const kind = readResolvedKind(el);
+  const hasClip = kind === "clip-up" || kind === "clip-right";
+
+  el.classList.add("reveal-item");
+
+  gsap.to(el, {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    duration: MOTION.reveal.duration,
+    delay,
+    ease: EASE_STANDARD,
+    overwrite: "auto",
+    ...(hasClip ? { clipPath: "inset(0 0 0 0)" } : {}),
+    onComplete: () => {
+      el.classList.remove("reveal-item");
+      if (hasClip) gsap.set(el, { clearProps: "clipPath" });
+    },
+  });
+}
+
+export function initReveals(root: ParentNode = document): void {
+  const groups = Array.from(root.querySelectorAll<HTMLElement>("[data-reveal-group]"));
+  const groupedTargets = new Set<HTMLElement>();
+
+  groups.forEach((group) => {
+    const targets = getGroupRevealTargets(group);
+    if (!targets.length) return;
+
+    targets.forEach((el, index) => {
+      groupedTargets.add(el);
+      prepareRevealTarget(el, index);
+    });
+
+    ScrollTrigger.batch(targets, {
+      start: "top 85%",
+      once: true,
+      invalidateOnRefresh: true,
+      onEnter: (batch) => {
+        const elements = toHtmlElements(batch);
+        elements.forEach((el, batchIndex) => {
+          animateRevealTarget(el, batchIndex * MOTION.reveal.stagger);
+        });
+      },
+    });
+  });
+
+  const standaloneTargets = Array.from(
+    root.querySelectorAll<HTMLElement>("[data-reveal], .motion-reveal-up, .motion-reveal-left, .motion-reveal-right"),
+  ).filter((el) => !groupedTargets.has(el));
+
+  standaloneTargets.forEach((el, index) => {
+    prepareRevealTarget(el, index);
+
+    ScrollTrigger.create({
+      trigger: el,
+      start: "top 85%",
+      once: true,
+      invalidateOnRefresh: true,
+      onEnter: () => {
+        animateRevealTarget(el);
+      },
+    });
   });
 }
 
@@ -91,18 +207,70 @@ export function initStagger(root: ParentNode = document): void {
     const items = group.querySelectorAll<HTMLElement>("[data-stagger-item], .motion-stagger-item");
     if (!items.length) return;
 
-    gsap.from(items, {
-      y: MOTION.stagger.y,
-      opacity: 0,
-      duration: MOTION.stagger.duration,
-      stagger: MOTION.stagger.each,
-      ease: EASE_STANDARD,
-      scrollTrigger: {
-        trigger: group,
-        start: "top 86%",
-        once: true,
+    gsap.set(items, { opacity: 0, y: MOTION.stagger.y });
+    trackTargets(toHtmlElements(items));
+
+    ScrollTrigger.create({
+      trigger: group,
+      start: "top 85%",
+      once: true,
+      invalidateOnRefresh: true,
+      onEnter: () => {
+        gsap.to(items, {
+          y: 0,
+          opacity: 1,
+          duration: MOTION.stagger.duration,
+          stagger: MOTION.stagger.each,
+          ease: EASE_STANDARD,
+          overwrite: "auto",
+        });
       },
     });
+  });
+}
+
+function waitForVisualMedia(visual: HTMLElement): Promise<void> {
+  return new Promise((resolve) => {
+    const img = visual.querySelector("img") as HTMLImageElement | null;
+    const video = visual.querySelector("video") as HTMLVideoElement | null;
+
+    if (img) {
+      if (img.complete && img.naturalWidth > 0) {
+        if (typeof img.decode === "function") {
+          img.decode().then(resolve).catch(resolve);
+        } else {
+          resolve();
+        }
+        return;
+      }
+
+      const onDone = () => {
+        if (typeof img.decode === "function") {
+          img.decode().then(resolve).catch(resolve);
+        } else {
+          resolve();
+        }
+      };
+
+      img.addEventListener("load", onDone, { once: true });
+      img.addEventListener("error", onDone, { once: true });
+      return;
+    }
+
+    if (video) {
+      if (video.readyState >= 2) {
+        resolve();
+        return;
+      }
+
+      const onReady = () => resolve();
+      video.addEventListener("loadeddata", onReady, { once: true });
+      video.addEventListener("canplay", onReady, { once: true });
+      video.addEventListener("error", onReady, { once: true });
+      return;
+    }
+
+    resolve();
   });
 }
 
@@ -118,18 +286,22 @@ export function initHeroMotion(root: ParentNode = document): void {
   const floats = hero.querySelectorAll<HTMLElement>('[data-hero-el="float"]');
   const hint = hero.querySelector<HTMLElement>(".hero-scroll-hint span");
 
-  const timeline = gsap.timeline({ defaults: { ease: EASE_STANDARD } });
+  trackTargets(toHtmlElements([...(floats ?? [])]));
+  if (badge) trackTargets([badge]);
+  if (title) trackTargets([title]);
+  if (subtitle) trackTargets([subtitle]);
+  if (ctas) trackTargets([ctas]);
+  if (visual) trackTargets([visual]);
+  if (hint) trackTargets([hint]);
+
+  const timeline = gsap.timeline({ paused: true, defaults: { ease: EASE_STANDARD } });
 
   if (badge) timeline.from(badge, { y: 10, opacity: 0, duration: MOTION.hero.badgeDuration });
 
   if (title) {
     const titleLines = title.querySelectorAll(".hero-video-mask__fallback span, .hero-title-line");
     if (titleLines.length) {
-      timeline.from(
-        titleLines,
-        { yPercent: 100, opacity: 0, stagger: 0.1, duration: MOTION.hero.titleDuration },
-        "-=0.14",
-      );
+      timeline.from(titleLines, { yPercent: 100, opacity: 0, stagger: 0.11, duration: MOTION.hero.titleDuration }, "-=0.14");
     } else {
       timeline.from(title, { y: 16, opacity: 0, duration: MOTION.hero.titleDuration }, "-=0.16");
     }
@@ -138,75 +310,7 @@ export function initHeroMotion(root: ParentNode = document): void {
   if (subtitle) timeline.from(subtitle, { y: 12, opacity: 0, duration: MOTION.hero.subtitleDuration }, "-=0.24");
 
   if (ctas?.children.length) {
-    timeline.from(
-      ctas.children,
-      { y: 9, opacity: 0, duration: MOTION.hero.ctaDuration, stagger: 0.06 },
-      "-=0.2",
-    );
-  }
-
-  // ⬇️ FIX: visual animato solo quando media è pronta
-  if (visual) {
-    // Evita “flash strano”: tieni il wrapper stabile ma non fare animazioni finché non è pronto.
-    gsap.set(visual, { opacity: 1, x: 0 }); // wrapper visibile e fermo
-
-    const waitForMedia = () =>
-      new Promise<void>((resolve) => {
-        const img = visual.querySelector("img") as HTMLImageElement | null;
-        const video = visual.querySelector("video") as HTMLVideoElement | null;
-
-        if (img) {
-          // Se già caricata
-          if (img.complete && img.naturalWidth > 0) {
-            // decode è meglio (niente pop di decode tardiva)
-            if ("decode" in img) {
-              (img.decode() as Promise<void>).then(resolve).catch(resolve);
-            } else {
-              resolve();
-            }
-            return;
-          }
-
-          const onLoad = () => {
-            img.removeEventListener("load", onLoad);
-            img.removeEventListener("error", onLoad);
-            if ("decode" in img) {
-              (img.decode() as Promise<void>).then(resolve).catch(resolve);
-            } else {
-              resolve();
-            }
-          };
-          img.addEventListener("load", onLoad, { once: true });
-          img.addEventListener("error", onLoad, { once: true });
-          return;
-        }
-
-        if (video) {
-          if (video.readyState >= 2) {
-            resolve();
-            return;
-          }
-          const done = () => resolve();
-          video.addEventListener("loadeddata", done, { once: true });
-          video.addEventListener("canplay", done, { once: true });
-          video.addEventListener("error", done, { once: true });
-          return;
-        }
-
-        // nessuna media trovata
-        resolve();
-      });
-
-    // Inserisci l’animazione del visual nel timeline, ma la fai partire solo dopo readiness
-    timeline.add(() => {
-      waitForMedia().then(() => {
-        gsap.fromTo(
-          visual,
-          { x: 18, opacity: 0 },
-          { x: 0, opacity: 1, duration: MOTION.hero.visualDuration, ease: EASE_STANDARD, overwrite: "auto" },
-        );
-      });
-    }, "-=0.26");
+    timeline.from(ctas.children, { y: 9, opacity: 0, duration: MOTION.hero.ctaDuration, stagger: 0.08 }, "-=0.2");
   }
 
   if (hint) {
@@ -227,6 +331,34 @@ export function initHeroMotion(root: ParentNode = document): void {
       yoyo: true,
     });
   });
+
+  const startTimeline = () => {
+    requestAnimationFrame(() => {
+      window.setTimeout(() => timeline.play(0), MOTION.hero.postPaintDelay);
+    });
+  };
+
+  if (!visual) {
+    startTimeline();
+    return;
+  }
+
+  gsap.set(visual, { opacity: 0, x: MOTION.hero.visualOffset });
+
+  waitForVisualMedia(visual).then(() => {
+    timeline.to(
+      visual,
+      {
+        x: 0,
+        opacity: 1,
+        duration: MOTION.hero.visualDuration,
+        ease: EASE_STANDARD,
+        overwrite: "auto",
+      },
+      "-=0.26",
+    );
+    startTimeline();
+  });
 }
 
 export function initParallax(root: ParentNode = document): void {
@@ -236,6 +368,7 @@ export function initParallax(root: ParentNode = document): void {
 
   parallaxTargets.forEach((el) => {
     const yPercent = Number(el.dataset.parallax) || MOTION.parallax.yPercent;
+    trackTargets([el]);
 
     gsap.to(el, {
       yPercent,
@@ -253,6 +386,8 @@ export function initParallax(root: ParentNode = document): void {
 export function initCardHover(root: ParentNode = document): Cleanup {
   const hoverTargets = Array.from(root.querySelectorAll<HTMLElement>(".card-hover"));
   const listeners: Array<{ el: HTMLElement; enter: () => void; leave: () => void }> = [];
+
+  trackTargets(hoverTargets);
 
   hoverTargets.forEach((el) => {
     const enter = () => {
@@ -288,18 +423,23 @@ export function initCardHover(root: ParentNode = document): Cleanup {
 
 export function cleanupMotion(): void {
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-  gsap.killTweensOf("*");
+  if (managedTargets.size > 0) {
+    gsap.killTweensOf(Array.from(managedTargets));
+  }
 }
 
 export function initMotionSystem(root: ParentNode = document): Cleanup {
   gsap.registerPlugin(ScrollTrigger);
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduceMotion) return () => cleanupMotion();
+  if (reduceMotion) {
+    setReducedMotionState(root);
+    return () => cleanupMotion();
+  }
 
   const removeHoverListeners = initCardHover(root);
   initHeroMotion(root);
-  initReveal(root);
+  initReveals(root);
   initStagger(root);
   initParallax(root);
 
