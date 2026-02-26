@@ -15,7 +15,7 @@ const MOTION = {
   },
   hover: { duration: 0.2, y: -2 },
   parallax: { yPercent: -4, scrub: 0.65 },
-} as const;
+};
 
 type Cleanup = () => void;
 
@@ -121,28 +121,94 @@ export function initHeroMotion(root: ParentNode = document): void {
   const timeline = gsap.timeline({ defaults: { ease: EASE_STANDARD } });
 
   if (badge) timeline.from(badge, { y: 10, opacity: 0, duration: MOTION.hero.badgeDuration });
+
   if (title) {
     const titleLines = title.querySelectorAll(".hero-video-mask__fallback span, .hero-title-line");
     if (titleLines.length) {
-      timeline.from(titleLines, { yPercent: 100, opacity: 0, stagger: 0.1, duration: MOTION.hero.titleDuration }, "-=0.14");
+      timeline.from(
+        titleLines,
+        { yPercent: 100, opacity: 0, stagger: 0.1, duration: MOTION.hero.titleDuration },
+        "-=0.14",
+      );
     } else {
       timeline.from(title, { y: 16, opacity: 0, duration: MOTION.hero.titleDuration }, "-=0.16");
     }
   }
+
   if (subtitle) timeline.from(subtitle, { y: 12, opacity: 0, duration: MOTION.hero.subtitleDuration }, "-=0.24");
+
   if (ctas?.children.length) {
     timeline.from(
       ctas.children,
-      {
-        y: 9,
-        opacity: 0,
-        duration: MOTION.hero.ctaDuration,
-        stagger: 0.06,
-      },
+      { y: 9, opacity: 0, duration: MOTION.hero.ctaDuration, stagger: 0.06 },
       "-=0.2",
     );
   }
-  if (visual) timeline.from(visual, { x: 18, opacity: 0, duration: MOTION.hero.visualDuration }, "-=0.26");
+
+  // ⬇️ FIX: visual animato solo quando media è pronta
+  if (visual) {
+    // Evita “flash strano”: tieni il wrapper stabile ma non fare animazioni finché non è pronto.
+    gsap.set(visual, { opacity: 1, x: 0 }); // wrapper visibile e fermo
+
+    const waitForMedia = () =>
+      new Promise<void>((resolve) => {
+        const img = visual.querySelector("img") as HTMLImageElement | null;
+        const video = visual.querySelector("video") as HTMLVideoElement | null;
+
+        if (img) {
+          // Se già caricata
+          if (img.complete && img.naturalWidth > 0) {
+            // decode è meglio (niente pop di decode tardiva)
+            if ("decode" in img) {
+              (img.decode() as Promise<void>).then(resolve).catch(resolve);
+            } else {
+              resolve();
+            }
+            return;
+          }
+
+          const onLoad = () => {
+            img.removeEventListener("load", onLoad);
+            img.removeEventListener("error", onLoad);
+            if ("decode" in img) {
+              (img.decode() as Promise<void>).then(resolve).catch(resolve);
+            } else {
+              resolve();
+            }
+          };
+          img.addEventListener("load", onLoad, { once: true });
+          img.addEventListener("error", onLoad, { once: true });
+          return;
+        }
+
+        if (video) {
+          if (video.readyState >= 2) {
+            resolve();
+            return;
+          }
+          const done = () => resolve();
+          video.addEventListener("loadeddata", done, { once: true });
+          video.addEventListener("canplay", done, { once: true });
+          video.addEventListener("error", done, { once: true });
+          return;
+        }
+
+        // nessuna media trovata
+        resolve();
+      });
+
+    // Inserisci l’animazione del visual nel timeline, ma la fai partire solo dopo readiness
+    timeline.add(() => {
+      waitForMedia().then(() => {
+        gsap.fromTo(
+          visual,
+          { x: 18, opacity: 0 },
+          { x: 0, opacity: 1, duration: MOTION.hero.visualDuration, ease: EASE_STANDARD, overwrite: "auto" },
+        );
+      });
+    }, "-=0.26");
+  }
+
   if (hint) {
     timeline.from(hint, { y: 8, opacity: 0, duration: 0.3 }, "-=0.15");
     gsap.to(hint, { y: 5, duration: 1.4, ease: "sine.inOut", repeat: -1, yoyo: true });
