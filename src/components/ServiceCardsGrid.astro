@@ -36,9 +36,9 @@ const gridColsClass =
   <div class="site-container">
     <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
 
-    <div class={`mt-8 grid gap-5 motion-stagger ${gridColsClass}`} data-stagger="services-grid">
+    <div class={`mt-8 grid gap-5 motion-stagger ${gridColsClass}`} data-stagger="services-grid" data-reveal-group="services-grid">
       {visibleServices.map((service) => (
-        <article class="card-base card-hover service-card overflow-hidden motion-stagger-item motion-reveal-up" data-stagger-item>
+        <article class="card-base card-hover service-card overflow-hidden motion-stagger-item" data-stagger-item data-reveal="auto">
           <div class="service-card-media-wrap">
             <img
               src={service.image.src}

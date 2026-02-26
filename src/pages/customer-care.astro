@@ -64,7 +64,7 @@ const faqs = [
 
   <section class="section-y">
     <div class="site-container grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-      <article class="panel" data-reveal="fade-up">
+      <article class="panel" data-reveal="auto">
         <h2 class="text-xl font-semibold text-slate-900">Ambiti di supporto</h2>
         <div class="mt-4 grid gap-3 sm:grid-cols-2" data-stagger="care-areas">
           {supportAreas.map((item) => (
@@ -87,7 +87,7 @@ const faqs = [
         </div>
       </article>
 
-      <article class="panel" data-reveal="fade-left">
+      <article class="panel" data-reveal="left">
         <h2 class="text-xl font-semibold text-slate-900">Canali customer care</h2>
         <ul class="mt-4 space-y-3 text-sm text-slate-600">
           <li class="card-base bg-slate-50 p-3"><strong class="text-slate-800">Telefono:</strong> {site.phoneDisplay}</li>
@@ -100,7 +100,7 @@ const faqs = [
   </section>
 
   <section class="section-y">
-    <div class="site-container panel" data-reveal="fade-up">
+    <div class="site-container panel" data-reveal="auto">
       <h2 class="text-xl font-semibold text-slate-900">FAQ assistenza clienti attivi</h2>
       <div class="mt-4">
         <FaqAccordion items={faqs} />

@@ -60,7 +60,7 @@ const { service } = Astro.props;
 
   <section class="section-y">
     <div class="site-container grid gap-6 lg:grid-cols-[1fr_1fr]">
-      <article class="panel" data-reveal="fade-up">
+      <article class="panel" data-reveal="auto">
         <h2 class="text-xl font-semibold text-slate-900">Processo sintetico</h2>
         <ol class="mt-4 grid gap-2" data-stagger="service-process">
           {service.process.map((step, i) => (
@@ -71,7 +71,7 @@ const { service } = Astro.props;
         </ol>
       </article>
 
-      <article class="panel" data-reveal="fade-left">
+      <article class="panel" data-reveal="left">
         <h2 class="text-xl font-semibold text-slate-900">Settori serviti</h2>
         <ul class="mt-4 grid gap-2 sm:grid-cols-2" data-stagger="sectors-grid">
           {service.sectors.map((s) => (
@@ -91,7 +91,7 @@ const { service } = Astro.props;
   />
 
   <section class="section-y">
-    <div class="site-container panel" data-reveal="fade-up">
+    <div class="site-container panel" data-reveal="auto">
       <h2 class="text-xl font-semibold text-slate-900">Domande frequenti</h2>
       <div class="mt-4">
         <FaqAccordion items={service.faqs} />
