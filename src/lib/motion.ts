@@ -171,7 +171,6 @@ export function initReveals(root: ParentNode = document): void {
     ScrollTrigger.batch(targets, {
       start: "top 85%",
       once: true,
-      invalidateOnRefresh: true,
       onEnter: (batch) => {
         const elements = toHtmlElements(batch);
         elements.forEach((el, batchIndex) => {
@@ -278,83 +277,54 @@ export function initHeroMotion(root: ParentNode = document): void {
   const hero = root.querySelector<HTMLElement>("[data-hero]");
   if (!hero) return;
 
+  if (hero.dataset.motionInit === "1") return;
+  hero.dataset.motionInit = "1";
+
   const badge = hero.querySelector<HTMLElement>('[data-hero-el="badge"]');
   const title = hero.querySelector<HTMLElement>('[data-hero-el="title"]');
   const subtitle = hero.querySelector<HTMLElement>('[data-hero-el="subtitle"]');
   const ctas = hero.querySelector<HTMLElement>('[data-hero-el="ctas"]');
   const visual = hero.querySelector<HTMLElement>('[data-hero-el="visual"]');
   const floats = hero.querySelectorAll<HTMLElement>('[data-hero-el="float"]');
-  const hint = hero.querySelector<HTMLElement>(".hero-scroll-hint span");
 
-  trackTargets(toHtmlElements([...(floats ?? [])]));
-  if (badge) trackTargets([badge]);
-  if (title) trackTargets([title]);
-  if (subtitle) trackTargets([subtitle]);
-  if (ctas) trackTargets([ctas]);
-  if (visual) trackTargets([visual]);
-  if (hint) trackTargets([hint]);
+  // 🔥 SET INIZIALE SUBITO, prima del paint animato
+  const heroEls = [badge, title, subtitle, ctas].filter(Boolean) as HTMLElement[];
+  gsap.set(heroEls, { opacity: 0, y: 16 });
 
-  const timeline = gsap.timeline({ paused: true, defaults: { ease: EASE_STANDARD, immediateRender: false } });
-
-  if (badge) timeline.from(badge, { y: 10, opacity: 0, duration: MOTION.hero.badgeDuration });
-
-  if (title) {
-    const titleLines = title.querySelectorAll(".hero-video-mask__fallback span, .hero-title-line");
-    if (titleLines.length) {
-      timeline.from(titleLines, { yPercent: 100, opacity: 0, stagger: 0.11, duration: MOTION.hero.titleDuration }, "-=0.14");
-    } else {
-      timeline.from(title, { y: 16, opacity: 0, duration: MOTION.hero.titleDuration }, "-=0.16");
-    }
+  if (visual) {
+    gsap.set(visual, { opacity: 0, scale: 1.02 });
   }
 
-  if (subtitle) timeline.from(subtitle, { y: 12, opacity: 0, duration: MOTION.hero.subtitleDuration }, "-=0.24");
+  const tl = gsap.timeline({ defaults: { ease: EASE_STANDARD } });
 
-  if (ctas?.children.length) {
-    timeline.from(ctas.children, { y: 9, opacity: 0, duration: MOTION.hero.ctaDuration, stagger: 0.08 }, "-=0.2");
+  if (badge) tl.to(badge, { opacity: 1, y: 0, duration: 0.4 });
+
+  if (title) tl.to(title, { opacity: 1, y: 0, duration: 0.7 }, "-=0.2");
+
+  if (subtitle) tl.to(subtitle, { opacity: 1, y: 0, duration: 0.5 }, "-=0.3");
+
+  if (ctas) tl.to(ctas, { opacity: 1, y: 0, duration: 0.4 }, "-=0.3");
+
+  if (visual) {
+    tl.to(
+      visual,
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+      },
+      "-=0.5"
+    );
   }
 
-  if (hint) {
-    timeline.from(hint, { y: 8, opacity: 0, duration: 0.3 }, "-=0.15");
-    gsap.to(hint, { y: 5, duration: 1.4, ease: "sine.inOut", repeat: -1, yoyo: true });
-  }
-
-  if (floats.length) {
-    timeline.from(floats, { y: 8, opacity: 0, duration: 0.32, stagger: 0.1 }, "-=0.24");
-  }
-
+  // Float animations (indipendenti)
   floats.forEach((el, index) => {
     gsap.to(el, {
-      y: index % 2 === 0 ? -7 : 7,
-      duration: 2.6 + index * 0.3,
+      y: index % 2 === 0 ? -6 : 6,
+      duration: 2.5,
       ease: "sine.inOut",
       repeat: -1,
       yoyo: true,
-    });
-  });
-
-  const startTimeline = () => {
-    requestAnimationFrame(() => {
-      window.setTimeout(() => timeline.play(0), MOTION.hero.postPaintDelay);
-    });
-  };
-
-  startTimeline();
-
-  if (!visual) return;
-
-  gsap.set(visual, { opacity: 1, x: 0 });
-
-  const media = visual.querySelector<HTMLElement>("video") ?? visual.querySelector<HTMLElement>("img");
-  if (!media) return;
-
-  gsap.set(media, { opacity: 0.001 });
-
-  waitForVisualMedia(visual).then(() => {
-    gsap.to(media, {
-      opacity: 1,
-      duration: MOTION.hero.visualDuration,
-      ease: EASE_STANDARD,
-      overwrite: "auto",
     });
   });
 }
