@@ -426,6 +426,11 @@ body {
   }
 
   .home-hero__video {
+    opacity: 0;
+    transition: opacity 260ms ease;
+  }
+
+  .home-hero__media-wrap[data-video-state="ready"] .home-hero__video {
     opacity: 0.92;
   }
 
@@ -1161,13 +1166,7 @@ body {
     min-height: 2.9rem;
   }
 
-  .motion-reveal-up,
-  .motion-reveal-left,
-  .motion-reveal-right {
-    will-change: transform, opacity;
-  }
-
-  .motion-stagger > .motion-stagger-item {
+  .reveal-item {
     will-change: transform, opacity;
   }
 
